@@ -1,5 +1,7 @@
 // api/analyze-chart.js
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import formidable from 'formidable'; // Ubah dari require('formidable')
+import fs from 'fs/promises';     // Ubah dari require('fs/promises')
 
 // Fungsi helper untuk mengonversi buffer gambar ke format yang dapat diterima Gemini
 function fileToGenerativePart(fileBuffer, mimeType) {
@@ -31,88 +33,28 @@ export default async function handler(request, response) {
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" }); 
 
   try {
-    // Parsing multipart/form-data
-    // Ini adalah bagian yang sedikit lebih kompleks karena Vercel defaultnya tidak memproses file upload.
-    // Kita akan menggunakan 'formidable' atau sejenisnya jika ini di Node.js murni,
-    // tapi untuk Vercel Serverless Function, kita bisa memanfaatkan 'busboy' atau memproses buffer langsung.
-    // Namun, cara termudah adalah menggunakan helper dari framework seperti Next.js atau Hono jika ada,
-    // atau untuk Vercel Native API, cukup akses request.body jika sudah dikonfigurasi untuk stream.
-    // KARENA INI HTML/CSS/JS PURE, KITA AKAN ANGGAP request.body SUDAH BERUPA BUFFER DARI FILE UPLOAD
-    // Atau yang lebih reliable adalah menggunakan 'formidable' sebagai dependensi.
-
-    // Untuk kesederhanaan dan demonstrasi di lingkungan Vercel Serverless Function
-    // yang menangani FormData dari browser:
-    // Vercel seringkali sudah memiliki parsing bawaan untuk FormData jika bodyParser: false
-    // Namun, kita perlu parse secara manual untuk mendapatkan field dan file.
-    // Metode ini mungkin memerlukan library seperti 'busboy' atau 'multiparty' di real project.
-    // Untuk demo sederhana, kita akan mengasumsikan FormData sudah di-parse oleh Vercel.
-    // Jika tidak, Anda perlu menambahkan library parsing seperti 'formidable' dan menggunakannya.
-
-    // Contoh manual parsing untuk Vercel (membutuhkan 'npm install busboy'):
-    const busboy = require('busboy');
-    const bb = busboy({ headers: request.headers });
-
-    let fileBuffer;
-    let mimeType;
-    let assetType;
-    let timeframe;
-    let additionalNotes;
-
-    const promises = [];
-
-    bb.on('file', (name, file, info) => {
-        const { filename, encoding, mimetype } = info;
-        mimeType = mimetype;
-        const fileChunks = [];
-        file.on('data', chunk => fileChunks.push(chunk));
-        file.on('end', () => {
-            fileBuffer = Buffer.concat(fileChunks);
-        });
-    });
-
-    bb.on('field', (name, val, info) => {
-        if (name === 'assetType') assetType = val;
-        else if (name === 'timeframe') timeframe = val;
-        else if (name === 'additionalNotes') additionalNotes = val;
-    });
-
-    bb.on('finish', () => {
-        promises.push(new Promise(resolve => resolve())); // Placeholder to ensure async completes
-    });
-
-    // Pipe the request stream to busboy
-    // Note: In Vercel, `request` object might not be a raw stream by default.
-    // You might need to wrap it if using Node.js's http.IncomingMessage.
-    // For Vercel's native `request` object, `request.body` might be a stream.
-    // A more robust solution might involve `data-uri` encoding on frontend
-    // or using a library like `formidable`.
-
-    // **Simplified approach for Vercel's `request` if `bodyParser: false` is set:**
-    // Assuming 'request.body' is the raw stream/buffer.
-    // A robust way to handle multipart/form-data in Vercel Serverless is complex without a framework helper.
-    // For this example, let's use a common pattern with 'formidable' (install with `npm install formidable`).
-
-    const formidable = require('formidable');
     const form = formidable({});
 
+    // formidable.parse() mengembalikan Promise yang resolve dengan [fields, files]
+    // Pastikan request.body adalah readable stream, yang umumnya benar di Vercel Functions.
     const [fields, files] = await form.parse(request);
 
     if (!files.image || files.image.length === 0) {
       return response.status(400).json({ message: 'No image file uploaded.' });
     }
 
-    const imageFile = files.image[0]; // Assuming single file upload
+    const imageFile = files.image[0]; // Asumsi single file upload
     if (!imageFile.mimetype.startsWith('image/')) {
         return response.status(400).json({ message: 'Invalid file type. Please upload an image.' });
     }
 
-    const fs = require('fs/promises'); // Node.js built-in for file system operations
+    // Baca file yang diunggah dari path sementara
     const imageBuffer = await fs.readFile(imageFile.filepath);
     const imagePart = fileToGenerativePart(imageBuffer, imageFile.mimetype);
 
-    assetType = fields.assetType ? fields.assetType[0] : '';
-    timeframe = fields.timeframe ? fields.timeframe[0] : '';
-    additionalNotes = fields.additionalNotes ? fields.additionalNotes[0] : '';
+    const assetType = fields.assetType ? fields.assetType[0] : '';
+    const timeframe = fields.timeframe ? fields.timeframe[0] : '';
+    const additionalNotes = fields.additionalNotes ? fields.additionalNotes[0] : '';
 
     const parts = [
       imagePart,
@@ -143,16 +85,18 @@ export default async function handler(request, response) {
         if (jsonMatch && jsonMatch[1]) {
             analysisOutput = JSON.parse(jsonMatch[1]);
         } else {
-            analysisOutput = JSON.parse(geminiResponseText); // Try parsing directly
+            // Jika tidak ada markdown, coba parse langsung
+            analysisOutput = JSON.parse(geminiResponseText); 
         }
     } catch (parseError) {
         console.error("Failed to parse Gemini's JSON response, sending raw text:", parseError);
+        // Fallback jika parsing gagal atau format JSON tidak sesuai
         analysisOutput = {
             direction: "Uncertain",
-            rationale: "Could not parse detailed analysis from AI. Raw response: " + geminiResponseText,
+            rationale: "AI analysis format could not be fully parsed. Raw response: " + geminiResponseText,
             support: "N/A",
             resistance: "N/A",
-            riskWarning: "Always exercise caution. AI analysis is for informational purposes only."
+            riskWarning: "Always exercise caution. AI analysis is for informational purposes only. Please verify information from other sources."
         };
     }
     
@@ -160,6 +104,7 @@ export default async function handler(request, response) {
 
   } catch (error) {
     console.error('Error in analyze-chart API:', error);
-    response.status(500).json({ message: 'Failed to analyze chart. Please check the image and try again. Error: ' + error.message });
+    // Detail error untuk debugging di client
+    response.status(500).json({ message: `Failed to analyze chart. Error details: ${error.message}` });
   }
 }
