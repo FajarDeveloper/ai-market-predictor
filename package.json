@@ -1,0 +1,24 @@
+{
+  "name": "ai-market-predictor",
+  "version": "1.0.0",
+  "description": "A web application for AI-powered market prediction using Gemini Vision.",
+  "main": "index.js",
+  "type": "module", 
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "AI",
+    "Gemini",
+    "Market Prediction",
+    "Crypto",
+    "Forex",
+    "Commodities"
+  ],
+  "author": "Farid Siddiq",
+  "license": "MIT",
+  "dependencies": {
+    "@google/generative-ai": "^0.15.0",
+    "formidable": "^3.5.1"
+  }
+}
