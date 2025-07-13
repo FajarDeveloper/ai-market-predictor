@@ -47,6 +47,7 @@
         header {
             text-align: center;
             margin-bottom: 20px;
+            position: relative; /* Untuk posisi language-switcher */
         }
 
         header h1 {
@@ -62,6 +63,32 @@
             font-size: 1.2em;
             max-width: 700px;
             margin: 0 auto;
+        }
+
+        /* Language Switcher */
+        .language-switcher {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            gap: 10px;
+        }
+        .language-switcher button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s ease;
+        }
+        .language-switcher button:hover {
+            background-color: var(--primary-dark);
+        }
+        .language-switcher button.active {
+            background-color: var(--secondary-color);
+            border: 1px solid var(--primary-color);
         }
 
         main {
@@ -317,53 +344,50 @@
                 display: flex;
                 flex-direction: column;
             }
+            .language-switcher {
+                top: 20px; /* Sesuaikan posisi di desktop */
+                right: 20px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>AI Market Predictor</h1>
-            <p class="subtitle">Upload your latest chart screenshot and let AI analyze market direction for Crypto, Forex, and Commodities.</p>
+            <div class="language-switcher">
+                <button id="langEnBtn" class="active" data-lang="en">EN</button>
+                <button id="langIdBtn" data-lang="id">ID</button>
+            </div>
+            <h1 id="headerTitle">AI Market Predictor</h1>
+            <p id="headerSubtitle" class="subtitle">Upload your latest chart screenshot and let AI analyze market direction for Crypto, Forex, and Commodities.</p>
         </header>
 
         <main>
             <section class="input-section card">
-                <h2>Upload Chart & Details</h2>
+                <h2 id="inputSectionTitle">Upload Chart & Details</h2>
                 <form id="chartAnalysisForm">
                     <div class="form-group">
-                        <label for="assetType">Asset Type:</label>
+                        <label id="labelAssetType" for="assetType">Asset Type:</label>
                         <select id="assetType" required>
-                            <option value="">Select Asset Type</option>
-                            <option value="Crypto">Crypto</option>
-                            <option value="Forex">Forex</option>
-                            <option value="Commodity">Commodity</option>
-                            <option value="Stock">Stock</option>
-                        </select>
+                            </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="timeframe">Timeframe:</label>
+                        <label id="labelTimeframe" for="timeframe">Timeframe:</label>
                         <select id="timeframe" required>
-                            <option value="">Select Timeframe</option>
-                            <option value="1H">1 Hour</option>
-                            <option value="4H">4 Hour</option>
-                            <option value="1D">1 Day</option>
-                            <option value="1W">1 Week</option>
-                            <option value="1M">1 Month</option>
-                        </select>
+                            </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="additionalNotes">Additional Context/Notes (Optional):</label>
+                        <label id="labelAdditionalNotes" for="additionalNotes">Additional Context/Notes (Optional):</label>
                         <textarea id="additionalNotes" rows="3" placeholder="e.g., 'Looking for resistance levels', 'Is this a bullish setup?'"></textarea>
                     </div>
 
                     <div class="form-group">
-                        <label>Upload Chart Screenshot:</label>
+                        <label id="labelUploadChart">Upload Chart Screenshot:</label>
                         <div id="uploadArea" class="upload-area">
                             <input type="file" id="chartImageInput" accept="image/*" required>
-                            <p>Drag & drop your image here, or click to browse</p>
+                            <p id="uploadAreaText">Drag & drop your image here, or click to browse</p>
                             <img id="imagePreview" class="preview" style="display: none;">
                             <div id="fileNameDisplay" class="file-name" style="display: none;"></div>
                         </div>
@@ -377,36 +401,204 @@
             </section>
 
             <section class="output-section card">
-                <h2>Analysis Results</h2>
+                <h2 id="outputSectionTitle">Analysis Results</h2>
                 <div id="analysisResult" class="analysis-result">
-                    <p class="placeholder-text">Upload a chart and click 'Analyze Chart' to see the AI's prediction here.</p>
+                    <p id="placeholderAnalysis" class="placeholder-text">Upload a chart and click 'Analyze Chart' to see the AI's prediction here.</p>
                 </div>
                 <div id="message" class="message-box" style="display: none;"></div>
             </section>
         </main>
 
         <footer>
-            <p>&copy; 2025 AI Market Predictor. All rights reserved.</p>
+            <p id="footerText">&copy; 2025 AI Market Predictor. All rights reserved.</p>
         </footer>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const chartAnalysisForm = document.getElementById('chartAnalysisForm');
+            const langEnBtn = document.getElementById('langEnBtn');
+            const langIdBtn = document.getElementById('langIdBtn');
+
+            const headerTitle = document.getElementById('headerTitle');
+            const headerSubtitle = document.getElementById('headerSubtitle');
+            const inputSectionTitle = document.getElementById('inputSectionTitle');
+            const labelAssetType = document.getElementById('labelAssetType');
+            const labelTimeframe = document.getElementById('labelTimeframe');
+            const labelAdditionalNotes = document.getElementById('labelAdditionalNotes');
+            const additionalNotesTextarea = document.getElementById('additionalNotes'); // Need to update placeholder
+            const labelUploadChart = document.getElementById('labelUploadChart');
+            const uploadAreaText = document.getElementById('uploadAreaText');
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            const buttonText = document.getElementById('buttonText');
+            const outputSectionTitle = document.getElementById('outputSectionTitle');
+            const placeholderAnalysis = document.getElementById('placeholderAnalysis');
+            const footerText = document.getElementById('footerText');
+            const messageBox = document.getElementById('message');
+
             const assetTypeSelect = document.getElementById('assetType');
             const timeframeSelect = document.getElementById('timeframe');
-            const additionalNotesTextarea = document.getElementById('additionalNotes');
+
+
+            const chartAnalysisForm = document.getElementById('chartAnalysisForm');
             const chartImageInput = document.getElementById('chartImageInput');
             const uploadArea = document.getElementById('uploadArea');
             const imagePreview = document.getElementById('imagePreview');
             const fileNameDisplay = document.getElementById('fileNameDisplay');
-            const analyzeBtn = document.getElementById('analyzeBtn');
-            const buttonText = document.getElementById('buttonText');
             const loadingSpinner = document.getElementById('loadingSpinner');
             const analysisResultDiv = document.getElementById('analysisResult');
-            const messageBox = document.getElementById('message');
 
-            let uploadedFile = null; // To store the file object
+            let uploadedFile = null;
+            let currentLang = localStorage.getItem('appLang') || 'en'; // Default ke 'en' atau dari local storage
+
+            const translations = {
+                en: {
+                    headerTitle: "AI Market Predictor",
+                    headerSubtitle: "Upload your latest chart screenshot and let AI analyze market direction for Crypto, Forex, and Commodities.",
+                    inputSectionTitle: "Upload Chart & Details",
+                    labelAssetType: "Asset Type:",
+                    selectAssetType: "Select Asset Type",
+                    crypto: "Crypto",
+                    forex: "Forex",
+                    commodity: "Commodity",
+                    stock: "Stock",
+                    labelTimeframe: "Timeframe:",
+                    selectTimeframe: "Select Timeframe",
+                    hour: "Hour", // For 1H, 4H
+                    day: "Day", // For 1D
+                    week: "Week", // For 1W
+                    month: "Month", // For 1M
+                    labelAdditionalNotes: "Additional Context/Notes (Optional):",
+                    placeholderNotes: "e.g., 'Looking for resistance levels', 'Is this a bullish setup?'",
+                    labelUploadChart: "Upload Chart Screenshot:",
+                    uploadAreaText: "Drag & drop your image here, or click to browse",
+                    analyzeButton: "Analyze Chart",
+                    analyzingButton: "Analyzing...",
+                    outputSectionTitle: "Analysis Results",
+                    placeholderAnalysis: "Upload a chart and click 'Analyze Chart' to see the AI's prediction here.",
+                    footerText: "&copy; 2025 AI Market Predictor. All rights reserved.",
+                    // Messages
+                    msgUploadImage: "Please upload an image file (e.g., JPG, PNG).",
+                    msgFileSize: "Image file size exceeds 5MB. Please upload a smaller image.",
+                    msgNoImageUploaded: "Please upload a chart screenshot.",
+                    msgSelectAssetTimeframe: "Please select Asset Type and Timeframe.",
+                    msgAnalysisComplete: "Analysis complete!",
+                    msgServerError: "Server error during analysis. Please try again.",
+                    msgFailedAnalysis: "Failed to get analysis.",
+                    msgErrorPrefix: "Error: "
+                },
+                id: {
+                    headerTitle: "Prediktor Pasar AI",
+                    headerSubtitle: "Unggah tangkapan layar grafik terbaru Anda dan biarkan AI menganalisis arah pasar untuk Kripto, Forex, dan Komoditas.",
+                    inputSectionTitle: "Unggah Grafik & Detail",
+                    labelAssetType: "Jenis Aset:",
+                    selectAssetType: "Pilih Jenis Aset",
+                    crypto: "Kripto",
+                    forex: "Forex",
+                    commodity: "Komoditas",
+                    stock: "Saham",
+                    labelTimeframe: "Jangka Waktu:",
+                    selectTimeframe: "Pilih Jangka Waktu",
+                    hour: "Jam", // For 1H, 4H
+                    day: "Hari", // For 1D
+                    week: "Minggu", // For 1W
+                    month: "Bulan", // For 1M
+                    labelAdditionalNotes: "Konteks/Catatan Tambahan (Opsional):",
+                    placeholderNotes: "cth: 'Mencari level resistensi', 'Apakah ini setup bullish?'",
+                    labelUploadChart: "Unggah Tangkapan Layar Grafik:",
+                    uploadAreaText: "Seret & lepas gambar Anda di sini, atau klik untuk mencari",
+                    analyzeButton: "Analisis Grafik",
+                    analyzingButton: "Menganalisis...",
+                    outputSectionTitle: "Hasil Analisis",
+                    placeholderAnalysis: "Unggah grafik dan klik 'Analisis Grafik' untuk melihat prediksi AI di sini.",
+                    footerText: "&copy; 2025 Prediktor Pasar AI. Semua Hak Dilindungi.",
+                    // Messages
+                    msgUploadImage: "Mohon unggah file gambar (misal: JPG, PNG).",
+                    msgFileSize: "Ukuran file gambar melebihi 5MB. Mohon unggah gambar yang lebih kecil.",
+                    msgNoImageUploaded: "Mohon unggah tangkapan layar grafik.",
+                    msgSelectAssetTimeframe: "Mohon pilih Jenis Aset dan Jangka Waktu.",
+                    msgAnalysisComplete: "Analisis selesai!",
+                    msgServerError: "Terjadi kesalahan server saat analisis. Mohon coba lagi.",
+                    msgFailedAnalysis: "Gagal mendapatkan analisis.",
+                    msgErrorPrefix: "Kesalahan: "
+                }
+            };
+
+            const assetTypes = {
+                '': { en: 'Select Asset Type', id: 'Pilih Jenis Aset' },
+                'Crypto': { en: 'Crypto', id: 'Kripto' },
+                'Forex': { en: 'Forex', id: 'Forex' },
+                'Commodity': { en: 'Commodity', id: 'Komoditas' },
+                'Stock': { en: 'Stock', id: 'Saham' }
+            };
+
+            const timeframes = {
+                '': { en: 'Select Timeframe', id: 'Pilih Jangka Waktu' },
+                '1H': { en: '1 Hour', id: '1 Jam' },
+                '4H': { en: '4 Hour', id: '4 Jam' },
+                '1D': { en: '1 Day', id: '1 Hari' },
+                '1W': { en: '1 Week', id: '1 Minggu' },
+                '1M': { en: '1 Month', id: '1 Bulan' }
+            };
+
+            function populateSelectOptions(selectElement, optionsData) {
+                selectElement.innerHTML = ''; // Clear existing options
+                for (const value in optionsData) {
+                    const option = document.createElement('option');
+                    option.value = value;
+                    option.textContent = optionsData[value][currentLang];
+                    selectElement.appendChild(option);
+                }
+            }
+
+            function updateUI() {
+                const t = translations[currentLang];
+
+                headerTitle.textContent = t.headerTitle;
+                headerSubtitle.textContent = t.headerSubtitle;
+                inputSectionTitle.textContent = t.inputSectionTitle;
+                labelAssetType.textContent = t.labelAssetType;
+                labelTimeframe.textContent = t.labelTimeframe;
+                labelAdditionalNotes.textContent = t.labelAdditionalNotes;
+                additionalNotesTextarea.placeholder = t.placeholderNotes;
+                labelUploadChart.textContent = t.labelUploadChart;
+                uploadAreaText.textContent = t.uploadAreaText;
+                buttonText.textContent = t.analyzeButton;
+                outputSectionTitle.textContent = t.outputSectionTitle;
+                placeholderAnalysis.textContent = t.placeholderAnalysis;
+                footerText.innerHTML = t.footerText; // Use innerHTML for copyright symbol
+
+                // Update select options
+                populateSelectOptions(assetTypeSelect, assetTypes);
+                populateSelectOptions(timeframeSelect, timeframes);
+
+                // Update active language button style
+                langEnBtn.classList.toggle('active', currentLang === 'en');
+                langIdBtn.classList.toggle('active', currentLang === 'id');
+
+                // Re-evaluate current messages in correct language if any
+                if (messageBox.style.display === 'block') {
+                    // This is a simplified approach. For more robust message handling,
+                    // you'd typically store message keys and re-display them.
+                    // For now, if a message is shown, it won't auto-translate unless re-triggered.
+                    // This is acceptable for simple cases.
+                }
+            }
+
+            // Initial UI update
+            updateUI();
+
+            // Language Switcher Event Listeners
+            langEnBtn.addEventListener('click', () => {
+                currentLang = 'en';
+                localStorage.setItem('appLang', 'en');
+                updateUI();
+            });
+
+            langIdBtn.addEventListener('click', () => {
+                currentLang = 'id';
+                localStorage.setItem('appLang', 'id');
+                updateUI();
+            });
 
             // --- File Upload Logic (Drag & Drop) ---
             uploadArea.addEventListener('click', () => chartImageInput.click());
@@ -435,14 +627,14 @@
 
             function handleFile(file) {
                 if (!file.type.startsWith('image/')) {
-                    showMessage('Please upload an image file (e.g., JPG, PNG).', 'error');
+                    showMessage(translations[currentLang].msgUploadImage, 'error');
                     imagePreview.style.display = 'none';
                     fileNameDisplay.style.display = 'none';
                     uploadedFile = null;
                     return;
                 }
                 if (file.size > 5 * 1024 * 1024) { // 5 MB limit
-                    showMessage('Image file size exceeds 5MB. Please upload a smaller image.', 'error');
+                    showMessage(translations[currentLang].msgFileSize, 'error');
                     imagePreview.style.display = 'none';
                     fileNameDisplay.style.display = 'none';
                     uploadedFile = null;
@@ -465,15 +657,15 @@
             chartAnalysisForm.addEventListener('submit', async function(event) {
                 event.preventDefault();
 
-                analysisResultDiv.innerHTML = '<p class="placeholder-text">Analyzing chart...</p>';
+                analysisResultDiv.innerHTML = `<p class="placeholder-text">${translations[currentLang].analyzingButton}...</p>`;
                 hideMessage();
 
                 if (!uploadedFile) {
-                    showMessage('Please upload a chart screenshot.', 'error');
+                    showMessage(translations[currentLang].msgNoImageUploaded, 'error');
                     return;
                 }
                 if (!assetTypeSelect.value || !timeframeSelect.value) {
-                    showMessage('Please select Asset Type and Timeframe.', 'error');
+                    showMessage(translations[currentLang].msgSelectAssetTimeframe, 'error');
                     return;
                 }
 
@@ -484,6 +676,7 @@
                 formData.append('assetType', assetTypeSelect.value);
                 formData.append('timeframe', timeframeSelect.value);
                 formData.append('additionalNotes', additionalNotesTextarea.value);
+                formData.append('outputLanguage', currentLang); // Kirim bahasa output ke API
 
                 try {
                     const response = await fetch('/api/analyze-chart', {
@@ -493,17 +686,17 @@
 
                     if (!response.ok) {
                         const errorData = await response.json();
-                        throw new Error(errorData.message || 'Server error during analysis. Please try again.');
+                        throw new Error(errorData.message || translations[currentLang].msgServerError);
                     }
 
                     const data = await response.json();
                     displayAnalysisResults(data.analysis);
-                    showMessage('Analysis complete!', 'success');
+                    showMessage(translations[currentLang].msgAnalysisComplete, 'success');
 
                 } catch (err) {
                     console.error('Analysis error:', err);
-                    analysisResultDiv.innerHTML = '<p class="placeholder-text">Failed to get analysis.</p>';
-                    showMessage(`Error: ${err.message}`, 'error');
+                    analysisResultDiv.innerHTML = `<p class="placeholder-text">${translations[currentLang].msgFailedAnalysis}</p>`;
+                    showMessage(`${translations[currentLang].msgErrorPrefix} ${err.message}`, 'error');
                 } finally {
                     setLoadingState(false);
                 }
@@ -512,7 +705,7 @@
             // --- Helper Functions ---
             function setLoadingState(isLoading) {
                 analyzeBtn.disabled = isLoading;
-                buttonText.textContent = isLoading ? 'Analyzing...' : 'Analyze Chart';
+                buttonText.textContent = isLoading ? translations[currentLang].analyzingButton : translations[currentLang].analyzeButton;
                 loadingSpinner.style.display = isLoading ? 'inline-block' : 'none';
             }
 
@@ -527,30 +720,28 @@
             }
 
             function displayAnalysisResults(analysis) {
-                // Asumsi 'analysis' adalah string markdown atau objek dengan detail
-                // Untuk demo ini, kita akan menampilkan string biasa.
-                // Jika AI mengembalikan struktur data, Anda bisa mem-parsing-nya di sini
-                // Contoh parsing sederhana jika AI memberikan format terstruktur:
                 let htmlContent = '';
                 if (typeof analysis === 'string') {
                     htmlContent = `<p>${analysis.replace(/\n/g, '<br>')}</p>`; // Basic newline conversion
                 } else if (typeof analysis === 'object') {
-                    // Contoh jika AI mengembalikan { direction: "Bullish", rationale: "...", support: "...", resistance: "..." }
-                    htmlContent += `<div class="result-item"><h3>Market Direction:</h3><p><strong>${analysis.direction || 'N/A'}</strong></p></div>`;
+                    // This assumes AI's JSON output keys are consistent (direction, rationale etc.)
+                    // You might need to translate these keys if AI doesn't return them in the selected language.
+                    // For now, let's assume AI's response for direction/rationale will be in the requested language.
+                    htmlContent += `<div class="result-item"><h3>${currentLang === 'en' ? 'Market Direction' : 'Arah Pasar'}:</h3><p><strong>${analysis.direction || 'N/A'}</strong></p></div>`;
                     if (analysis.rationale) {
-                         htmlContent += `<div class="result-item"><h3>Rationale:</h3><p>${analysis.rationale}</p></div>`;
+                         htmlContent += `<div class="result-item"><h3>${currentLang === 'en' ? 'Rationale' : 'Alasan'}:</h3><p>${analysis.rationale}</p></div>`;
                     }
                     if (analysis.support) {
-                        htmlContent += `<div class="result-item"><h3>Support Level:</h3><p>${analysis.support}</p></div>`;
+                        htmlContent += `<div class="result-item"><h3>${currentLang === 'en' ? 'Support Level' : 'Level Dukungan'}:</h3><p>${analysis.support}</p></div>`;
                     }
                      if (analysis.resistance) {
-                        htmlContent += `<div class="result-item"><h3>Resistance Level:</h3><p>${analysis.resistance}</p></div>`;
+                        htmlContent += `<div class="result-item"><h3>${currentLang === 'en' ? 'Resistance Level' : 'Level Resistensi'}:</h3><p>${analysis.resistance}</p></div>`;
                     }
                     if (analysis.riskWarning) {
-                        htmlContent += `<div class="result-item warning-message"><h3>Risk Warning:</h3><p>${analysis.riskWarning}</p></div>`;
+                        htmlContent += `<div class="result-item warning-message"><h3>${currentLang === 'en' ? 'Risk Warning' : 'Peringatan Risiko'}:</h3><p>${analysis.riskWarning}</p></div>`;
                     }
                 } else {
-                    htmlContent = `<p class="placeholder-text">No detailed analysis available.</p>`;
+                    htmlContent = `<p class="placeholder-text">${translations[currentLang].placeholderAnalysis}</p>`;
                 }
                 analysisResultDiv.innerHTML = htmlContent;
             }
