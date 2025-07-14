@@ -14,7 +14,7 @@ function fileToGenerativePart(fileBuffer, mimeType) {
 }
 
 export const config = {
-  api: {
+  api:AIzaSyCiCFa_wNpIi2RHfEU1dbnG2DWqmfBP2Cg {
     bodyParser: false, // Penting! Nonaktifkan bodyParser agar kita bisa memproses multipart/form-data secara manual
   },
 };
@@ -29,7 +29,7 @@ export default async function handler(request, response) {
   }
 
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" }); 
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-latest" }); 
 
   try {
     const form = formidable({});
