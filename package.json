@@ -15,7 +15,7 @@
     "Forex",
     "Commodities"
   ],
-  "author": "Farid Siddiq",
+  "author": "Dimas Fajar Setiawan",
   "license": "MIT",
   "dependencies": {
     "@google/generative-ai": "^0.15.0",
