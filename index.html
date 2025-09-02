@@ -78,10 +78,11 @@ body {
 
 /* Switch style */
 .switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
+	position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);  /* Offset by half the width and height of the element */
+
 }
 
 .switch input {
@@ -172,8 +173,6 @@ body{
   max-width:1120px;
   display:flex;
   flex-direction:column;
-  justify-content: center;
-  align-items: center;
   gap:24px;
   padding-inline: clamp(8px, 2vw, 12px);
 }
