@@ -78,7 +78,7 @@ body {
 
 /* Switch style */
 .switch {
-    position: center;
+    position: relative;
     display: inline-block;
     width: 60px;
     height: 34px;
@@ -122,6 +122,16 @@ input:checked + .slider:before {
     transform: translateX(26px);
 }
 
+/* Center the switch */
+.switch-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 20px; /* Adjust the position */
+    left: 50%;
+    transform: translateX(-50%);
+}
 
 /* ===== BASE ===== */
 html, body{
