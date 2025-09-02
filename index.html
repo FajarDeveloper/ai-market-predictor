@@ -9,8 +9,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Market Analyzer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	
     <style>
+		
       /* ===== Modern Responsive Theme (CSS-only refresh) ===== */
 /* Reset kecil & better sizing */
 *,
@@ -142,6 +146,29 @@ input:checked + .slider:before {
     transform: translateX(-50%);
 }
 
+.social-media-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;  /* Space between icons */
+    margin-top: 20px;
+}
+
+.social-icon {
+    font-size: 30px;             /* Size of the icons */
+    color: #000;                 /* Default icon color */
+    transition: color 0.3s ease; /* Smooth transition for hover effect */
+    text-decoration: none;       /* Remove underline from links */
+}
+
+.social-icon:hover {
+    color: #2196F3;              /* Change color on hover (use any color you prefer) */
+}
+
+.social-icon i {
+    display: inline-block;
+}
+		
+		
 /* ===== BASE ===== */
 html, body{
   height:100%;
@@ -476,13 +503,13 @@ footer{
         <br>
         	<footer>
             <div class="social-media-icons">
-        <a href="https://www.tiktok.com/@masterofgold_id" target="_blank">
-            <i class="fa fa-tiktok" style="font-size: 24px; color: #000;"></i>
-        </a>
-        <a href="https://www.instagram.com/dfajar22_" target="_blank">
-            <i class="fa fa-instagram" style="font-size: 24px; color: #000;"></i>
-        </a>
-    </div>
+    <a href="https://www.tiktok.com/@masterofgold_id" target="_blank" class="social-icon">
+        <i class="fab fa-tiktok"></i> <!-- TikTok Icon -->
+    </a>
+    <a href="https://www.instagram.com/dfajar22_" target="_blank" class="social-icon">
+        <i class="fab fa-instagram"></i> <!-- Instagram Icon -->
+    </a>
+</div>
 </footer>
         </header>
 
