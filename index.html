@@ -50,102 +50,6 @@
   --focus-ring: 0 0 0 4px rgba(37,99,235,.18);
 }
 
-/* Default light theme */
-:root {
-    --background-light: #f6f8fb;
-    --text-color: #0f172a;
-    --muted-text: #475569;
-    --primary-color: #2563eb;
-    --primary-dark: #1e40af;
-    /* other light mode variables... */
-}
-
-/* Dark theme */
-[data-theme="dark"] {
-    --background-light: #0b1220;
-    --text-color: #e5e7eb;
-    --muted-text: #94a3b8;
-    --primary-color: #2563eb;
-    --primary-dark: #1e40af;
-    /* other dark mode variables... */
-}
-
-/* Apply theme colors to background, text, etc. */
-body {
-    background-color: var(--background-light);
-    color: var(--text-color);
-}
-
-
-/* Switch style */
-.switch {
-	position: relative;
-    display: inline-block;
-    witdh: 60px;
-	height: 34px;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: 0.4s;
-    border-radius: 34px;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    border-radius: 50%;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: 0.4s;
-}
-
-input:checked + .slider {
-    background-color: #2196F3;
-}
-
-input:checked + .slider:before {
-    transform: translateX(26px);
-}
-
-		/* Center the switch button */
-.switch-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 20px; /* You can adjust this to your preference */
-    left: 50%;
-    transform: translateX(-50%);
-}
-		
-
-/* Center the switch */
-.switch-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 20px; /* Adjust the position */
-    left: 50%;
-    transform: translateX(-50%);
-}
-
 .social-media-icons {
     display: flex;
     justify-content: center;
@@ -485,10 +389,6 @@ footer{
     <div class="container">
         <header>
             <div class="language-switcher">
-				<label class="switch">
-    <input type="checkbox" id="themeToggle">
-    <span class="slider round"></span>
-				</label>
                 <button id="langEnBtn" class="active" data-lang="en">EN</button>
                 <button id="langIdBtn" data-lang="id">ID</button>
 </div>
@@ -903,25 +803,5 @@ footer{
         });
        
     </script>
-    <script>
-    	// Get the theme toggle switch and the current theme stored in localStorage
-const themeToggle = document.getElementById('themeToggle');
-let currentTheme = localStorage.getItem('theme') || 'light';
-
-// Set the initial theme based on saved preference
-document.documentElement.setAttribute('data-theme', currentTheme);
-
-// If the theme is dark, check the switch
-if (currentTheme === 'dark') {
-    themeToggle.checked = true;
-}
-
-// Event listener for the theme toggle switch
-themeToggle.addEventListener('change', () => {
-    currentTheme = themeToggle.checked ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', currentTheme);
-    localStorage.setItem('theme', currentTheme);
-});
-    	</script>
 </body>
 </html>
