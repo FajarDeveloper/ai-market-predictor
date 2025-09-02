@@ -78,11 +78,10 @@ body {
 
 /* Switch style */
 .switch {
+	position: relative;
     display: inline-block;
-    position:absolute;
-    top:0; right:0;
-    display:flex; gap:10px;
-    padding:6px;
+    witdh: 60px;
+	height: 34px;
 }
 
 .switch input {
@@ -460,12 +459,12 @@ footer{
 </head>
 <body>
     <div class="container">
-        <header>
-            <div class="language-switcher">
-            	<label class="switch">
+		<label class="switch">
     <input type="checkbox" id="themeToggle">
     <span class="slider round"></span>
-</label>
+		</label>
+        <header>
+            <div class="language-switcher">
                 <button id="langEnBtn" class="active" data-lang="en">EN</button>
                 <button id="langIdBtn" data-lang="id">ID</button>
 </div>
