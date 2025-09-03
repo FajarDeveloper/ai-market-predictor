@@ -404,38 +404,26 @@ footer{
         <br>
  <style>
     /* Membuat animasi cahaya pelangi */
-    @keyframes rainbowGlow {
+    @keyframes shadowAnimation {
       0% {
-        background: linear-gradient(135deg, #ff7f50, #ff1493, #8a2be2, #00ced1, #7fff00, #ff6347);
-        background-size: 400% 400%;
+        box-shadow: 0 0 10px rgba(173, 216, 230, 0.8), /* Light Blue */
+                    0 0 20px rgba(128, 0, 128, 0.8),  /* Purple */
+                    0 0 30px rgba(0, 128, 0, 0.8),    /* Green */
+                    0 0 40px rgba(255, 255, 255, 0.8); /* White */
       }
       50% {
-        background: linear-gradient(135deg, #ff6347, #7fff00, #00ced1, #8a2be2, #ff1493, #ff7f50);
-        background-size: 400% 400%;
+        box-shadow: 0 0 20px rgba(173, 216, 230, 0.8), /* Light Blue */
+                    0 0 30px rgba(128, 0, 128, 0.8),  /* Purple */
+                    0 0 40px rgba(0, 128, 0, 0.8),    /* Green */
+                    0 0 50px rgba(255, 255, 255, 0.8); /* White */
       }
       100% {
-        background: linear-gradient(135deg, #ff7f50, #ff1493, #8a2be2, #00ced1, #7fff00, #ff6347);
-        background-size: 400% 400%;
+        box-shadow: 0 0 30px rgba(173, 216, 230, 0.8), /* Light Blue */
+                    0 0 40px rgba(128, 0, 128, 0.8),  /* Purple */
+                    0 0 50px rgba(0, 128, 0, 0.8),    /* Green */
+                    0 0 60px rgba(255, 255, 255, 0.8); /* White */
       }
-    }
-
-    .box {
-      display: inline-block;
-      vertical-align: middle;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #a7c7e7, #d2e5f0); /* Biru halus */
-      color: #000000; /* Warna Teks */
-      padding: 10px 20px;
-      border-radius: 50px;
-      font-family: Arial, sans-serif;
-      font-size: 18px;
-      width: 220px;
-      height: 40px;
-      text-align: center;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      animation: rainbowGlow 3s infinite alternate; /* Menambahkan animasi pelangi */
-    }
+	}
 
 	 .box1 {
       display: inline-block;
@@ -452,13 +440,7 @@ footer{
       width: 218px;
       height: 38px;
       text-align: center;
-      box-shadow: 0 0 4px rgba(255, 0, 0, 0.7),   /* Red */
-              0 0 5px rgba(255, 127, 0, 0.7), /* Orange */
-              0 0 6px rgba(255, 255, 0, 0.7), /* Yellow */
-              0 0 7px rgba(0, 255, 0, 0.7),   /* Green */
-              0 0 8px rgba(0, 0, 255, 0.7),   /* Blue */
-              0 0 9px rgba(75, 0, 130, 0.7),  /* Indigo */
-              0 0 10px rgba(148, 0, 211, 0.7); /* Violet */
+      animation: shadowAnimation 2s infinite alternate;
 	 }
 	 
   </style>
