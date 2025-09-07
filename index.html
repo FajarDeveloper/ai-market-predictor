@@ -1,235 +1,254 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta name="monetag" content="28cd66a48a557b8bfa51174459c7f7bc">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Market Analyzer</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
+    
     <style>
-        /* General Reset */
-        *, *::before, *::after { box-sizing: border-box; }
-
-        /* Colors & Theme Variables */
-        :root {
-            --primary-color: #2563eb;
-            --primary-dark: #1e40af;
-            --secondary-color: #64748b;
-            --background-light: #f6f8fb;
-            --card-background: #ffffff;
-            --text-color: #0f172a;
-            --muted-text: #475569;
-            --border-color: #e5e7eb;
-            --shadow-color: rgba(15,23,42,.08);
-            --success-color: #16a34a;
-            --error-color: #ef4444;
-            --warning-color: #b45309;
-            --radius: 14px;
-            --elev-1: 0 6px 24px var(--shadow-color);
-            --elev-2: 0 10px 30px rgba(15,23,42,.12);
-            --focus-ring: 0 0 0 4px rgba(37,99,235,.18);
+        /* Reset and basic styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-            background: var(--background-light);
-            color: var(--text-color);
-            margin: 0;
-            padding: 24px;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f3f4f6;
             display: flex;
             justify-content: center;
-            min-height: 100vh;
-            flex-direction: column;
             align-items: center;
+            min-height: 100vh;
+            padding: 20px;
         }
 
         .container {
             width: 100%;
-            max-width: 1120px;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
+            max-width: 1100px;
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
         header {
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 30px;
         }
 
         header h1 {
-            margin: 0;
-            color: var(--primary-color);
-            font-weight: 800;
-            font-size: clamp(1.6rem, 2.8vw + .5rem, 2.6rem);
+            font-size: 32px;
+            color: #2563eb;
+            font-weight: 600;
         }
 
-        .subtitle {
-            color: var(--muted-text);
-            font-size: clamp(.95rem, .5vw + .85rem, 1.1rem);
-            max-width: 760px;
-            margin: 0 auto;
+        header p {
+            font-size: 16px;
+            color: #6b7280;
         }
 
         .language-switcher {
-            position: absolute;
-            top: 0;
-            right: 0;
             display: flex;
-            gap: 10px;
-            padding: 6px;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: -25px;
         }
 
         .language-switcher button {
-            appearance: none;
-            border: 1px solid var(--border-color);
-            background: linear-gradient(180deg, rgba(255, 255, 255, .9), rgba(255, 255, 255, .7));
-            color: var(--text-color);
-            padding: 8px 12px;
-            border-radius: 999px;
+            background-color: transparent;
+            border: 1px solid #2563eb;
+            color: #2563eb;
+            padding: 8px 20px;
+            border-radius: 25px;
             cursor: pointer;
-            font-size: .9rem;
+            font-size: 14px;
             font-weight: 600;
-            transition: transform .12s ease, box-shadow .2s ease, background-color .2s ease;
-            box-shadow: 0 2px 8px var(--shadow-color);
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .language-switcher button:hover {
-            transform: translateY(-1px);
+            background-color: #2563eb;
+            color: white;
         }
 
-        .language-switcher button:active {
-            transform: translateY(0);
+        main {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
         }
 
-        .language-switcher button.active {
-            background: linear-gradient(180deg, var(--primary-color), var(--primary-dark));
-            color: #fff;
-            border-color: transparent;
-            box-shadow: 0 8px 18px rgba(37,99,235,.35);
+        .input-section, .output-section {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        .card {
-            background: var(--card-background);
-            padding: 24px;
-            border-radius: var(--radius);
-            border: 1px solid var(--border-color);
-            box-shadow: var(--elev-1);
-            transition: box-shadow .25s ease, transform .12s ease, border-color .25s ease;
-        }
-
-        .card:hover {
-            box-shadow: var(--elev-2);
+        .input-section h2, .output-section h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
         }
 
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
+            font-size: 14px;
             font-weight: 600;
-            color: var(--muted-text);
-            font-size: .95rem;
+            color: #333;
+            margin-bottom: 8px;
         }
 
-        input[type="text"],
-        select,
-        textarea {
+        input[type="text"], select, textarea {
             width: 100%;
-            padding: 14px 12px;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-xs);
-            font-size: 1rem;
-            background: linear-gradient(180deg, rgba(255, 255, 255, .9), rgba(255, 255, 255, .7));
-            color: var(--text-color);
-            transition: border-color .25s ease, box-shadow .25s ease, background-color .25s ease;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: #f9fafb;
+            color: #333;
+            transition: border-color 0.3s;
         }
 
-        input[type="text"]:focus,
-        select:focus,
-        textarea:focus {
-            border-color: var(--primary-color);
+        input[type="text"]:focus, select:focus, textarea:focus {
+            border-color: #2563eb;
             outline: none;
-            box-shadow: var(--focus-ring);
-            background: #fff;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .upload-area {
+            padding: 20px;
+            border: 2px dashed #e5e7eb;
+            border-radius: 8px;
+            background-color: #f9fafb;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .upload-area:hover {
+            background-color: #2563eb;
+            border-color: #2563eb;
+        }
+
+        .upload-area img {
+            max-width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .upload-area .file-name {
+            font-size: 14px;
+            color: #333;
+            margin-top: 10px;
         }
 
         .btn {
-            padding: 14px 20px;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 1.05rem;
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: transform .12s ease, box-shadow .22s ease, opacity .2s ease, background-color .2s ease;
-        }
-
-        .primary-btn {
             width: 100%;
-            margin-top: 8px;
-            color: #fff;
-            background: linear-gradient(180deg, var(--primary-color), var(--primary-dark));
-            box-shadow: 0 14px 28px rgba(37,99,235,.25);
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background-color: #2563eb;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
 
-        .primary-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 18px 36px rgba(37,99,235,.30);
+        .btn:hover {
+            background-color: #1e40af;
+        }
+
+        .loading-spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #fff;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        .analysis-result {
+            padding: 20px;
+            background-color: #f9fafb;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            margin-top: 20px;
+        }
+
+        .result-item {
+            margin-bottom: 20px;
+        }
+
+        .result-item h3 {
+            font-size: 18px;
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        .result-item p {
+            font-size: 16px;
+            color: #333;
         }
 
         footer {
             text-align: center;
-            margin-top: 10px;
-            color: var(--muted-text);
-            font-size: .92rem;
+            margin-top: 30px;
+            font-size: 14px;
+            color: #6b7280;
         }
 
-        /* Mobile First Responsive Design */
         @media (min-width: 768px) {
             main {
                 grid-template-columns: 1fr 1fr;
             }
+
+            .container {
+                max-width: 90%;
+            }
         }
 
-        @media (min-width: 1024px) {
-            .container {
-                gap: 28px;
-            }
-            main {
-                gap: 28px;
-            }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
     </style>
 </head>
 <body>
+
     <div class="container">
         <header>
             <div class="language-switcher">
                 <button id="langEnBtn" class="active" data-lang="en">EN</button>
                 <button id="langIdBtn" data-lang="id">ID</button>
             </div>
-            <a href="https://lynk.id/mgtrade/">
-                <img src="https://imgpx.com/Dd4UjbwERpzv.png" width="100%" height="auto" style="margin-top: 10px;"/>
-            </a>
-            <h1 id="headerTitle">AI Market Analyzer</h1>
-            <p id="headerSubtitle" class="subtitle">Upload your latest chart screenshot and let AI analyze market direction for Crypto, Forex, and Commodities.</p>
+            <h1>AI Market Analyzer</h1>
+            <p>Upload your latest chart screenshot and let AI analyze market direction for Crypto, Forex, and Commodities.</p>
         </header>
 
         <main>
-            <section class="input-section card">
-                <h2 id="inputSectionTitle">Upload Chart & Details</h2>
+            <section class="input-section">
+                <h2>Upload Chart & Details</h2>
                 <form id="chartAnalysisForm">
                     <div class="form-group">
-                        <label id="labelAssetType" for="assetType">Asset Type:</label>
+                        <label for="assetType">Asset Type:</label>
                         <select id="assetType" required>
                             <option value="Crypto">Crypto</option>
                             <option value="Forex">Forex</option>
@@ -239,7 +258,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label id="labelTimeframe" for="timeframe">Timeframe:</label>
+                        <label for="timeframe">Timeframe:</label>
                         <select id="timeframe" required>
                             <option value="5M">5 Minute</option>
                             <option value="15M">15 Minute</option>
@@ -253,38 +272,37 @@
                     </div>
 
                     <div class="form-group">
-                        <label id="labelAdditionalNotes" for="additionalNotes">Additional Context/Notes (Optional):</label>
+                        <label for="additionalNotes">Additional Context/Notes (Optional):</label>
                         <textarea id="additionalNotes" rows="3" placeholder="e.g., 'Looking for resistance levels', 'Is this a bullish setup?'"></textarea>
                     </div>
 
                     <div class="form-group">
-                        <label id="labelUploadChart">Upload Chart Screenshot:</label>
+                        <label for="uploadChart">Upload Chart Screenshot:</label>
                         <div id="uploadArea" class="upload-area">
                             <input type="file" id="chartImageInput" accept="image/*" required>
-                            <p id="uploadAreaText">Drag & drop your image here, or click to browse</p>
+                            <p>Drag & drop your image here, or click to browse</p>
                             <img id="imagePreview" class="preview" style="display: none;">
                             <div id="fileNameDisplay" class="file-name" style="display: none;"></div>
                         </div>
                     </div>
 
-                    <button type="submit" id="analyzeBtn" class="btn primary-btn">
-                        <span id="buttonText">Analyze Chart</span>
+                    <button type="submit" class="btn" id="analyzeBtn">
+                        Analyze Chart
                         <span id="loadingSpinner" class="loading-spinner" style="display: none;"></span>
                     </button>
                 </form>
             </section>
 
-            <section class="output-section card">
-                <h2 id="outputSectionTitle">Analysis Results</h2>
+            <section class="output-section">
+                <h2>Analysis Results</h2>
                 <div id="analysisResult" class="analysis-result">
-                    <p id="placeholderAnalysis" class="placeholder-text">Upload a chart and click 'Analyze Chart' to see the AI's prediction here.</p>
+                    <p id="placeholderAnalysis">Upload a chart and click 'Analyze Chart' to see the AI's prediction here.</p>
                 </div>
-                <div id="message" class="message-box" style="display: none;"></div>
             </section>
         </main>
 
         <footer>
-            <p id="footerText">&copy; 2025 AI Market Analyzer by MG Trade. All rights reserved.</p>
+            <p>&copy; 2025 AI Market Analyzer by MG Trade. All rights reserved.</p>
         </footer>
     </div>
 
@@ -300,23 +318,8 @@
             const analyzeBtn = document.getElementById('analyzeBtn');
             const loadingSpinner = document.getElementById('loadingSpinner');
             const analysisResultDiv = document.getElementById('analysisResult');
-            const messageBox = document.getElementById('message');
-            const assetTypeSelect = document.getElementById('assetType');
-            const timeframeSelect = document.getElementById('timeframe');
+            const placeholderAnalysis = document.getElementById('placeholderAnalysis');
             let uploadedFile = null;
-
-            langEnBtn.addEventListener('click', () => setLanguage('en'));
-            langIdBtn.addEventListener('click', () => setLanguage('id'));
-
-            function setLanguage(lang) {
-                localStorage.setItem('lang', lang);
-                updateUI();
-            }
-
-            function updateUI() {
-                const currentLang = localStorage.getItem('lang') || 'en';
-                // This part handles UI language updates
-            }
 
             uploadArea.addEventListener('click', () => chartImageInput.click());
             uploadArea.addEventListener('dragover', (e) => e.preventDefault());
@@ -339,48 +342,40 @@
 
             function handleFile(file) {
                 if (!file.type.startsWith('image/')) {
-                    showMessage('Please upload an image file.', 'error');
-                    imagePreview.style.display = 'none';
-                    fileNameDisplay.style.display = 'none';
-                    uploadedFile = null;
-                    return;
-                }
-                if (file.size > 5 * 1024 * 1024) { // 5 MB limit
-                    showMessage('Image file size exceeds 5MB. Please upload a smaller image.', 'error');
+                    alert("Please upload a valid image file.");
                     imagePreview.style.display = 'none';
                     fileNameDisplay.style.display = 'none';
                     uploadedFile = null;
                     return;
                 }
 
-                uploadedFile = file;
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     imagePreview.src = e.target.result;
                     imagePreview.style.display = 'block';
                     fileNameDisplay.textContent = file.name;
                     fileNameDisplay.style.display = 'block';
+                    uploadedFile = file;
                 };
                 reader.readAsDataURL(file);
             }
 
-            chartAnalysisForm.addEventListener('submit', async function(event) {
+            chartAnalysisForm.addEventListener('submit', async (event) => {
                 event.preventDefault();
 
-                analysisResultDiv.innerHTML = `<p class="placeholder-text">Analyzing...</p>`;
-                showMessage('', 'success');
+                analyzeBtn.disabled = true;
+                loadingSpinner.style.display = 'inline-block';
 
                 if (!uploadedFile) {
-                    showMessage('Please upload a chart screenshot.', 'error');
+                    alert("Please upload a chart.");
                     return;
                 }
 
                 const formData = new FormData();
                 formData.append('image', uploadedFile);
-                formData.append('assetType', assetTypeSelect.value);
-                formData.append('timeframe', timeframeSelect.value);
-
-                setLoadingState(true);
+                formData.append('assetType', document.getElementById('assetType').value);
+                formData.append('timeframe', document.getElementById('timeframe').value);
+                formData.append('additionalNotes', document.getElementById('additionalNotes').value);
 
                 try {
                     const response = await fetch('/api/analyze-chart', {
@@ -389,40 +384,40 @@
                     });
 
                     if (!response.ok) {
-                        throw new Error('Server error during analysis');
+                        throw new Error("Error during analysis");
                     }
 
                     const data = await response.json();
                     displayAnalysisResults(data.analysis);
-
-                } catch (err) {
-                    analysisResultDiv.innerHTML = `<p class="placeholder-text">Analysis failed. Try again.</p>`;
-                    showMessage(`Error: ${err.message}`, 'error');
+                } catch (error) {
+                    alert(error.message);
                 } finally {
-                    setLoadingState(false);
+                    analyzeBtn.disabled = false;
+                    loadingSpinner.style.display = 'none';
                 }
             });
 
-            function setLoadingState(isLoading) {
-                analyzeBtn.disabled = isLoading;
-                loadingSpinner.style.display = isLoading ? 'inline-block' : 'none';
-            }
-
-            function showMessage(msg, type) {
-                messageBox.textContent = msg;
-                messageBox.className = `message-box ${type}-message`;
-                messageBox.style.display = 'block';
-            }
-
             function displayAnalysisResults(analysis) {
-                let htmlContent = '';
                 if (analysis) {
-                    htmlContent = `<div class="result-item">
-                        <h3>Market Direction:</h3><p><strong>${analysis.direction}</strong></p></div>`;
+                    placeholderAnalysis.style.display = 'none';
+                    analysisResultDiv.innerHTML = `
+                        <div class="result-item">
+                            <h3>Market Direction</h3>
+                            <p><strong>${analysis.direction}</strong></p>
+                        </div>
+                        <div class="result-item">
+                            <h3>Support Level</h3>
+                            <p>${analysis.support}</p>
+                        </div>
+                        <div class="result-item">
+                            <h3>Resistance Level</h3>
+                            <p>${analysis.resistance}</p>
+                        </div>
+                    `;
                 }
-                analysisResultDiv.innerHTML = htmlContent;
             }
         });
     </script>
+
 </body>
 </html>
