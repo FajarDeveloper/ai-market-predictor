@@ -6,7 +6,6 @@
     <title>AI Market Analyzer</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    
     <style>
         /* Reset and basic styles */
         * {
@@ -23,11 +22,13 @@
             align-items: center;
             min-height: 100vh;
             padding: 20px;
+            margin: 0;
+            flex-direction: column;
         }
 
         .container {
             width: 100%;
-            max-width: 1100px;
+            max-width: 1200px;
             background-color: #fff;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
@@ -74,6 +75,15 @@
         .language-switcher button:hover {
             background-color: #2563eb;
             color: white;
+        }
+
+        /* Banner */
+        .banner {
+            margin-top: 10px;
+            width: 100%;
+            height: auto;
+            max-height: 400px;
+            object-fit: cover;
         }
 
         main {
@@ -228,7 +238,6 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-
     </style>
 </head>
 <body>
@@ -239,6 +248,7 @@
                 <button id="langEnBtn" class="active" data-lang="en">EN</button>
                 <button id="langIdBtn" data-lang="id">ID</button>
             </div>
+            <img src="https://imgpx.com/Dd4UjbwERpzv.png" alt="AI Market Analyzer Banner" class="banner" />
             <h1>AI Market Analyzer</h1>
             <p>Upload your latest chart screenshot and let AI analyze market direction for Crypto, Forex, and Commodities.</p>
         </header>
@@ -416,8 +426,8 @@
                     `;
                 }
             }
+
         });
     </script>
-
 </body>
 </html>
