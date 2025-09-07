@@ -226,6 +226,25 @@
             color: #6b7280;
         }
 
+        /* Social Media Icons */
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            font-size: 30px;
+            color: #2563eb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: #1e40af;
+        }
+
         @media (min-width: 768px) {
             main {
                 grid-template-columns: 1fr 1fr;
@@ -256,6 +275,16 @@
             <h1 id="headerTitle">AI Market Analyzer</h1>
             <p id="headerSubtitle">Upload your latest chart screenshot and let AI analyze market direction for Crypto, Forex, and Commodities.</p>
         </header>
+
+        <!-- Social Media Icons -->
+        <div class="social-icons">
+            <a href="https://www.instagram.com/yourusername" target="_blank">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://www.tiktok.com/@yourusername" target="_blank">
+                <i class="fab fa-tiktok"></i>
+            </a>
+        </div>
 
         <main>
             <section class="input-section">
