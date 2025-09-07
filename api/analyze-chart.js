@@ -69,7 +69,7 @@ export default async function handler(request, response) {
         parts.push({ text: `Additional context from user: "${additionalNotes}". Incorporate this into your analysis if relevant.` });
     }
 
-    parts.push({ text: `Focus on key technical patterns, chart patterns, candlestick pattern, support/resistance levels, impactful news, geopolitics and overall trend. Please also include a short risk warning. Provide output in this structured JSON-like format: { "direction": "string", "rationale": "string", "support": "string", "resistance": "string", "riskWarning": "string" }. ${languagePrompt}` });
+    parts.push({ text: `Focus on key technical patterns, chart patterns, candlestick pattern, support/resistance levels, FVG if any, influential news if any, geopolitics If there are and overall trend. also provide a good and safe price execution position from the analysis conclusions obtained. Please also include a short risk warning. Provide output in this structured JSON-like format: { "direction": "string", "rationale": "string", "support": "string", "resistance": "string", "riskWarning": "string" }. ${languagePrompt}` });
 
 
     const result = await model.generateContent({
