@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta name="monetag" content="28cd66a48a557b8bfa51174459c7f7bc">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Market Analyzer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <style>
+        /* Modern, Clean UI Styling */
+        *,
+        *::before,
+        *::after { box-sizing: border-box; }
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary-color: #64748b;
+            --background-light: #f6f8fb;
+            --card-background: #ffffff;
+            --text-color: #0f172a;
+            --muted-text: #475569;
+            --border-color: #e5e7eb;
+            --shadow-color: rgba(15,23,42,.08);
+            --success-color: #16a34a;
+            --error-color: #ef4444;
+            --warning-color: #b45309;
+            --radius: 14px;
+            --elev-1: 0 6px 24px var(--shadow-color);
+            --elev-2: 0 10px 30px rgba(15,23,42,.12);
+            --focus-ring: 0 0 0 4px rgba(37,99,235,.18);
+        }
+
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            background: radial-gradient(1200px 800px at 10% -10%, rgba(37,99,235,.10), transparent 60%),
+                        radial-gradient(1000px 600px at 90% -20%, rgba(99,102,241,.10), transparent 60%),
+                        var(--background-light);
+            color: var(--text-color);
+            margin: 0;
+            padding: 24px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1120px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            padding-inline: clamp(8px, 2vw, 12px);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        header h1 {
+            margin: 0;
+            color: var(--primary-color);
+            font-weight: 800;
+            font-size: clamp(1.6rem, 2.8vw + .5rem, 2.6rem);
+        }
+
+        .subtitle {
+            color: var(--muted-text);
+            font-size: clamp(.95rem, .5vw + .85rem, 1.1rem);
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .language-switcher {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            gap: 10px;
+            padding: 6px;
+        }
+
+        .language-switcher button {
+            appearance: none;
+            border: 1px solid var(--border-color);
+            background: linear-gradient(180deg, rgba(255, 255, 255, .9), rgba(255, 255, 255, .7));
+            color: var(--text-color);
+            padding: 8px 12px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: .9rem;
+            font-weight: 600;
+            transition: transform .12s ease, box-shadow .2s ease, background-color .2s ease;
+            box-shadow: 0 2px 8px var(--shadow-color);
+        }
+
+        .language-switcher button:hover {
+            transform: translateY(-1px);
+        }
+
+        .language-switcher button:active {
+            transform: translateY(0);
+        }
+
+        .language-switcher button.active {
+            background: linear-gradient(180deg, var(--primary-color), var(--primary-dark));
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 8px 18px rgba(37,99,235,.35);
+        }
+
+        .card {
+            background: var(--card-background);
+            padding: clamp(18px, 2.5vw, 30px);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--elev-1);
+            transition: box-shadow .25s ease, transform .12s ease, border-color .25s ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--elev-2);
+        }
+
+        .card h2 {
+            margin: 0 0 18px;
+            font-weight: 700;
+            color: var(--text-color);
+            font-size: clamp(1.05rem, .9vw + .8rem, 1.35rem);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--muted-text);
+            font-size: .95rem;
+        }
+
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xs);
+            font-size: 1rem;
+            background: linear-gradient(180deg, rgba(255, 255, 255, .9), rgba(255, 255, 255, .7));
+            color: var(--text-color);
+            transition: border-color .25s ease, box-shadow .25s ease, background-color .25s ease;
+        }
+
+        input[type="text"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: var(--focus-ring);
+            background: #fff;
+        }
+
+        .btn {
+            padding: 14px 20px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.05rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: transform .12s ease, box-shadow .22s ease, opacity .2s ease, background-color .2s ease;
+        }
+
+        .primary-btn {
+            width: 100%;
+            margin-top: 8px;
+            color: #fff;
+            background: linear-gradient(180deg, var(--primary-color), var(--primary-dark));
+            box-shadow: 0 14px 28px rgba(37,99,235,.25);
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 36px rgba(37,99,235,.30);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 10px;
+            color: var(--muted-text);
+            font-size: .92rem;
+        }
+
+        @media (min-width: 768px) {
+            main {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                gap: 28px;
+            }
+            main {
+                gap: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="language-switcher">
+                <button id="langEnBtn" class="active" data-lang="en">EN</button>
+                <button id="langIdBtn" data-lang="id">ID</button>
+            </div>
+            <a href="https://lynk.id/mgtrade/">
+                <img src="https://imgpx.com/Dd4UjbwERpzv.png" width="100%" height="auto" style="margin-top: 10px;"/>
+            </a>
+            <h1 id="headerTitle">AI Market Analyzer</h1>
+            <p id="headerSubtitle" class="subtitle">Upload your latest chart screenshot and let AI analyze market direction for Crypto, Forex, and Commodities.</p>
+        </header>
+
+        <main>
+            <section class="input-section card">
+                <h2 id="inputSectionTitle">Upload Chart & Details</h2>
+                <form id="chartAnalysisForm">
+                    <div class="form-group">
+                        <label id="labelAssetType" for="assetType">Asset Type:</label>
+                        <select id="assetType" required></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label id="labelTimeframe" for="timeframe">Timeframe:</label>
+                        <select id="timeframe" required></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label id="labelAdditionalNotes" for="additionalNotes">Additional Context/Notes (Optional):</label>
+                        <textarea id="additionalNotes" rows="3" placeholder="e.g., 'Looking for resistance levels', 'Is this a bullish setup?'"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label id="labelUploadChart">Upload Chart Screenshot:</label>
+                        <div id="uploadArea" class="upload-area">
+                            <input type="file" id="chartImageInput" accept="image/*" required>
+                            <p id="uploadAreaText">Drag & drop your image here, or click to browse</p>
+                            <img id="imagePreview" class="preview" style="display: none;">
+                            <div id="fileNameDisplay" class="file-name" style="display: none;"></div>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="analyzeBtn" class="btn primary-btn">
+                        <span id="buttonText">Analyze Chart</span>
+                        <span id="loadingSpinner" class="loading-spinner" style="display: none;"></span>
+                    </button>
+                </form>
+            </section>
+
+            <section class="output-section card">
+                <h2 id="outputSectionTitle">Analysis Results</h2>
+                <div id="analysisResult" class="analysis-result">
+                    <p id="placeholderAnalysis" class="placeholder-text">Upload a chart and click 'Analyze Chart' to see the AI's prediction here.</p>
+                </div>
+                <div id="message" class="message-box" style="display: none;"></div>
+            </section>
+        </main>
+
+        <footer>
+            <p id="footerText">&copy; 2025 AI Market Analyzer by MG Trade. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
