@@ -410,6 +410,37 @@
                 document.getElementById('analyzeBtn').textContent = t.analyzeButton;
                 document.getElementById('outputSectionTitle').textContent = t.outputSectionTitle;
                 document.getElementById('placeholderAnalysis').textContent = t.placeholderAnalysis;
+
+                // Update select options
+                const assetOptions = document.getElementById('assetType').options;
+                const timeframeOptions = document.getElementById('timeframe').options;
+                if (currentLang === 'id') {
+                    assetOptions[0].text = "Kripto";
+                    assetOptions[1].text = "Forex";
+                    assetOptions[2].text = "Komoditas";
+                    assetOptions[3].text = "Saham";
+                    timeframeOptions[0].text = "5 Menit";
+                    timeframeOptions[1].text = "15 Menit";
+                    timeframeOptions[2].text = "30 Menit";
+                    timeframeOptions[3].text = "1 Jam";
+                    timeframeOptions[4].text = "4 Jam";
+                    timeframeOptions[5].text = "1 Hari";
+                    timeframeOptions[6].text = "1 Minggu";
+                    timeframeOptions[7].text = "1 Bulan";
+                } else {
+                    assetOptions[0].text = "Crypto";
+                    assetOptions[1].text = "Forex";
+                    assetOptions[2].text = "Commodity";
+                    assetOptions[3].text = "Stock";
+                    timeframeOptions[0].text = "5 Minute";
+                    timeframeOptions[1].text = "15 Minute";
+                    timeframeOptions[2].text = "30 Minute";
+                    timeframeOptions[3].text = "1 Hour";
+                    timeframeOptions[4].text = "4 Hour";
+                    timeframeOptions[5].text = "1 Day";
+                    timeframeOptions[6].text = "1 Week";
+                    timeframeOptions[7].text = "1 Month";
+                }
             }
 
             langEnBtn.addEventListener('click', () => updateLanguage('en'));
