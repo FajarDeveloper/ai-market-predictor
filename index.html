@@ -238,6 +238,7 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+
     </style>
 </head>
 <body>
@@ -249,16 +250,16 @@
                 <button id="langIdBtn" data-lang="id">ID</button>
             </div>
             <img src="https://imgpx.com/Dd4UjbwERpzv.png" alt="AI Market Analyzer Banner" class="banner" />
-            <h1>AI Market Analyzer</h1>
-            <p>Upload your latest chart screenshot and let AI analyze market direction for Crypto, Forex, and Commodities.</p>
+            <h1 id="headerTitle">AI Market Analyzer</h1>
+            <p id="headerSubtitle">Upload your latest chart screenshot and let AI analyze market direction for Crypto, Forex, and Commodities.</p>
         </header>
 
         <main>
             <section class="input-section">
-                <h2>Upload Chart & Details</h2>
+                <h2 id="inputSectionTitle">Upload Chart & Details</h2>
                 <form id="chartAnalysisForm">
                     <div class="form-group">
-                        <label for="assetType">Asset Type:</label>
+                        <label id="labelAssetType" for="assetType">Asset Type:</label>
                         <select id="assetType" required>
                             <option value="Crypto">Crypto</option>
                             <option value="Forex">Forex</option>
@@ -268,7 +269,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="timeframe">Timeframe:</label>
+                        <label id="labelTimeframe" for="timeframe">Timeframe:</label>
                         <select id="timeframe" required>
                             <option value="5M">5 Minute</option>
                             <option value="15M">15 Minute</option>
@@ -282,12 +283,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="additionalNotes">Additional Context/Notes (Optional):</label>
+                        <label id="labelAdditionalNotes" for="additionalNotes">Additional Context/Notes (Optional):</label>
                         <textarea id="additionalNotes" rows="3" placeholder="e.g., 'Looking for resistance levels', 'Is this a bullish setup?'"></textarea>
                     </div>
 
                     <div class="form-group">
-                        <label for="uploadChart">Upload Chart Screenshot:</label>
+                        <label id="labelUploadChart" for="uploadChart">Upload Chart Screenshot:</label>
                         <div id="uploadArea" class="upload-area">
                             <input type="file" id="chartImageInput" accept="image/*" required>
                             <p>Drag & drop your image here, or click to browse</p>
@@ -304,7 +305,7 @@
             </section>
 
             <section class="output-section">
-                <h2>Analysis Results</h2>
+                <h2 id="outputSectionTitle">Analysis Results</h2>
                 <div id="analysisResult" class="analysis-result">
                     <p id="placeholderAnalysis">Upload a chart and click 'Analyze Chart' to see the AI's prediction here.</p>
                 </div>
@@ -330,6 +331,59 @@
             const analysisResultDiv = document.getElementById('analysisResult');
             const placeholderAnalysis = document.getElementById('placeholderAnalysis');
             let uploadedFile = null;
+
+            function updateLanguage(lang) {
+                localStorage.setItem('lang', lang);
+                setLanguageContent(lang);
+            }
+
+            function setLanguageContent(lang) {
+                const translations = {
+                    en: {
+                        headerTitle: "AI Market Analyzer",
+                        headerSubtitle: "Upload your latest chart screenshot and let AI analyze market direction for Crypto, Forex, and Commodities.",
+                        inputSectionTitle: "Upload Chart & Details",
+                        labelAssetType: "Asset Type:",
+                        labelTimeframe: "Timeframe:",
+                        labelAdditionalNotes: "Additional Context/Notes (Optional):",
+                        labelUploadChart: "Upload Chart Screenshot:",
+                        analyzeButton: "Analyze Chart",
+                        outputSectionTitle: "Analysis Results",
+                        placeholderAnalysis: "Upload a chart and click 'Analyze Chart' to see the AI's prediction here."
+                    },
+                    id: {
+                        headerTitle: "Analisis Pasar AI",
+                        headerSubtitle: "Unggah tangkapan layar grafik terbaru Anda dan biarkan AI menganalisis arah pasar untuk Kripto, Forex, dan Komoditas.",
+                        inputSectionTitle: "Unggah Grafik & Detail",
+                        labelAssetType: "Jenis Aset:",
+                        labelTimeframe: "Jangka Waktu:",
+                        labelAdditionalNotes: "Konteks/Catatan Tambahan (Opsional):",
+                        labelUploadChart: "Unggah Tangkapan Layar Grafik:",
+                        analyzeButton: "Analisis Grafik",
+                        outputSectionTitle: "Hasil Analisis",
+                        placeholderAnalysis: "Unggah grafik dan klik 'Analisis Grafik' untuk melihat prediksi AI di sini."
+                    }
+                };
+
+                const currentLang = lang || localStorage.getItem('lang') || 'en';
+                const t = translations[currentLang];
+
+                document.getElementById('headerTitle').textContent = t.headerTitle;
+                document.getElementById('headerSubtitle').textContent = t.headerSubtitle;
+                document.getElementById('inputSectionTitle').textContent = t.inputSectionTitle;
+                document.getElementById('labelAssetType').textContent = t.labelAssetType;
+                document.getElementById('labelTimeframe').textContent = t.labelTimeframe;
+                document.getElementById('labelAdditionalNotes').textContent = t.labelAdditionalNotes;
+                document.getElementById('labelUploadChart').textContent = t.labelUploadChart;
+                document.getElementById('analyzeBtn').textContent = t.analyzeButton;
+                document.getElementById('outputSectionTitle').textContent = t.outputSectionTitle;
+                document.getElementById('placeholderAnalysis').textContent = t.placeholderAnalysis;
+            }
+
+            langEnBtn.addEventListener('click', () => updateLanguage('en'));
+            langIdBtn.addEventListener('click', () => updateLanguage('id'));
+
+            updateLanguage(localStorage.getItem('lang') || 'en');
 
             uploadArea.addEventListener('click', () => chartImageInput.click());
             uploadArea.addEventListener('dragover', (e) => e.preventDefault());
@@ -429,5 +483,6 @@
 
         });
     </script>
+
 </body>
 </html>
