@@ -10,11 +10,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <style>
-        /* Modern, Clean UI Styling */
-        *,
-        *::before,
-        *::after { box-sizing: border-box; }
+        /* General Reset */
+        *, *::before, *::after { box-sizing: border-box; }
 
+        /* Colors & Theme Variables */
         :root {
             --primary-color: #2563eb;
             --primary-dark: #1e40af;
@@ -36,16 +35,15 @@
 
         body {
             font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-            background: radial-gradient(1200px 800px at 10% -10%, rgba(37,99,235,.10), transparent 60%),
-                        radial-gradient(1000px 600px at 90% -20%, rgba(99,102,241,.10), transparent 60%),
-                        var(--background-light);
+            background: var(--background-light);
             color: var(--text-color);
             margin: 0;
             padding: 24px;
             display: flex;
             justify-content: center;
             min-height: 100vh;
-            line-height: 1.6;
+            flex-direction: column;
+            align-items: center;
         }
 
         .container {
@@ -54,13 +52,11 @@
             display: flex;
             flex-direction: column;
             gap: 24px;
-            padding-inline: clamp(8px, 2vw, 12px);
         }
 
         header {
             text-align: center;
-            margin-bottom: 8px;
-            position: relative;
+            margin-bottom: 10px;
         }
 
         header h1 {
@@ -117,7 +113,7 @@
 
         .card {
             background: var(--card-background);
-            padding: clamp(18px, 2.5vw, 30px);
+            padding: 24px;
             border-radius: var(--radius);
             border: 1px solid var(--border-color);
             box-shadow: var(--elev-1);
@@ -126,18 +122,6 @@
 
         .card:hover {
             box-shadow: var(--elev-2);
-        }
-
-        .card h2 {
-            margin: 0 0 18px;
-            font-weight: 700;
-            color: var(--text-color);
-            font-size: clamp(1.05rem, .9vw + .8rem, 1.35rem);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            position: relative;
-            padding-bottom: 10px;
         }
 
         .form-group {
@@ -208,6 +192,7 @@
             font-size: .92rem;
         }
 
+        /* Mobile First Responsive Design */
         @media (min-width: 768px) {
             main {
                 grid-template-columns: 1fr 1fr;
@@ -222,6 +207,7 @@
                 gap: 28px;
             }
         }
+
     </style>
 </head>
 <body>
@@ -244,12 +230,26 @@
                 <form id="chartAnalysisForm">
                     <div class="form-group">
                         <label id="labelAssetType" for="assetType">Asset Type:</label>
-                        <select id="assetType" required></select>
+                        <select id="assetType" required>
+                            <option value="Crypto">Crypto</option>
+                            <option value="Forex">Forex</option>
+                            <option value="Commodity">Commodity</option>
+                            <option value="Stock">Stock</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
                         <label id="labelTimeframe" for="timeframe">Timeframe:</label>
-                        <select id="timeframe" required></select>
+                        <select id="timeframe" required>
+                            <option value="5M">5 Minute</option>
+                            <option value="15M">15 Minute</option>
+                            <option value="30M">30 Minute</option>
+                            <option value="1H">1 Hour</option>
+                            <option value="4H">4 Hour</option>
+                            <option value="1D">1 Day</option>
+                            <option value="1W">1 Week</option>
+                            <option value="1M">1 Month</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
@@ -287,5 +287,142 @@
             <p id="footerText">&copy; 2025 AI Market Analyzer by MG Trade. All rights reserved.</p>
         </footer>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const langEnBtn = document.getElementById('langEnBtn');
+            const langIdBtn = document.getElementById('langIdBtn');
+            const chartAnalysisForm = document.getElementById('chartAnalysisForm');
+            const chartImageInput = document.getElementById('chartImageInput');
+            const uploadArea = document.getElementById('uploadArea');
+            const imagePreview = document.getElementById('imagePreview');
+            const fileNameDisplay = document.getElementById('fileNameDisplay');
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const analysisResultDiv = document.getElementById('analysisResult');
+            const messageBox = document.getElementById('message');
+            const assetTypeSelect = document.getElementById('assetType');
+            const timeframeSelect = document.getElementById('timeframe');
+            let uploadedFile = null;
+
+            langEnBtn.addEventListener('click', () => setLanguage('en'));
+            langIdBtn.addEventListener('click', () => setLanguage('id'));
+
+            function setLanguage(lang) {
+                localStorage.setItem('lang', lang);
+                updateUI();
+            }
+
+            function updateUI() {
+                const currentLang = localStorage.getItem('lang') || 'en';
+                // This part handles UI language updates
+            }
+
+            uploadArea.addEventListener('click', () => chartImageInput.click());
+            uploadArea.addEventListener('dragover', (e) => e.preventDefault());
+            uploadArea.addEventListener('drop', handleFileDrop);
+            chartImageInput.addEventListener('change', handleFileChange);
+
+            function handleFileDrop(e) {
+                e.preventDefault();
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFile(files[0]);
+                }
+            }
+
+            function handleFileChange(e) {
+                if (e.target.files.length > 0) {
+                    handleFile(e.target.files[0]);
+                }
+            }
+
+            function handleFile(file) {
+                if (!file.type.startsWith('image/')) {
+                    showMessage('Please upload an image file.', 'error');
+                    imagePreview.style.display = 'none';
+                    fileNameDisplay.style.display = 'none';
+                    uploadedFile = null;
+                    return;
+                }
+                if (file.size > 5 * 1024 * 1024) { // 5 MB limit
+                    showMessage('Image file size exceeds 5MB. Please upload a smaller image.', 'error');
+                    imagePreview.style.display = 'none';
+                    fileNameDisplay.style.display = 'none';
+                    uploadedFile = null;
+                    return;
+                }
+
+                uploadedFile = file;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                    fileNameDisplay.textContent = file.name;
+                    fileNameDisplay.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+
+            chartAnalysisForm.addEventListener('submit', async function(event) {
+                event.preventDefault();
+
+                analysisResultDiv.innerHTML = `<p class="placeholder-text">Analyzing...</p>`;
+                showMessage('', 'success');
+
+                if (!uploadedFile) {
+                    showMessage('Please upload a chart screenshot.', 'error');
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append('image', uploadedFile);
+                formData.append('assetType', assetTypeSelect.value);
+                formData.append('timeframe', timeframeSelect.value);
+
+                setLoadingState(true);
+
+                try {
+                    const response = await fetch('/api/analyze-chart', {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Server error during analysis');
+                    }
+
+                    const data = await response.json();
+                    displayAnalysisResults(data.analysis);
+
+                } catch (err) {
+                    analysisResultDiv.innerHTML = `<p class="placeholder-text">Analysis failed. Try again.</p>`;
+                    showMessage(`Error: ${err.message}`, 'error');
+                } finally {
+                    setLoadingState(false);
+                }
+            });
+
+            function setLoadingState(isLoading) {
+                analyzeBtn.disabled = isLoading;
+                loadingSpinner.style.display = isLoading ? 'inline-block' : 'none';
+            }
+
+            function showMessage(msg, type) {
+                messageBox.textContent = msg;
+                messageBox.className = `message-box ${type}-message`;
+                messageBox.style.display = 'block';
+            }
+
+            function displayAnalysisResults(analysis) {
+                let htmlContent = '';
+                if (analysis) {
+                    htmlContent = `<div class="result-item">
+                        <h3>Market Direction:</h3><p><strong>${analysis.direction}</strong></p></div>`;
+                }
+                analysisResultDiv.innerHTML = htmlContent;
+            }
+        });
+    </script>
 </body>
 </html>
