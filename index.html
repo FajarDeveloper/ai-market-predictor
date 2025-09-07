@@ -206,7 +206,7 @@ label{
             background-color: #e2f3f5; /* Light blue background */
             padding: 20px;
             border-radius: 12px 12px 12px 12px; /* Rounded top, sharp bottom */
-            margin-top: 0px;
+            margin-top: 0px;         
             text-align: center;
             font-size: 18px;
             font-weight: 600;
@@ -215,7 +215,7 @@ label{
         }
         
         .info-text {         
-            text-align: left;
+            text-align: left;           
             font-size: 18px;
             color: #000000;
             font-weight: 600;            
@@ -583,8 +583,8 @@ footer{
 <!-- Info Box between upload and analysis sections -->
         <div class="info">
             <b><p style="font-size: 25px;">Broker dengan spread 0.0 hanya dengan deposit Rp20.000!</p></b>
-            <div class="info-text">
-<b>Keunggulan : </b><br/>• Deposit rendah (hanya 20rb)<br/>• Berlisensi FSCA<br/>• Anti lag saat News<br/>• Jenis akun Standart, Cent & Pro<br/>• Tanpa komisi Penarikan & Deposit<br/>• Tersedia penarikan ke e-wallet lokal<br/>• Tersedia leverage 1:Unlimited<br/>• Tersedia CopyTrading<br/>• Terdapat 470+ instrumen trading<br/>
+            
+<b><p style="text-align: left; color: #000000;">Keunggulan : </b><br/>• Deposit rendah (hanya 20rb)<br/>• Berlisensi FSCA<br/>• Anti lag saat News<br/>• Jenis akun Standart, Cent & Pro<br/>• Tanpa komisi Penarikan & Deposit<br/>• Tersedia penarikan ke e-wallet lokal<br/>• Tersedia aplikasi di Playstore & Appstore<br/>• Tersedia leverage 1:Unlimited<br/>• Tersedia CopyTrading<br/>• Terdapat 470+ instrumen trading<br/> • Memiliki 28 penghargaan broker terbaik<br/>• 0.16 detik kecepatan eksekusi order<br/>• Mendukung MT4 & MT5<br/>• Tambahan bonus setiap deposit<br/>• Aktif mengadakan Demo-Contest<br/>• Terdapat toko hadiah<br/>• Terdapat materi edukasi gratis
             <center><button id="registerButton" onclick="openLink()">Daftar Sekarang</button></center>
         </div>
 
@@ -928,10 +928,7 @@ footer{
                     }
                      if (analysis.resistance) {
                         htmlContent += `<div class="result-item"><h3>${currentLang === 'en' ? 'Resistance Level' : 'Level Resistensi'}:</h3><p>${analysis.resistance}</p></div>`;
-                    }
-                    if (analysis.riskWarning) {
-                        htmlContent += `<div class="result-item warning-message"><h3>${currentLang === 'en' ? 'Risk Warning' : 'Peringatan Risiko'}:</h3><p>${analysis.riskWarning}</p></div>`;
-                    }
+                    }                    
                 } else {
                     htmlContent = `<p class="placeholder-text">${translations[currentLang].placeholderAnalysis}</p>`;
                 }
