@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+	
+    <meta name="monetag" content="28cd66a48a557b8bfa51174459c7f7bc">
+    <!-- Iklan Inters 1 -->
+    
+    <!-- Batas -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Market Analyzer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	
+    <style>
+		
+      /* ===== MODERN STYLE UPDATES ===== */
+
+/* Reset & Better Sizing */
+*,
+*::before,
+*::after { 
+    box-sizing: border-box; 
+}
+
+/* ===== THEME TOKENS ===== */
+:root {
+  --primary-color: #2563eb; 
+  --primary-dark: #1e40af;
+  --secondary-color: #64748b;
+  --background-light: #f6f8fb;
+  --card-background: #ffffff;
+  --text-color: #0f172a;
+  --muted-text: #475569;
+  --border-color: #e5e7eb;
+  --shadow-color: rgba(15,23,42,.08);
+  --success-color: #16a34a;
+  --error-color: #ef4444;
+  --warning-color: #b45309;
+  --radius: 16px;
+  --elev-1: 0 6px 24px var(--shadow-color);
+  --elev-2: 0 10px 30px rgba(15,23,42,.12);
+}
+
+/* ===== BASE STYLES ===== */
+html, body {
+    height: 100%;
+    scroll-behavior: smooth;
+    font-family: 'Poppins', sans-serif;
+    background: radial-gradient(1200px 800px at 10% -10%, rgba(37,99,235,.10), transparent 60%),
+                radial-gradient(1000px 600px at 90% -20%, rgba(99,102,241,.10), transparent 60%),
+                var(--background-light);
+    color: var(--text-color);
+    margin: 0;
+    padding: 24px;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+/* ===== CONTAINER ===== */
+.container {
+    width: 100%;
+    max-width: 1120px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-inline: clamp(8px, 2vw, 12px);
+}
+
+/* ===== HEADER ===== */
+header {
+    text-align: center;
+    margin-bottom: 8px;
+    position: relative;
+}
+
+header h1 {
+    margin: 0 0 8px;
+    color: var(--primary-color);
+    font-weight: 800;
+    letter-spacing: .2px;
+    line-height: 1.15;
+    font-size: clamp(1.6rem, 2.8vw + .5rem, 2.6rem);
+}
+
+.subtitle {
+    color: var(--muted-text);
+    font-size: clamp(.95rem, .5vw + .85rem, 1.1rem);
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+/* ===== NAVBAR & LANGUAGE SWITCHER ===== */
+.language-switcher {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    gap: 10px;
+    padding: 6px;
+}
+
+.language-switcher button {
+    appearance: none;
+    border: 1px solid var(--border-color);
+    background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.7));
+    color: var(--text-color);
+    padding: 8px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: .9rem;
+    font-weight: 600;
+    transition: transform .12s ease, box-shadow .2s ease, background-color .2s ease, border-color .2s ease;
+    box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.language-switcher button:hover {
+    transform: translateY(-1px);
+}
+
+.language-switcher button:active {
+    transform: translateY(0);
+}
+
+.language-switcher button.active {
+    background: linear-gradient(180deg, var(--primary-color), var(--primary-dark));
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 8px 18px rgba(37,99,235,.35);
+}
+
+/* ===== CARDS ===== */
+.card {
+    background: var(--card-background);
+    padding: clamp(18px, 2.5vw, 30px);
+    border-radius: var(--radius);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--elev-1);
+    transition: box-shadow .25s ease, transform .12s ease, border-color .25s ease;
+}
+
+.card:hover {
+    box-shadow: var(--elev-2);
+}
+
+.card h2 {
+    margin: 0 0 18px;
+    font-weight: 700;
+    color: var(--text-color);
+    font-size: clamp(1.05rem, .9vw + .8rem, 1.35rem);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.card h2::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 72px;
+    height: 3px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
+}
+
+/* ===== FORM STYLES ===== */
+.form-group {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--muted-text);
+    font-size: .95rem;
+}
+
+/* Inputs & Select */
+input[type="text"], select, textarea {
+    width: 100%;
+    padding: 14px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xs);
+    font-size: 1rem;
+    background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.7));
+    color: var(--text-color);
+    transition: border-color .25s ease, box-shadow .25s ease, background-color .25s ease;
+}
+
+input[type="text"]:focus, select:focus, textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: var(--focus-ring);
+    background: #fff;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 110px;
+}
+
+/* ===== UPLOAD AREA ===== */
+.upload-area {
+    border: 2px dashed var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 28px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .25s ease, background-color .25s ease, box-shadow .25s ease;
+    background: rgba(148,163,184,.05);
+}
+
+.upload-area:hover {
+    border-color: var(--primary-color);
+    background: rgba(37,99,235,.06);
+    box-shadow: 0 8px 20px rgba(37,99,235,.08);
+}
+
+.upload-area.drag-over {
+    border-color: var(--primary-dark);
+    background: rgba(37,99,235,.10);
+}
+
+.upload-area p {
+    margin: 0;
+    color: var(--muted-text);
+    font-size: 1rem;
+}
+
+.upload-area img.preview {
+    max-width: 100%;
+    max-height: 260px;
+    margin-top: 14px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 12px 28px var(--shadow-color);
+}
+
+.upload-area .file-name {
+    margin-top: 10px;
+    font-size: .92rem;
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+    padding: 14px 20px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1.05rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: transform .12s ease, box-shadow .22s ease, opacity .2s ease, background-color .2s ease;
+    will-change: transform;
+}
+
+.primary-btn {
+    width: 100%;
+    margin-top: 8px;
+    color: #fff;
+    background: linear-gradient(180deg, var(--primary-color), var(--primary-dark));
+    box-shadow: 0 14px 28px rgba(37,99,235,.25);
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 36px rgba(37,99,235,.30);
+}
+
+.primary-btn:active {
+    transform: translateY(0);
+}
+
+.primary-btn:disabled {
+    background: linear-gradient(180deg, #94a3b8, #64748b);
+    cursor: not-allowed;
+    opacity: .85;
+    box-shadow: none;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+    border: 3px solid rgba(255,255,255,.3);
+    border-top: 3px solid #fff;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Messages */
+.message-box {
+    margin-top: 8px;
+    padding: 14px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 600;
+    border: 1px solid transparent;
+}
+
+.success-message {
+    background: rgba(22,163,74,.12);
+    color: #16a34a;
+    border-color: rgba(22,163,74,.35);
+}
+
+.error-message {
+    background: rgba(239,68,68,.12);
+    color: #ef4444;
+    border-color: rgba(239,68,68,.35);
+}
+
+.warning-message {
+    background: rgba(180,83,9,.12);
+    color: #b45309;
+    border-color: rgba(180,83,9,.35);
+}
+
+/* ===== FOOTER ===== */
+footer {
+    text-align: center;
+    margin-top: 10px;
+    color: var(--muted-text);
+    font-size: .92rem;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (min-width: 768px) {
+    main {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (min-width: 1024px) {
+    .container {
+        gap: 28px;
+    }
+    main {
+        gap: 28px;
+    }
+}
+
+/* ===== ANIMATION KEYFRAMES ===== */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+	 
+  </style>
+</head>
+<body>
+ <div class="box1">
+      <center></center><b>MGAI 2.2 Prime</b></center>
+    </label>
+  </div>
+	  </body>
+		  	<br>
+        	<footer>
+            <div class="social-media-icons">
+    <a href="https://www.tiktok.com/@masterofgold_id" target="_blank" class="social-icon">
+        <i class="fab fa-tiktok"></i> <!-- TikTok Icon -->
+    </a>
+    <a href="https://www.instagram.com/dfajar22_" target="_blank" class="social-icon">
+        <i class="fab fa-instagram"></i> <!-- Instagram Icon -->
+    </a>
+</div>
+</footer>
+        </header>
+
+        <main>
+            <section class="input-section card">
+                <h2 id="inputSectionTitle">Upload Chart & Details</h2>
+                <form id="chartAnalysisForm">
+                    <div class="form-group">
+                        <label id="labelAssetType" for="assetType">Asset Type:</label>
+                        <select id="assetType" required>
+                            </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label id="labelTimeframe" for="timeframe">Timeframe:</label>
+                        <select id="timeframe" required>
+                            </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label id="labelAdditionalNotes" for="additionalNotes">Additional Context/Notes (Optional):</label>
+                        <textarea id="additionalNotes" rows="3" placeholder="e.g., 'Looking for resistance levels', 'Is this a bullish setup?'"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label id="labelUploadChart">Upload Chart Screenshot:</label>
+                        <div id="uploadArea" class="upload-area">
+                            <input type="file" id="chartImageInput" accept="image/*" required>
+                            <p id="uploadAreaText">Drag & drop your image here, or click to browse</p>
+                            <img id="imagePreview" class="preview" style="display: none;">
+                            <div id="fileNameDisplay" class="file-name" style="display: none;"></div>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="analyzeBtn" class="btn primary-btn">
+                        <span id="buttonText">Analyze Chart</span>
+                        <span id="loadingSpinner" class="loading-spinner" style="display: none;"></span>
+                    </button>
+                </form>
+            </section>
+
+            <section class="output-section card">
+                <h2 id="outputSectionTitle">Analysis Results</h2>
+                <div id="analysisResult" class="analysis-result">
+                    <p id="placeholderAnalysis" class="placeholder-text">Upload a chart and click 'Analyze Chart' to see the AI's prediction here.</p>
+                </div>
+                <div id="message" class="message-box" style="display: none;"></div>
+            </section>
+        </main>
+
+        <footer>
+    <p id="footerText">&copy; 2025 AI Market Analyzer by MG Trade. All rights reserved.</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const langEnBtn = document.getElementById('langEnBtn');
+            const langIdBtn = document.getElementById('langIdBtn');
+
+            const headerTitle = document.getElementById('headerTitle');
+            const headerSubtitle = document.getElementById('headerSubtitle');
+            const inputSectionTitle = document.getElementById('inputSectionTitle');
+            const labelAssetType = document.getElementById('labelAssetType');
+            const labelTimeframe = document.getElementById('labelTimeframe');
+            const labelAdditionalNotes = document.getElementById('labelAdditionalNotes');
+            const additionalNotesTextarea = document.getElementById('additionalNotes'); // Need to update placeholder
+            const labelUploadChart = document.getElementById('labelUploadChart');
+            const uploadAreaText = document.getElementById('uploadAreaText');
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            const buttonText = document.getElementById('buttonText');
+            const outputSectionTitle = document.getElementById('outputSectionTitle');
+            const placeholderAnalysis = document.getElementById('placeholderAnalysis');
+            const footerText = document.getElementById('footerText');
+            const messageBox = document.getElementById('message');
+
+            const assetTypeSelect = document.getElementById('assetType');
+            const timeframeSelect = document.getElementById('timeframe');
+
+
+            const chartAnalysisForm = document.getElementById('chartAnalysisForm');
+            const chartImageInput = document.getElementById('chartImageInput');
+            const uploadArea = document.getElementById('uploadArea');
+            const imagePreview = document.getElementById('imagePreview');
+            const fileNameDisplay = document.getElementById('fileNameDisplay');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const analysisResultDiv = document.getElementById('analysisResult');
+
+            let uploadedFile = null;
+            let currentLang = localStorage.getItem('appLang') || 'en'; // Default ke 'en' atau dari local storage
+
+            const translations = {
+                en: {
+                    headerTitle: "AI Market Analyzer",
+                    headerSubtitle: "Upload your latest chart screenshot and let AI analyze market direction for Crypto, Forex, and Commodities.",
+                    inputSectionTitle: "Upload Chart & Details",
+                    labelAssetType: "Asset Type:",
+                    selectAssetType: "Select Asset Type",
+                    crypto: "Crypto",
+                    forex: "Forex",
+                    commodity: "Commodity",
+                    stock: "Stock",
+                    labelTimeframe: "Timeframe:",
+                    selectTimeframe: "Select Timeframe",
+                    minute: "Minute", // For 5M, 15M, 30M
+                    hour: "Hour", // For 1H, 4H
+                    day: "Day", // For 1D
+                    week: "Week", // For 1W
+                    month: "Month", // For 1M
+                    labelAdditionalNotes: "Additional Context/Notes (Optional):",
+                    placeholderNotes: "e.g., 'Looking for resistance levels', 'Is this a bullish setup?'",
+                    labelUploadChart: "Upload Chart Screenshot:",
+                    uploadAreaText: "Drag & drop your image here, or click to browse",
+                    analyzeButton: "Analyze Chart",
+                    analyzingButton: "Analyzing...",
+                    outputSectionTitle: "Analysis Results",
+                    placeholderAnalysis: "Upload a chart and click 'Analyze Chart' to see the AI's prediction here.",
+                    footerText: "&copy; 2025 AI Market Analyzer by MG Trade. All rights reserved.",
+                    // Messages
+                    msgUploadImage: "Please upload an image file (e.g., JPG, PNG).",
+                    msgFileSize: "Image file size exceeds 5MB. Please upload a smaller image.",
+                    msgNoImageUploaded: "Please upload a chart screenshot.",
+                    msgSelectAssetTimeframe: "Please select Asset Type and Timeframe.",
+                    msgAnalysisComplete: "Analysis complete!",
+                    msgServerError: "Server error during analysis. Please try again.",
+                    msgFailedAnalysis: "Failed to get analysis.",
+                    msgErrorPrefix: "Error: "
+                },
+                id: {
+                    headerTitle: "Analisis Pasar AI",
+                    headerSubtitle: "Unggah tangkapan layar grafik terbaru Anda dan biarkan AI menganalisis arah pasar untuk Kripto, Forex, dan Komoditas.",
+                    inputSectionTitle: "Unggah Grafik & Detail",
+                    labelAssetType: "Jenis Aset:",
+                    selectAssetType: "Pilih Jenis Aset",
+                    crypto: "Kripto",
+                    forex: "Forex",
+                    commodity: "Komoditas",
+                    stock: "Saham",
+                    labelTimeframe: "Jangka Waktu:",
+                    selectTimeframe: "Pilih Jangka Waktu",
+                    minute: "Menit", // For 5M, 15M, 30M
+                    hour: "Jam", // For 1H, 4H
+                    day: "Hari", // For 1D
+                    week: "Minggu", // For 1W
+                    month: "Bulan", // For 1M
+                    labelAdditionalNotes: "Konteks/Catatan Tambahan (Opsional):",
+                    placeholderNotes: "cth: 'Mencari level resistensi', 'Apakah ini setup bullish?'",
+                    labelUploadChart: "Unggah Tangkapan Layar Grafik:",
+                    uploadAreaText: "Seret & lepas gambar Anda di sini, atau klik untuk mencari",
+                    analyzeButton: "Analisis Grafik",
+                    analyzingButton: "Menganalisis...",
+                    outputSectionTitle: "Hasil Analisis",
+                    placeholderAnalysis: "Unggah grafik dan klik 'Analisis Grafik' untuk melihat prediksi AI di sini.",
+                    footerText: "&copy; 2025 Analisis Pasar AI by MG Trade. Semua Hak Dilindungi.",
+                    // Messages
+                    msgUploadImage: "Mohon unggah file gambar (misal: JPG, PNG).",
+                    msgFileSize: "Ukuran file gambar melebihi 5MB. Mohon unggah gambar yang lebih kecil.",
+                    msgNoImageUploaded: "Mohon unggah tangkapan layar grafik.",
+                    msgSelectAssetTimeframe: "Mohon pilih Jenis Aset dan Jangka Waktu.",
+                    msgAnalysisComplete: "Analisis selesai!",
+                    msgServerError: "Terjadi kesalahan server saat analisis. Mohon coba lagi.",
+                    msgFailedAnalysis: "Gagal mendapatkan analisis.",
+                    msgErrorPrefix: "Kesalahan: "
+                }
+            };
+
+            const assetTypes = {
+                '': { en: 'Select Asset Type', id: 'Pilih Jenis Aset' },
+                'Crypto': { en: 'Crypto', id: 'Kripto' },
+                'Forex': { en: 'Forex', id: 'Forex' },
+                'Commodity': { en: 'Commodity', id: 'Komoditas' },
+                'Stock': { en: 'Stock', id: 'Saham' }
+            };
+
+            const timeframes = {
+                '': { en: 'Select Timeframe', id: 'Pilih Jangka Waktu' },
+                '5M': { en: '5 Minute', id: '5 Menit' },
+                '15M': { en: '15 Minute', id: '15 Menit' },
+                '30M': { en: '30 Minute', id: '30 Menit' },
+                '1H': { en: '1 Hour', id: '1 Jam' },
+                '4H': { en: '4 Hour', id: '4 Jam' },
+                '1D': { en: '1 Day', id: '1 Hari' },
+                '1W': { en: '1 Week', id: '1 Minggu' },
+                '1M': { en: '1 Month', id: '1 Bulan' }
+            };
+
+            function populateSelectOptions(selectElement, optionsData) {
+                selectElement.innerHTML = ''; // Clear existing options
+                for (const value in optionsData) {
+                    const option = document.createElement('option');
+                    option.value = value;
+                    option.textContent = optionsData[value][currentLang];
+                    selectElement.appendChild(option);
+                }
+            }
+
+            function updateUI() {
+                const t = translations[currentLang];
+
+                headerTitle.textContent = t.headerTitle;
+                headerSubtitle.textContent = t.headerSubtitle;
+                inputSectionTitle.textContent = t.inputSectionTitle;
+                labelAssetType.textContent = t.labelAssetType;
+                labelTimeframe.textContent = t.labelTimeframe;
+                labelAdditionalNotes.textContent = t.labelAdditionalNotes;
+                additionalNotesTextarea.placeholder = t.placeholderNotes;
+                labelUploadChart.textContent = t.labelUploadChart;
+                uploadAreaText.textContent = t.uploadAreaText;
+                buttonText.textContent = t.analyzeButton;
+                outputSectionTitle.textContent = t.outputSectionTitle;
+                placeholderAnalysis.textContent = t.placeholderAnalysis;
+                footerText.innerHTML = t.footerText; // Use innerHTML for copyright symbol
+
+                // Update select options
+                populateSelectOptions(assetTypeSelect, assetTypes);
+                populateSelectOptions(timeframeSelect, timeframes);
+
+                // Update active language button style
+                langEnBtn.classList.toggle('active', currentLang === 'en');
+                langIdBtn.classList.toggle('active', currentLang === 'id');
+
+                // Re-evaluate current messages in correct language if any
+                if (messageBox.style.display === 'block') {
+                    // This is a simplified approach. For more robust message handling,
+                    // you'd typically store message keys and re-display them.
+                    // For now, if a message is shown, it won't auto-translate unless re-triggered.
+                    // This is acceptable for simple cases.
+                }
+            }
+
+            // Initial UI update
+            updateUI();
+
+            // Language Switcher Event Listeners
+            langEnBtn.addEventListener('click', () => {
+                currentLang = 'en';
+                localStorage.setItem('appLang', 'en');
+                updateUI();
+            });
+
+            langIdBtn.addEventListener('click', () => {
+                currentLang = 'id';
+                localStorage.setItem('appLang', 'id');
+                updateUI();
+            });
+
+            // --- File Upload Logic (Drag & Drop) ---
+            uploadArea.addEventListener('click', () => chartImageInput.click());
+            
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('drag-over');
+            });
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('drag-over');
+            });
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('drag-over');
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFile(files[0]);
+                }
+            });
+
+            chartImageInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleFile(e.target.files[0]);
+                }
+            });
+
+            function handleFile(file) {
+                if (!file.type.startsWith('image/')) {
+                    showMessage(translations[currentLang].msgUploadImage, 'error');
+                    imagePreview.style.display = 'none';
+                    fileNameDisplay.style.display = 'none';
+                    uploadedFile = null;
+                    return;
+                }
+                if (file.size > 5 * 1024 * 1024) { // 5 MB limit
+                    showMessage(translations[currentLang].msgFileSize, 'error');
+                    imagePreview.style.display = 'none';
+                    fileNameDisplay.style.display = 'none';
+                    uploadedFile = null;
+                    return;
+                }
+
+                uploadedFile = file;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                    fileNameDisplay.textContent = file.name;
+                    fileNameDisplay.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+                hideMessage(); // Clear any previous error message
+            }
+
+            // --- Form Submission Logic ---
+            chartAnalysisForm.addEventListener('submit', async function(event) {
+                event.preventDefault();
+
+                analysisResultDiv.innerHTML = `<p class="placeholder-text">${translations[currentLang].analyzingButton}...</p>`;
+                hideMessage();
+
+                if (!uploadedFile) {
+                    showMessage(translations[currentLang].msgNoImageUploaded, 'error');
+                    return;
+                }
+                if (!assetTypeSelect.value || !timeframeSelect.value) {
+                    showMessage(translations[currentLang].msgSelectAssetTimeframe, 'error');
+                    return;
+                }
+
+                setLoadingState(true);
+
+                const formData = new FormData();
+                formData.append('image', uploadedFile);
+                formData.append('assetType', assetTypeSelect.value);
+                formData.append('timeframe', timeframeSelect.value);
+                formData.append('additionalNotes', additionalNotesTextarea.value);
+                formData.append('outputLanguage', currentLang); // Kirim bahasa output ke API
+
+                try {
+                    const response = await fetch('/api/analyze-chart', {
+                        method: 'POST',
+                        body: formData, // FormData otomatis set Content-Type: multipart/form-data
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || translations[currentLang].msgServerError);
+                    }
+
+                    const data = await response.json();
+                    displayAnalysisResults(data.analysis);
+                    showMessage(translations[currentLang].msgAnalysisComplete, 'success');
+
+                } catch (err) {
+                    console.error('Analysis error:', err);
+                    analysisResultDiv.innerHTML = `<p class="placeholder-text">${translations[currentLang].msgFailedAnalysis}</p>`;
+                    showMessage(`${translations[currentLang].msgErrorPrefix} ${err.message}`, 'error');
+                } finally {
+                    setLoadingState(false);
+                }
+            });
+
+            // --- Helper Functions ---
+            function setLoadingState(isLoading) {
+                analyzeBtn.disabled = isLoading;
+                buttonText.textContent = isLoading ? translations[currentLang].analyzingButton : translations[currentLang].analyzeButton;
+                loadingSpinner.style.display = isLoading ? 'inline-block' : 'none';
+            }
+
+            function showMessage(msg, type) {
+                messageBox.textContent = msg;
+                messageBox.className = `message-box ${type}-message`;
+                messageBox.style.display = 'block';
+            }
+
+            function hideMessage() {
+                messageBox.style.display = 'none';
+            }
+
+            function displayAnalysisResults(analysis) {
+                let htmlContent = '';
+                if (typeof analysis === 'string') {
+                    htmlContent = `<p>${analysis.replace(/\n/g, '<br>')}</p>`; // Basic newline conversion
+                } else if (typeof analysis === 'object') {
+                    // This assumes AI's JSON output keys are consistent (direction, rationale etc.)
+                    // You might need to translate these keys if AI doesn't return them in the selected language.
+                    // For now, let's assume AI's response for direction/rationale will be in the requested language.
+                    htmlContent += `<div class="result-item"><h3>${currentLang === 'en' ? 'Market Direction' : 'Arah Pasar'}:</h3><p><strong>${analysis.direction || 'N/A'}</strong></p></div>`;
+                    if (analysis.rationale) {
+                         htmlContent += `<div class="result-item"><h3>${currentLang === 'en' ? 'Rationale' : 'Alasan'}:</h3><p>${analysis.rationale}</p></div>`;
+                    }
+                    if (analysis.support) {
+                        htmlContent += `<div class="result-item"><h3>${currentLang === 'en' ? 'Support Level' : 'Level Dukungan'}:</h3><p>${analysis.support}</p></div>`;
+                    }
+                     if (analysis.resistance) {
+                        htmlContent += `<div class="result-item"><h3>${currentLang === 'en' ? 'Resistance Level' : 'Level Resistensi'}:</h3><p>${analysis.resistance}</p></div>`;
+                    }
+                    if (analysis.riskWarning) {
+                        htmlContent += `<div class="result-item warning-message"><h3>${currentLang === 'en' ? 'Risk Warning' : 'Peringatan Risiko'}:</h3><p>${analysis.riskWarning}</p></div>`;
+                    }
+                } else {
+                    htmlContent = `<p class="placeholder-text">${translations[currentLang].placeholderAnalysis}</p>`;
+                }
+                analysisResultDiv.innerHTML = htmlContent;
+            }
+        });
+       
+    </script>
+</body>
+</html>
