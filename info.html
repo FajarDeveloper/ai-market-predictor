@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MGLYZER Info</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="menu">
+            <div class="language-switcher">
+                <button id="en" onclick="switchLanguage('en')">English</button>
+                <button id="id" onclick="switchLanguage('id')">Indonesia</button>
+            </div>
+            <div class="header">
+                <h1 id="title">MGLYZER</h1>
+                <p id="subtitle">Your AI-powered market trend prediction tool.</p>
+            </div>
+            
+            <div id="content">
+                <section>
+                    <h2 id="feature-title">Features</h2>
+                    <ul id="feature-list">
+                        <li id="feature-1">AI-based market trend prediction.</li>
+                        <li id="feature-2">Real-time data analysis for accuracy.</li>
+                        <li id="feature-3">Supports informed decisions in trading & investments.</li>
+                        <li id="feature-4">User-friendly interface with modern design.</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 id="benefits-title">Benefits</h2>
+                    <ul id="benefits-list">
+                        <li id="benefit-1">Enhance your decision-making abilities.</li>
+                        <li id="benefit-2">Reduce risks in the market.</li>
+                        <li id="benefit-3">Maximize your profits with accurate predictions.</li>
+                        <li id="benefit-4">Access reliable AI-driven insights.</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 id="how-it-works-title">How It Works</h2>
+                    <p id="how-it-works">
+                       MGLYZER analyzes massive data sets using machine learning algorithms to predict market trends. It provides real-time data to track market changes and offers valuable insights for smarter investment and trading decisions.
+                    </p>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchLanguage(language) {
+            const title = document.getElementById('title');
+            const subtitle = document.getElementById('subtitle');
+            const featureTitle = document.getElementById('feature-title');
+            const benefitsTitle = document.getElementById('benefits-title');
+            const howItWorksTitle = document.getElementById('how-it-works-title');
+
+            const feature1 = document.getElementById('feature-1');
+            const feature2 = document.getElementById('feature-2');
+            const feature3 = document.getElementById('feature-3');
+            const feature4 = document.getElementById('feature-4');
+
+            const benefit1 = document.getElementById('benefit-1');
+            const benefit2 = document.getElementById('benefit-2');
+            const benefit3 = document.getElementById('benefit-3');
+            const benefit4 = document.getElementById('benefit-4');
+
+            const howItWorks = document.getElementById('how-it-works');
+
+            if(language === 'en') {
+                title.textContent = 'MGLYZER';
+                subtitle.textContent = 'Your AI-powered market trend prediction tool.';
+                featureTitle.textContent = 'Features';
+                benefitsTitle.textContent = 'Benefits';
+                howItWorksTitle.textContent = 'How It Works';
+
+                feature1.textContent = 'AI-based market trend prediction.';
+                feature2.textContent = 'Real-time data analysis for accuracy.';
+                feature3.textContent = 'Supports informed decisions in trading & investments.';
+                feature4.textContent = 'User-friendly interface with modern design.';
+
+                benefit1.textContent = 'Enhance your decision-making abilities.';
+                benefit2.textContent = 'Reduce risks in the market.';
+                benefit3.textContent = 'Maximize your profits with accurate predictions.';
+                benefit4.textContent = 'Access reliable AI-driven insights.';
+
+                howItWorks.textContent = 'MGLYZER analyzes massive data sets using machine learning algorithms to predict market trends. It provides real-time data to track market changes and offers valuable insights for smarter investment and trading decisions.';
+            } else {
+                title.textContent = 'MGLYZER (Prediktor Pasar AI)';
+                subtitle.textContent = 'Alat prediksi tren pasar berbasis AI.';
+                featureTitle.textContent = 'Fitur';
+                benefitsTitle.textContent = 'Manfaat';
+                howItWorksTitle.textContent = 'Cara Kerja';
+
+                feature1.textContent = 'Prediksi tren pasar berbasis AI.';
+                feature2.textContent = 'Analisis data waktu nyata untuk akurasi.';
+                feature3.textContent = 'Mendukung keputusan yang lebih baik dalam perdagangan & investasi.';
+                feature4.textContent = 'Antarmuka yang ramah pengguna dengan desain modern.';
+
+                benefit1.textContent = 'Tingkatkan kemampuan pengambilan keputusan Anda.';
+                benefit2.textContent = 'Kurangi risiko di pasar.';
+                benefit3.textContent = 'Maksimalkan keuntungan Anda dengan prediksi yang akurat.';
+                benefit4.textContent = 'Akses wawasan yang dapat diandalkan, dihasilkan oleh AI.';
+
+                howItWorks.textContent = 'MGLYZER menganalisis sejumlah besar data menggunakan algoritma pembelajaran mesin untuk memprediksi tren pasar. Ini memberikan data waktu nyata untuk melacak perubahan pasar dan menawarkan wawasan berharga untuk keputusan investasi dan perdagangan yang lebih cerdas.';
+            }
+        }
+    </script>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    padding: 20px;
+    display: auto;
+    justify-content: center;
+    align-items: center;
+    
+    height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 900px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.language-switcher {
+    display: auto;
+    justify-content: flex-end;
+    text-align: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.language-switcher button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    text-align: center;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: 1px solid #007bff;
+}
+
+.language-switcher button:hover {
+    background-color: #0056b3;
+}
+
+.header {
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #007bff;
+    margin-bottom: 20px;
+    margin-top:20px;
+}
+
+p#subtitle {
+    font-size: 1.2rem;
+    color: #777;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+    margin-top: 15px;
+    color: #333;
+}
+
+ul {
+    list-style-type: none;
+    margin-bottom: 20px;
+    padding-left: 20px;
+}
+
+li {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+section {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+p {
+    font-size: 1.1rem;
+    color: #555;
+}
+
+button {
+    background-color: #28a745;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #218838;
+}
+</style>
+
+</body>
+</html>
