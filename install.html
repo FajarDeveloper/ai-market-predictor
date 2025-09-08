@@ -1,0 +1,217 @@
+<style>
+	* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f7f7f7;
+    color: #333;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 100%;    
+    border-radius: 10px;    
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.menu {
+    background: #fff;
+    width: 100%;
+    max-width: 900px;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.language-switcher {
+    display: auto;
+    justify-content: flex-end;
+    text-align: center;
+    gap: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.language-switcher button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.language-switcher button:hover {
+    background-color: #0056b3;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+p#subtitle {
+    font-size: 1.2rem;
+    color: #777;
+}
+
+.section-title {
+    font-weight: bold;
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.download-section {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.download-button {
+    background-color: #28a745;
+    color: white;
+    padding: 15px 40px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+.download-button:hover {
+    background-color: #218838;
+}
+
+#features-list {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+li {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .menu {
+        width: 100%;
+    }
+
+    .download-button {
+        width: 250px;
+        font-size: 1rem;
+    }
+}
+
+	</style>
+	
+	<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Application - MGLYZER</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts for modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+        <div class="menu">
+            <div class="language-switcher">
+                <button id="en" onclick="switchLanguage('en')">English</button>
+                <button id="id" onclick="switchLanguage('id')">Indonesia</button>
+            </div>
+            <div class="header">
+                <h1 id="title">MGLYZER</h1>
+                <p id="subtitle">Download the app to predict market trends using AI.</p>
+            </div>
+
+            <section class="download-section">               
+                <a href="#https://github.com/FajarDeveloper/ai-market-predictor/raw/refs/heads/main/MGLYZER-2.2.apk" class="download-button" id="download-now">
+                    <span id="download-text">Download Now</span>
+                </a>
+            </section>
+
+            <section>
+                <h2 id="features-title" class="section-title">Features</h2>
+                <ul id="features-list">
+                    <li id="feature-1">AI-powered market trend predictions.</li>
+                    <li id="feature-2">Real-time data analysis.</li>
+                    <li id="feature-3">User-friendly interface.</li>
+                    <li id="feature-4">Compatible with Android devices.</li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+
+    <script>
+        function switchLanguage(language) {
+            const title = document.getElementById('title');
+            const subtitle = document.getElementById('subtitle');
+            const downloadTitle = document.getElementById('download-title');
+            const featuresTitle = document.getElementById('features-title');
+
+            const downloadText = document.getElementById('download-text');
+
+            const feature1 = document.getElementById('feature-1');
+            const feature2 = document.getElementById('feature-2');
+            const feature3 = document.getElementById('feature-3');
+            const feature4 = document.getElementById('feature-4');
+
+            if(language === 'en') {
+                title.textContent = 'MGLYZER';
+                subtitle.textContent = 'Download the app to predict market trends using AI.';
+                downloadTitle.textContent = 'Download Application';
+                featuresTitle.textContent = 'Features';
+
+                downloadText.textContent = 'Download Now';
+
+                feature1.textContent = 'AI-powered market trend predictions.';
+                feature2.textContent = 'Real-time data analysis.';
+                feature3.textContent = 'User-friendly interface.';
+                feature4.textContent = 'Compatible with Android devices.';
+            } else {
+                
+                subtitle.textContent = 'Unduh aplikasi untuk memprediksi tren pasar menggunakan AI.';
+                downloadTitle.textContent = 'Unduh Aplikasi';
+                featuresTitle.textContent = 'Fitur';
+
+                downloadText.textContent = 'Unduh Sekarang';
+
+                feature1.textContent = 'Prediksi tren pasar berbasis AI.';
+                feature2.textContent = 'Analisis data waktu nyata.';
+                feature3.textContent = 'Antarmuka yang ramah pengguna.';
+                feature4.textContent = 'Kompatibel dengan perangkat Android.';
+            }
+        }
+    </script>
+
+</body>
+</html>
