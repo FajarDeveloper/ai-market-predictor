@@ -495,11 +495,15 @@ footer{
             border-radius: 50px; /* oval shape */
             font-size: 18px;
             font-weight: 600;
-            color: red;
+            color: white;
             text-align: center;
+            display: flex;
+            justify-content: center;
+            gap: 30px;  /* Space between icons */
+            margin-top: 5px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             z-index: 10000;
-            pointer-events: none; /* allow clicks through */
+            pointer-events: auto; /* allow clicks through */
             transition: all 0.3s ease;
         }
 
@@ -520,7 +524,20 @@ footer{
 
     <!-- Floating Bottom Bar -->
     <div id="floatingBetaBar">
-        MG.AI: Beta
+    	
+        <!-- Menu Icons -->      
+            <a href="https://ai-market-predictor-one.vercel.app/" target="_blank" class="social-icon">
+                <i class="fa fa-home"></i>
+            </a>
+            <a href="https://ai-market-predictor-one.vercel.app/info.html" target="_blank" class="social-icon">
+                <i class="fa fa-info"></i>
+            </a>
+            <a href="https://ai-market-predictor-one.vercel.app/crown.html" target="_blank" class="social-icon">
+                <i class="fa fa-crown"></i>
+            </a>
+            <a href="https://chat.whatsapp.com/IACHnHTIwpr4SIgB1AbChE?mode=ems_copy_c" target="_blank" class="social-icon">
+                <i class="fa fa-download"></i>
+            </a>
     </div>
 	
   </style>
@@ -537,6 +554,9 @@ footer{
             </a>
             <a href="https://chat.whatsapp.com/IACHnHTIwpr4SIgB1AbChE?mode=ems_copy_c" target="_blank" class="social-icon">
                 <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="https://t.me/penjarahemass" target="_blank" class="social-icon">
+                <i class="fab fa-telegram"></i>
             </a>
 </div>
 </footer>
