@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kirim Ulasan</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8; /* Biru halus */
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff; /* Putih susu */
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-left: auto; /* Membuat margin kiri lebih seimbang */
+            margin-right: auto; /* Membuat margin kanan lebih seimbang */
+        }
+
+        h2 {
+            text-align: center;
+            color: #4682b4; /* Biru lebih gelap */
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            color: #4682b4; /* Biru gelap */
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 120px;
+        }
+
+        .stars {
+            display: flex;
+            justify-content: space-between;
+            width: 200px;
+            margin-top: 10px;
+        }
+
+        .star {
+            font-size: 30px;
+            color: #ddd;
+            cursor: pointer;
+        }
+
+        /* Mengubah warna bintang saat dipilih */
+        input[type="radio"]:checked ~ .stars label:nth-child(1),
+        input[type="radio"]:checked ~ .stars label:nth-child(2),
+        input[type="radio"]:checked ~ .stars label:nth-child(3),
+        input[type="radio"]:checked ~ .stars label:nth-child(4),
+        input[type="radio"]:checked ~ .stars label:nth-child(5) {
+            color: #4682b4; /* Biru */
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #4682b4; /* Biru */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #5a8fb7; /* Biru lebih gelap */
+        }
+
+        /* Dialog Mengambang */
+        .dialog {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff; /* Putih susu */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: none;
+            text-align: center;
+            z-index: 9999;
+        }
+
+        .dialog.show {
+            display: block;
+        }
+
+        .dialog .check-icon {
+            color: #4682b4; /* Biru */
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .dialog .message {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .dialog .close-btn {
+            margin-top: 15px;
+            padding: 8px 16px;
+            background-color: #4682b4; /* Biru */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .dialog .close-btn:hover {
+            background-color: #5a8fb7; /* Biru lebih gelap */
+        }
+
+        .rating-value {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 18px;
+            color: #4682b4; /* Biru */
+        }
+
+        /* Animasi Loading */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9998; /* Di bawah dialog sukses */
+        }
+
+        .loading-box {
+            background-color: #fff; /* Putih susu */
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-box .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4682b4; /* Biru */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-box p {
+            margin-top: 10px;
+            color: #333;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Kirim Ulasan Anda</h2>
+        <form id="reviewForm">
+            <div class="form-group">
+                <label for="name">Nama Anda</label>
+                <input type="text" id="name" name="name" placeholder="Masukkan nama Anda" required>
+            </div>
+            <div class="form-group">
+                <label for="rating">Rating</label>
+                <div class="stars">
+                    <!-- Setiap radio button diwakili dengan label bintang -->
+                    <input type="radio" id="star5" name="rating" value="5" required>
+                    <label class="star" for="star5">⭐</label>
+
+                    <input type="radio" id="star4" name="rating" value="4">
+                    <label class="star" for="star4">⭐</label>
+
+                    <input type="radio" id="star3" name="rating" value="3">
+                    <label class="star" for="star3">⭐</label>
+
+                    <input type="radio" id="star2" name="rating" value="2">
+                    <label class="star" for="star2">⭐</label>
+
+                    <input type="radio" id="star1" name="rating" value="1">
+                    <label class="star" for="star1">⭐</label>
+                </div>
+                <!-- Menampilkan rating yang dipilih -->
+                <div id="ratingValue" class="rating-value">Pilih rating</div>
+            </div>
+            <div class="form-group">
+                <label for="comment">Komentar</label>
+                <textarea id="comment" name="comment" placeholder="Tuliskan komentar Anda" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Kirim Ulasan</button>
+        </form>
+    </div>
+
+    <!-- Dialog Mengambang -->
+    <div id="successDialog" class="dialog">
+        
+        <div class="message">Ulasan Anda Telah Terkirim!</div>
+        <button class="close-btn" onclick="closeDialog()">Tutup</button>
+    </div>
+
+    <!-- Animasi Loading -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-box">
+            <div class="spinner"></div>
+            <p>Memproses...</p>
+        </div>
+    </div>
+
+    <script>
+        // Fungsi untuk menampilkan dialog setelah pengiriman ulasan
+        function showDialog() {
+            document.getElementById('successDialog').classList.add('show');
+        }
+
+        // Fungsi untuk menutup dialog
+        function closeDialog() {
+            document.getElementById('successDialog').classList.remove('show');
+        }
+
+        // Menangani pengiriman form
+        document.getElementById('reviewForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Mencegah form disubmit secara tradisional
+
+            // Menampilkan animasi loading
+            document.getElementById('loadingOverlay').style.display = 'flex';
+
+            // Menunggu selama 4 detik sebelum menampilkan dialog sukses
+            setTimeout(function() {
+                // Menyembunyikan animasi loading dan menampilkan dialog sukses
+                document.getElementById('loadingOverlay').style.display = 'none';
+                showDialog();
+
+                // Reset form setelah pengiriman
+                document.getElementById('reviewForm').reset();
+                document.getElementById('ratingValue').innerText = 'Pilih rating';
+            }, 4000); // 4 detik
+        });
+
+        // Fungsi untuk memperbarui rating yang dipilih
+        const stars = document.querySelectorAll('.star');
+        const ratingValue = document.getElementById('ratingValue');
+
+        // Update rating berdasarkan klik pada bintang
+        stars.forEach(star => {
+            star.addEventListener('click', function() {
+                const rating = this.previousElementSibling.value; // Mendapatkan nilai rating
+                ratingValue.innerText = `Rating Anda: ${rating} ⭐`;
+                // Menandai bintang yang dipilih
+                document.querySelectorAll('.star').forEach(label => label.style.color = '#ddd');
+                this.style.color = '#4682b4'; // Biru
+            });
+        });
+
+        // Update rating berdasarkan klik pada radio button
+        const radioButtons = document.querySelectorAll('input[type="radio"]');
+        radioButtons.forEach(radio => {
+            radio.addEventListener('change', function() {
+                const rating = this.value;
+                ratingValue.innerText = `Rating Anda: ${rating} ⭐`;
+                // Menandai bintang yang dipilih
+                document.querySelectorAll('.star').forEach(label => label.style.color = '#ddd');
+                const selectedStar = document.querySelector(`label[for="star${rating}"]`);
+                selectedStar.style.color = '#4682b4'; // Biru
+            });
+        });
+    </script>
+
+</body>
+</html>
