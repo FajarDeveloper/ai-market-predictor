@@ -1,220 +1,287 @@
-<style>
-	* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #f7f7f7;
-    color: #333;
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.container {
-    width: 100%;
-    max-width: 100%;    
-    border-radius: 10px;    
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.menu {
-    background: #fff;
-    width: 100%;
-    max-width: 100%;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.language-switcher {
-    display: auto;
-    justify-content: flex-end;
-    text-align: center;
-    gap: 10px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-.language-switcher button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.language-switcher button:hover {
-    background-color: #0056b3;
-}
-
-.header {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-h1 {
-    font-size: 2.5rem;
-    color: #007bff;
-    margin-bottom: 10px;
-}
-
-p#subtitle {
-    font-size: 1.2rem;
-    color: #777;
-}
-
-.section-title {
-    font-weight: bold;
-    font-size: 1.6rem;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.download-section {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.download-button {
-    background-color: #28a745;
-    color: white;
-    padding: 15px 40px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.2rem;
-    transition: background-color 0.3s ease;
-    text-decoration: none;
-}
-
-.download-button:hover {
-    background-color: #218838;
-}
-
-#features-list {
-    list-style-type: none;
-    padding-left: 20px;
-}
-
-li {
-    font-size: 1.1rem;
-    color: #555;
-    margin-bottom: 10px;
-}
-
-@media (max-width: 768px) {
-    .container {
-        padding: 10px;
-    }
-
-    .menu {
-        width: 100%;
-    }
-
-    .download-button {
-        width: 250px;
-        font-size: 1rem;
-    }
-}
-
-	</style>
-	
-	<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Download Application - MGLYZER</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Google Fonts for modern typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>MGLYZER - Download</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #f0f2f5; /* Very light gray */
+            --card-bg-light: rgba(255, 255, 255, 0.8); /* For glassmorphism base */
+            --card-bg-dark: rgba(255, 255, 255, 0.95); /* For slightly opaque parts */
+            --border-color: rgba(220, 220, 220, 0.6);
+            --primary-gradient-start: #3b82f6; /* Blue for primary */
+            --primary-gradient-end: #2563eb;   /* Darker Blue for primary */
+            --primary-text-color: #1d4ed8;     /* Even darker blue for text */
+            --text-main: #1a202c; /* Darker text */
+            --text-secondary: #4a5568; /* Medium text */
+            --shadow-light: rgba(0, 0, 0, 0.04);
+            --shadow-medium: rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.03) 1px, transparent 0);
+            background-size: 30px 30px;
+            color: var(--text-main);
+            margin: 0;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-main);
+        }
+
+        .language-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            background-color: var(--card-bg-light);
+            border: 1px solid var(--border-color);
+            padding: 0.4rem 0.5rem;
+            border-radius: 99px;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px var(--shadow-light);
+            z-index: 10; /* Ensure it stays on top */
+        }
+
+        .language-switcher button {
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 99px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .language-switcher button.active {
+            background-image: linear-gradient(to right, var(--primary-gradient-start), var(--primary-gradient-end));
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .main-content-wrapper {
+            width: 100%;
+            max-width: 800px; /* Adjusted max-width for the main content card */
+            margin: 0 auto;
+            padding: 0 1rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .download-card {
+            background: linear-gradient(135deg, var(--card-bg-light), var(--card-bg-dark));
+            border: 1px solid var(--border-color);
+            border-radius: 25px;
+            padding: 3rem 2.5rem; /* Increased padding */
+            box-shadow: 0 10px 30px var(--shadow-light);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .download-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px var(--shadow-medium);
+        }
+
+        .download-card::before { /* Subtle background shimmer effect */
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 0;
+        }
+
+        .download-card:hover::before {
+            opacity: 1;
+        }
+
+
+        .download-header {
+            margin-bottom: 2.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .download-header .main-logo {
+            width: 100px;
+            height: auto;
+            margin-bottom: 1.5rem;
+        }
+
+        .download-header h1 {
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--primary-gradient-start), var(--primary-gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .download-header p {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .download-link-section {
+            position: relative;
+            z-index: 1;
+        }
+
+        .download-button {
+            display: inline-flex; /* Use inline-flex for icon alignment */
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.2rem 2.5rem;
+            background-image: linear-gradient(to right, var(--primary-gradient-start), var(--primary-gradient-end));
+            color: white;
+            border: none;
+            border-radius: 15px; /* More rounded button */
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+            margin-top: 2rem;
+        }
+
+        .download-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(59, 130, 246, 0.4);
+            opacity: 0.95;
+        }
+
+        .download-button svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+            flex-shrink: 0;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            body {
+                padding: 1.5rem 1rem;
+            }
+            .main-content-wrapper {
+                padding: 0;
+            }
+            .language-switcher {
+                margin-bottom: 2rem;
+            }
+            .download-card {
+                padding: 2.5rem 1.5rem;
+            }
+            .download-header {
+                margin-bottom: 2rem;
+            }
+            .download-header h1 {
+                font-size: 2.2rem;
+            }
+            .download-header p {
+                font-size: 0.95rem;
+            }
+            .download-button {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+                margin-top: 1.5rem;
+            }
+            .download-button svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="menu">
-            <div class="language-switcher">
-                <button id="en" onclick="switchLanguage('en')">English</button>
-                <button id="id" onclick="switchLanguage('id')">Indonesia</button>
-            </div>
-            <div class="header">
-            	<br>
-                <img src="https://imgpx.com/AvP2LvrPfcsm.png" width="200px" height="200px" style="margin-top: 0px;"/></br>
-                <br>
-                <h1 id="title">MGLYZER</h1>
-<p id="subtitle">Download the app to predict market trends using AI.</p>
-            </div>
+    <div class="language-switcher">
+        <button id="en-btn" class="active">English</button>
+        <button id="id-btn">Indonesia</button>
+    </div>
 
-            <section class="download-section">               
-                <a href="https://github.com/FajarDeveloper/ai-market-predictor/raw/refs/heads/main/MGLYZER-2.2.apk" class="download-button" id="download-now">
-                    <span id="download-text">Download Now</span>
+    <div class="main-content-wrapper">
+        <div class="download-card">
+            <header class="download-header">
+                <img src="https://i.ibb.co/6rW3r5n/AI-logo-placeholder.png" alt="MGLYZER Logo" class="main-logo"/>
+                
+                <h1 data-en="Download MGLYZER" data-id="Unduh MGLYZER">Download MGLYZER</h1>
+                <p data-en="Get the latest version of MGLYZER and start predicting market trends with cutting-edge AI technology." data-id="Dapatkan versi terbaru MGLYZER dan mulailah memprediksi tren pasar dengan teknologi AI tercanggih.">Get the latest version of MGLYZER and start predicting market trends.</p>
+            </header>
+
+            <section class="download-link-section">
+                <a href="https://github.com/FajarDeveloper/ai-market-predictor/raw/refs/heads/main/MGLYZER-2.2.apk" class="download-button" download>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-4H8l4-4 4 4h-1v4h-2v-4z"/></svg>
+                    <span data-en="Download Now" data-id="Unduh Sekarang">Download Now</span>
                 </a>
             </section>
-
-            <section>
-                <h2 id="features-title" class="section-title">Features</h2>
-                <ul id="features-list">
-                    <li id="feature-1">AI-powered market trend predictions.</li>
-                    <li id="feature-2">Real-time data analysis.</li>
-                    <li id="feature-3">User-friendly interface.</li>
-                    <li id="feature-4">Compatible with Android devices.</li>
-                </ul>
-            </section>
-
         </div>
     </div>
 
     <script>
-        function switchLanguage(language) {
-            const title = document.getElementById('title');
-            const subtitle = document.getElementById('subtitle');
-            const downloadTitle = document.getElementById('download-title');
-            const featuresTitle = document.getElementById('features-title');
+        document.addEventListener('DOMContentLoaded', () => {
+            const enButton = document.getElementById('en-btn');
+            const idButton = document.getElementById('id-btn');
+            
+            const translatableElements = document.querySelectorAll('[data-en], .download-button span');
 
-            const downloadText = document.getElementById('download-text');
+            function switchLanguage(lang) {
+                translatableElements.forEach(element => {
+                    if (element.dataset[lang]) {
+                        element.textContent = element.dataset[lang];
+                    }
+                });
 
-            const feature1 = document.getElementById('feature-1');
-            const feature2 = document.getElementById('feature-2');
-            const feature3 = document.getElementById('feature-3');
-            const feature4 = document.getElementById('feature-4');
-
-            if(language === 'en') {
-                title.textContent = 'MGLYZER';
-                subtitle.textContent = 'Download the app to predict market trends using AI.';
-                downloadTitle.textContent = 'Download Application';
-                featuresTitle.textContent = 'Features';
-
-                downloadText.textContent = 'Download Now';
-
-                feature1.textContent = 'AI-powered market trend predictions.';
-                feature2.textContent = 'Real-time data analysis.';
-                feature3.textContent = 'User-friendly interface.';
-                feature4.textContent = 'Compatible with Android devices.';
-            } else {
-                
-                subtitle.textContent = 'Unduh aplikasi untuk memprediksi tren pasar menggunakan AI.';
-                downloadTitle.textContent = 'Unduh Aplikasi';
-                featuresTitle.textContent = 'Fitur';
-
-                downloadText.textContent = 'Unduh Sekarang';
-
-                feature1.textContent = 'Prediksi tren pasar berbasis AI.';
-                feature2.textContent = 'Analisis data waktu nyata.';
-                feature3.textContent = 'Antarmuka yang ramah pengguna.';
-                feature4.textContent = 'Kompatibel dengan perangkat Android.';
+                if (lang === 'en') {
+                    enButton.classList.add('active');
+                    idButton.classList.remove('active');
+                    document.documentElement.lang = 'en';
+                } else {
+                    idButton.classList.add('active');
+                    enButton.classList.remove('active');
+                    document.documentElement.lang = 'id';
+                }
             }
-        }
-    </script>
 
+            enButton.addEventListener('click', () => switchLanguage('en'));
+            idButton.addEventListener('click', () => switchLanguage('id'));
+
+            // Set initial language based on the active button
+            switchLanguage('en'); 
+        });
+    </script>
 </body>
 </html>

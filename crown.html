@@ -1,203 +1,252 @@
-<style>
-	* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
-    padding: 0px;
-}
-
-.container {
-    width: 100%;
-    max-width: 100%;    
-    border-radius: 10px;    
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.menu {
-    background: #fff;
-    width: 80%;
-    max-width: 900px;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.language-switcher {
-    display: auto;
-    justify-content: flex-end;
-    text-align: center;
-    gap: 10px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-.language-switcher button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.language-switcher button:hover {
-    background-color: #0056b3;
-}
-
-.header {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-h1 {
-    font-size: 2.5rem;
-    color: #007bff;
-    margin-bottom: 20px;
-}
-
-p#subtitle {
-    font-size: 1.2rem;
-    color: #777;
-}
-
-.section-title {
-    font-weight: bold;
-    font-size: 1.4rem;
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.info-box {
-    background: rgba(0, 123, 255, 0.1);
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.info-box p {
-    font-size: 1.1rem;
-    color: #555;
-}
-
-@media (max-width: 768px) {
-    .container {
-        padding: 10px;
-    }
-
-    .menu {
-        width: 100%;
-    }
-}
-
-	</style>
-	
-	<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Information - MGLYZER</title>
-    <link rel="stylesheet" href="style.css">
+    <title>MGLYZER - Future of Analysis</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #f4f7fc; /* Light gray background */
+            --card-bg: #ffffff; /* White card background */
+            --border-color: #e5e7eb; /* Light gray border */
+            --primary-color: #3b82f6; /* A strong, modern blue */
+            --text-primary: #1f2937; /* Dark gray for text */
+            --text-secondary: #6b7280; /* Medium gray for secondary text */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.04) 1px, transparent 0);
+            background-size: 25px 25px;
+            color: var(--text-primary);
+            padding: 2rem 1rem; /* Added padding for smaller screens */
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            animation: fadeIn 1s ease-in-out;
+            margin: 0 auto; /* Center container and allow flow from top */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        /* Placeholder for your large AI logo */
+        .header .main-logo {
+            width: 120px; /* Adjust size as needed */
+            height: auto;
+            margin-bottom: 1rem;
+        }
+
+        .header h1 {
+            font-size: clamp(2rem, 5vw, 2.5rem);
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: 1px;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            font-weight: 400;
+        }
+
+        .language-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            background-color: #eef2f9;
+            padding: 0.5rem;
+            border-radius: 99px;
+            margin-bottom: 2rem;
+        }
+
+        .language-switcher button {
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 99px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .language-switcher button.active {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-item {
+            background: #f9fafb;
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .info-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+        }
+
+        .item-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .item-header svg {
+            width: 24px;
+            height: 24px;
+            color: var(--primary-color);
+        }
+
+        .item-header h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .info-item p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            .container {
+                padding: 1.5rem;
+            }
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
 
     <div class="container">
-        <div class="menu">
-            <div class="language-switcher">
-                <button id="en" onclick="switchLanguage('en')">English</button>
-                <button id="id" onclick="switchLanguage('id')">Indonesia</button>
-            </div>
-            <div class="header">
-                <h1 id="title">MGLYZER</h1>
-                <br>
-                <img src="https://imgpx.com/AvP2LvrPfcsm.png" width="200px" height="200px" style="margin-top: 0px;"/></br>
-                <br>
-                <p id="subtitle">Your AI-powered market trend prediction tool.</p>
-            </div>
-
-            <section>
-                <p id="specification-title" class="section-title">Information</p>
-                <div id="specifications-box" class="info-box">
-                    <p id="specifications-content">MGLYZER is still in beta testing, where this version will limit each token that is called every day and will limit the users who can access it.</p>
-                </div>
-            </section>
-
-            <section>
-                <p id="version-title" class="section-title">Version</p>
-                <div id="version-box" class="info-box">
-                    <p id="version-content">v2.2 Beta Testing</p>
-                </div>
-            </section>
-
-            <section>
-                <p id="devices-title" class="section-title">Devices</p>
-                <div id="devices-box" class="info-box">
-                    <p id="devices-content">Okhttp7-Pro: Calling responses from Flagship AI Gemini Pro-2.5 and GPT-5</p>
-                </div>
-            </section>
-
-            <section>
-                <p id="brain-title" class="section-title">Brain</p>
-                <div id="brain-box" class="info-box">
-                    <p id="brain-content">MGChip v1 Beta</p>
-                </div>
-            </section>
-
+        <div class="language-switcher">
+            <button id="en-btn" class="active">English</button>
+            <button id="id-btn">Indonesia</button>
         </div>
+        
+        <header class="header">
+            <img src="https://i.ibb.co/6rW3r5n/AI-logo-placeholder.png" alt="AI Logo" class="main-logo"/>
+            
+            <h1 data-en="MGLYZER" data-id="MGLYZER">MGLYZER</h1>
+            <p data-en="Your AI-powered market trend prediction tool." data-id="Alat prediksi tren pasar berbasis AI.">Your AI-powered market trend prediction tool.</p>
+        </header>
+
+        <main class="info-grid">
+            <div class="info-item">
+                <div class="item-header">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>
+                    <h2 data-en="Information" data-id="Informasi">Information</h2>
+                </div>
+                <p data-en="MGLYZER is still in beta testing, where this version will limit each token that is called every day and will limit the users who can access it." data-id="MGLYZER masih dalam tahap pengujian beta, dimana versi ini akan membatasi setiap token yang di panggil setiap hari dan akan membatasi pengguna yang dapat mengaksesnya.">MGLYZER is still in beta testing...</p>
+            </div>
+
+            <div class="info-item">
+                <div class="item-header">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+                    <h2 data-en="Version" data-id="Versi">Version</h2>
+                </div>
+                <p data-en="v2.2 Beta Testing" data-id="Pengujian Beta v2.2">v2.2 Beta Testing</p>
+            </div>
+
+            <div class="info-item">
+                <div class="item-header">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" /></svg>
+                    <h2 data-en="Devices" data-id="Perangkat">Devices</h2>
+                </div>
+                <p data-en="Okhttp7-Pro: Calling responses from Flagship AI Gemini Pro-2.5 and GPT-5" data-id="Okhttp7-Pro: Memanggil respons dari Flagship AI Gemini Pro-2.5 dan GPT-5">Okhttp7-Pro: Calling responses...</p>
+            </div>
+
+            <div class="info-item">
+                <div class="item-header">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 002.25-2.25V6.75a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 6.75v10.5a2.25 2.25 0 002.25 2.25z" /></svg>
+                    <h2 data-en="Brain" data-id="Otak">Brain</h2>
+                </div>
+                <p data-en="MGChip v1 Beta" data-id="MGChip v1 Beta">MGChip v1 Beta</p>
+            </div>
+        </main>
     </div>
 
     <script>
-        function switchLanguage(language) {
-            const title = document.getElementById('title');
-            const subtitle = document.getElementById('subtitle');
-            const specificationTitle = document.getElementById('specification-title');
-            const versionTitle = document.getElementById('version-title');
-            const devicesTitle = document.getElementById('devices-title');
-            const brainTitle = document.getElementById('brain-title');
+        document.addEventListener('DOMContentLoaded', () => {
+            const enButton = document.getElementById('en-btn');
+            const idButton = document.getElementById('id-btn');
+            
+            // Select all elements that have translation data
+            const translatableElements = document.querySelectorAll('[data-en]');
 
-            const specificationsContent = document.getElementById('specifications-content');
-            const versionContent = document.getElementById('version-content');
-            const devicesContent = document.getElementById('devices-content');
-            const brainContent = document.getElementById('brain-content');
+            function switchLanguage(lang) {
+                translatableElements.forEach(element => {
+                    // Check if the dataset for the language exists before assigning
+                    if (element.dataset[lang]) {
+                        element.textContent = element.dataset[lang];
+                    }
+                });
 
-            if(language === 'en') {
-                title.textContent = 'MGLYZER';
-                subtitle.textContent = 'Your AI-powered market trend prediction tool.';
-                specificationTitle.textContent = 'Information';
-                versionTitle.textContent = 'Version';
-                devicesTitle.textContent = 'Devices';
-                brainTitle.textContent = 'Brain';
-
-                specificationsContent.textContent = 'MGLYZER is still in beta testing, where this version will limit each token that is called every day and will limit the users who can access it.';
-                versionContent.textContent = 'v2.2 Beta Testing';
-                devicesContent.textContent = 'Okhttp7-Pro: Calling responses from Flagship AI Gemini Pro-2.5 and GPT-5';
-                brainContent.textContent = 'MGChip v1 Beta';
-            } else {
-                
-                subtitle.textContent = 'Alat prediksi tren pasar berbasis AI.';
-                specificationTitle.textContent = 'Informasi';
-                versionTitle.textContent = 'Versi';
-                devicesTitle.textContent = 'Perangkat';
-                brainTitle.textContent = 'Otak';
-
-                specificationsContent.textContent = 'MGLYZER masih dalam tahap pengujian beta, dimana versi ini akan membatasi setiap token yang di panggil setiap hari dan akan membatasi pengguna yang dapat mengaksesnya.';
-                versionContent.textContent = 'Pengujian Beta v2.2';
-                devicesContent.textContent = 'Okhttp7-Pro: Memanggil respons dari Flagship AI Gemini Pro-2.5 dan GPT-5';
-                brainContent.textContent = 'MGChip v1 Beta';
+                // Update active button state
+                if (lang === 'en') {
+                    enButton.classList.add('active');
+                    idButton.classList.remove('active');
+                } else {
+                    idButton.classList.add('active');
+                    enButton.classList.remove('active');
+                }
             }
-        }
-    </script>
 
+            enButton.addEventListener('click', () => switchLanguage('en'));
+            idButton.addEventListener('click', () => switchLanguage('id'));
+
+            // Set initial language based on the active button
+            switchLanguage('en'); 
+        });
+    </script>
 </body>
 </html>

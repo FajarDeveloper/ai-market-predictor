@@ -3,230 +3,332 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MGLYZER Info</title>
-    <link rel="stylesheet" href="style.css">
+    <title>About MGLYZER - Your AI Market Trend Predictor</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #f0f2f5; /* Very light gray */
+            --card-bg-light: rgba(255, 255, 255, 0.8); /* For glassmorphism base */
+            --card-bg-dark: rgba(255, 255, 255, 0.95); /* For slightly opaque parts */
+            --border-color: rgba(220, 220, 220, 0.6);
+            --primary-gradient-start: #3b82f6; /* Blue for primary */
+            --primary-gradient-end: #1d4ed8;   /* Darker blue for primary */
+            --primary-text-color: #1e40af;     /* Even darker blue for text */
+            --text-main: #1a202c; /* Darker text */
+            --text-secondary: #4a5568; /* Medium text */
+            --shadow-light: rgba(0, 0, 0, 0.04);
+            --shadow-medium: rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.03) 1px, transparent 0);
+            background-size: 30px 30px;
+            color: var(--text-main);
+            margin: 0;
+            padding: 2rem 1rem; /* Consistent padding for all screen sizes */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-main);
+        }
+
+        .language-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            background-color: var(--card-bg-light);
+            border: 1px solid var(--border-color);
+            padding: 0.4rem 0.5rem;
+            border-radius: 99px;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px var(--shadow-light);
+        }
+
+        .language-switcher button {
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 99px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .language-switcher button.active {
+            background-image: linear-gradient(to right, var(--primary-gradient-start), var(--primary-gradient-end));
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); /* Shadow color from gradient */
+        }
+
+        .main-content-wrapper { /* Wrapper to control max-width and center content */
+            width: 100%;
+            max-width: 900px; /* Adjusted max-width for content area */
+            margin: 0 auto; /* Center the wrapper */
+            padding: 0 1rem; /* Inner padding for the wrapper */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeIn 0.8s ease-out; /* Apply animation here */
+        }
+        
+        .header-section .main-logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+
+        .header-section h1 {
+            font-size: clamp(2.5rem, 6vw, 3.8rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--primary-gradient-start), var(--primary-gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-section .subtitle {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--primary-text-color); /* Changed to primary-text-color for emphasis */
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem; /* Adjusted gap */
+            text-align: left;
+            animation: fadeIn 1s ease-out 0.2s forwards; /* Delayed animation for grid */
+            opacity: 0; /* Start hidden for animation */
+        }
+
+        .info-item {
+            background: linear-gradient(135deg, var(--card-bg-light), var(--card-bg-dark));
+            border: 1px solid var(--border-color);
+            border-radius: 25px; /* Softer, rounder corners */
+            padding: 2.5rem; /* Increased padding inside card */
+            box-shadow: 0 10px 30px var(--shadow-light);
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(12px); /* Glassmorphism effect */
+            -webkit-backdrop-filter: blur(12px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-item::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 0;
+        }
+
+        .info-item:hover::before {
+            opacity: 1;
+        }
+
+        .info-item:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 20px 40px var(--shadow-medium);
+        }
+
+        .item-header {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem; /* Increased gap */
+            margin-bottom: 1.5rem; /* Increased margin */
+            position: relative;
+            z-index: 1;
+        }
+
+        .item-header svg {
+            width: 32px; /* Larger icons */
+            height: 32px;
+            color: var(--primary-text-color); /* Changed to primary-text-color */
+            flex-shrink: 0;
+        }
+
+        .item-header h2 {
+            font-size: 1.4rem; /* Larger title in cards */
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .info-item p {
+            font-size: 1rem; /* Consistent paragraph size */
+            color: var(--text-secondary);
+            line-height: 1.7; /* Slightly more line height */
+            flex-grow: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem; /* Less padding on very small screens */
+            }
+            .main-content-wrapper {
+                padding: 0; /* Remove inner padding for smaller screens */
+            }
+            .header-section {
+                margin-bottom: 2.5rem;
+            }
+            .header-section h1 {
+                font-size: 2.2rem;
+            }
+            .header-section .subtitle {
+                font-size: 0.95rem;
+                margin-bottom: 2.5rem;
+            }
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem; /* Reduced gap */
+            }
+            .language-switcher {
+                margin-bottom: 2rem;
+            }
+            .info-item {
+                padding: 2rem; /* Adjusted padding for smaller cards */
+            }
+            .item-header h2 {
+                font-size: 1.2rem; /* Adjusted title size for smaller cards */
+            }
+            .info-item p {
+                font-size: 0.9rem; /* Adjusted paragraph size for smaller cards */
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="menu">
-            <div class="language-switcher">
-                <button id="en" onclick="switchLanguage('en')">English</button>
-                <button id="id" onclick="switchLanguage('id')">Indonesia</button>
-            </div>
-            <div class="header">
-            	<br>
-                <img src="https://imgpx.com/AvP2LvrPfcsm.png" width="200px" height="200px" style="margin-top: 0px;"/></br>
-                <br>
-                <h1 id="title">MGLYZER</h1>
-                <p id="subtitle">Your AI-powered market trend prediction tool.</p>
-            </div>
+
+    <div class="language-switcher">
+        <button id="en-btn" class="active">English</button>
+        <button id="id-btn">Indonesia</button>
+    </div>
+
+    <div class="main-content-wrapper">
+        <header class="header-section">
+            <img src="https://i.ibb.co/6rW3r5n/AI-logo-placeholder.png" alt="MGLYZER Logo" class="main-logo"/>
             
-            <div id="content">
-                <section>
-                    <h2 id="feature-title">Features</h2>
-                    <ul id="feature-list">
-                        <li id="feature-1">AI-based market trend prediction.</li>
-                        <li id="feature-2">Real-time data analysis for accuracy.</li>
-                        <li id="feature-3">Supports informed decisions in trading & investments.</li>
-                        <li id="feature-4">User-friendly interface with modern design.</li>
-                    </ul>
-                </section>
+            <h1 data-en="About MGLYZER" data-id="Tentang MGLYZER">About MGLYZER</h1>
+            <p class="subtitle" data-en="Your AI-powered market trend prediction tool, evolving for the future." data-id="Alat prediksi tren pasar berbasis AI Anda, berevolusi untuk masa depan.">Your AI-powered market trend prediction tool, evolving for the future.</p>
+        </header>
 
-                <section>
-                    <h2 id="benefits-title">Benefits</h2>
-                    <ul id="benefits-list">
-                        <li id="benefit-1">Enhance your decision-making abilities.</li>
-                        <li id="benefit-2">Reduce risks in the market.</li>
-                        <li id="benefit-3">Maximize your profits with accurate predictions.</li>
-                        <li id="benefit-4">Access reliable AI-driven insights.</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h2 id="how-it-works-title">How It Works</h2>
-                    <p id="how-it-works">
-                       MGLYZER analyzes massive data sets using machine learning algorithms to predict market trends. It provides real-time data to track market changes and offers valuable insights for smarter investment and trading decisions.
-                    </p>
-                </section>
+        <main class="info-grid">
+            <div class="info-item">
+                <div class="item-header">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>
+                    <h2 data-en="Feature" data-id="Fitur">Feature</h2>
+                </div>
+                <p data-en="AI-based market trend prediction.
+Real-time data analysis for accuracy.
+Supports informed decisions in trading & investments.
+User-friendly interface with modern design." data-id="Prediksi tren pasar berbasis AI.
+Analisis data real-time untuk akurasi.
+Mendukung keputusan yang tepat dalam perdagangan & investasi.
+Antarmuka yang ramah pengguna dengan desain modern.">MGLYZER is currently in beta testing. This version limits daily token calls and user access...</p>
             </div>
-        </div>
+
+            <div class="info-item">
+                <div class="item-header">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+                    <h2 data-en="Benefits" data-id="Benefit">Benefits</h2>
+                </div>
+                <p data-en="Enhance your decision-making abilities.
+Reduce risks in the market.
+Maximize your profits with accurate predictions.
+Access reliable AI-driven insights." data-id="Tingkatkan kemampuan Anda dalam mengambil keputusan.
+
+Kurangi risiko di pasar.
+
+Maksimalkan keuntungan Anda dengan prediksi yang akurat.
+
+Akses wawasan berbasis AI yang andal.
+
+">v2.2 Beta Testing</p>
+            </div>
+
+            <div class="info-item">
+                <div class="item-header">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" /></svg>
+                    <h2 data-en="Ways of Working" data-id="Cara Kerja">Ways of working</h2>
+                </div>
+                <p data-en="MGLYZER analyzes massive data sets using machine learning algorithms to predict market trends. It provides real-time data to track market changes and offers valuable insights for smarter investment and trading decisions." data-id="MGLYZER menganalisis kumpulan data besar menggunakan algoritma pembelajaran mesin untuk memprediksi tren pasar. MGLYZER menyediakan data real-time untuk melacak perubahan pasar dan menawarkan wawasan berharga untuk investasi yang lebih cerdas.">Okhttp7-Pro: Calling responses from Flagship AI Gemini Pro-2.5 and GPT-5</p>
+            </div>
+
+            <div class="info-item">
+                <div class="item-header">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 002.25-2.25V6.75a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 6.75v10.5a2.25 2.25 0 002.25 2.25z" /></svg>
+                    <h2 data-en="Core AI" data-id="Inti AI">Core AI</h2>
+                </div>
+                <p data-en="MGChip v1 Beta: The proprietary AI chip, MGChip, forms the 'brain' of MGLYZER, ensuring intelligent processing and optimal performance for every analysis." data-id="MGChip v1 Beta: Chip AI milik pribadi, MGChip, membentuk 'otak' MGLYZER, memastikan pemrosesan cerdas dan kinerja optimal untuk setiap analisis.">MGChip v1 Beta</p>
+            </div>
+        </main>
     </div>
 
     <script>
-        function switchLanguage(language) {
-            const title = document.getElementById('title');
-            const subtitle = document.getElementById('subtitle');
-            const featureTitle = document.getElementById('feature-title');
-            const benefitsTitle = document.getElementById('benefits-title');
-            const howItWorksTitle = document.getElementById('how-it-works-title');
+        document.addEventListener('DOMContentLoaded', () => {
+            const enButton = document.getElementById('en-btn');
+            const idButton = document.getElementById('id-btn');
+            
+            const translatableElements = document.querySelectorAll('[data-en]');
 
-            const feature1 = document.getElementById('feature-1');
-            const feature2 = document.getElementById('feature-2');
-            const feature3 = document.getElementById('feature-3');
-            const feature4 = document.getElementById('feature-4');
+            function switchLanguage(lang) {
+                translatableElements.forEach(element => {
+                    if (element.dataset[lang]) {
+                        element.textContent = element.dataset[lang];
+                    }
+                });
 
-            const benefit1 = document.getElementById('benefit-1');
-            const benefit2 = document.getElementById('benefit-2');
-            const benefit3 = document.getElementById('benefit-3');
-            const benefit4 = document.getElementById('benefit-4');
-
-            const howItWorks = document.getElementById('how-it-works');
-
-            if(language === 'en') {
-                title.textContent = 'MGLYZER';
-                subtitle.textContent = 'Your AI-powered market trend prediction tool.';
-                featureTitle.textContent = 'Features';
-                benefitsTitle.textContent = 'Benefits';
-                howItWorksTitle.textContent = 'How It Works';
-
-                feature1.textContent = 'AI-based market trend prediction.';
-                feature2.textContent = 'Real-time data analysis for accuracy.';
-                feature3.textContent = 'Supports informed decisions in trading & investments.';
-                feature4.textContent = 'User-friendly interface with modern design.';
-
-                benefit1.textContent = 'Enhance your decision-making abilities.';
-                benefit2.textContent = 'Reduce risks in the market.';
-                benefit3.textContent = 'Maximize your profits with accurate predictions.';
-                benefit4.textContent = 'Access reliable AI-driven insights.';
-
-                howItWorks.textContent = 'MGLYZER analyzes massive data sets using machine learning algorithms to predict market trends. It provides real-time data to track market changes and offers valuable insights for smarter investment and trading decisions.';
-            } else {               
-                subtitle.textContent = 'Alat prediksi tren pasar berbasis AI.';
-                featureTitle.textContent = 'Fitur';
-                benefitsTitle.textContent = 'Manfaat';
-                howItWorksTitle.textContent = 'Cara Kerja';
-
-                feature1.textContent = 'Prediksi tren pasar berbasis AI.';
-                feature2.textContent = 'Analisis data waktu nyata untuk akurasi.';
-                feature3.textContent = 'Mendukung keputusan yang lebih baik dalam perdagangan & investasi.';
-                feature4.textContent = 'Antarmuka yang ramah pengguna dengan desain modern.';
-
-                benefit1.textContent = 'Tingkatkan kemampuan pengambilan keputusan Anda.';
-                benefit2.textContent = 'Kurangi risiko di pasar.';
-                benefit3.textContent = 'Maksimalkan keuntungan Anda dengan prediksi yang akurat.';
-                benefit4.textContent = 'Akses wawasan yang dapat diandalkan, dihasilkan oleh AI.';
-
-                howItWorks.textContent = 'MGLYZER menganalisis sejumlah besar data menggunakan algoritma pembelajaran mesin untuk memprediksi tren pasar. Ini memberikan data waktu nyata untuk melacak perubahan pasar dan menawarkan wawasan berharga untuk keputusan investasi dan perdagangan yang lebih cerdas.';
+                if (lang === 'en') {
+                    enButton.classList.add('active');
+                    idButton.classList.remove('active');
+                    document.documentElement.lang = 'en';
+                } else {
+                    idButton.classList.add('active');
+                    enButton.classList.remove('active');
+                    document.documentElement.lang = 'id';
+                }
             }
-        }
+
+            enButton.addEventListener('click', () => switchLanguage('en'));
+            idButton.addEventListener('click', () => switchLanguage('id'));
+
+            // Set initial language based on the active button
+            switchLanguage('en'); 
+        });
     </script>
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f9f9f9;
-    color: #333;
-    padding: 20px;
-    display: auto;
-    justify-content: center;
-    align-items: center;
-    
-    height: 100vh;
-}
-
-.container {
-    width: 100%;
-    max-width: 900px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.language-switcher {
-    display: auto;
-    justify-content: flex-end;
-    text-align: center;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.language-switcher button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    text-align: center;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    border: 1px solid #007bff;
-}
-
-.language-switcher button:hover {
-    background-color: #0056b3;
-}
-
-.header {
-    text-align: center;
-}
-
-h1 {
-    font-size: 2.5rem;
-    color: #007bff;
-    margin-bottom: 20px;
-    margin-top:20px;
-}
-
-p#subtitle {
-    font-size: 1.2rem;
-    color: #777;
-    margin-bottom: 20px;
-}
-
-h2 {
-    font-size: 1.6rem;
-    margin-bottom: 10px;
-    margin-top: 15px;
-    color: #333;
-}
-
-ul {
-    list-style-type: none;
-    margin-bottom: 20px;
-    padding-left: 20px;
-}
-
-li {
-    font-size: 1.1rem;
-    color: #555;
-    margin-bottom: 8px;
-}
-
-section {
-    padding-bottom: 20px;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-p {
-    font-size: 1.1rem;
-    color: #555;
-}
-
-button {
-    background-color: #28a745;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.1rem;
-    margin-top: 20px;
-}
-
-button:hover {
-    background-color: #218838;
-}
-</style>
-
 </body>
 </html>

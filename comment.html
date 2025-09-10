@@ -3,49 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kirim Ulasan</title>
+    <title>Kirim Ulasan - MGLYZER</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
     <style>
+        :root {
+            --bg-color: #f4f7fc;
+            --card-bg: #ffffff;
+            --border-color: #e5e7eb;
+            --primary-color: #3b82f6;
+            --primary-hover-color: #2563eb;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --star-inactive-color: #d1d5db;
+            --star-active-color: #facc15; /* Yellow for stars */
+        }
+
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f4f8; /* Biru halus */
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
             margin: 0;
-            padding: 0;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
         .container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff; /* Putih susu */
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-left: auto; /* Membuat margin kiri lebih seimbang */
-            margin-right: auto; /* Membuat margin kanan lebih seimbang */
+            width: 100%;
+            max-width: 500px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            animation: fadeIn 0.7s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         h2 {
             text-align: center;
-            color: #4682b4; /* Biru lebih gelap */
+            color: var(--text-primary);
+            font-weight: 700;
+            margin-bottom: 2rem;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 1.5rem;
         }
 
         label {
-            font-weight: bold;
+            font-weight: 600;
             display: block;
-            margin-bottom: 5px;
-            color: #4682b4; /* Biru gelap */
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-size: 0.9rem;
         }
 
-        input, textarea {
+        input[type="text"], textarea {
             width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
         }
 
         textarea {
@@ -53,129 +89,114 @@
             height: 120px;
         }
 
+        /* Modern Star Rating */
+        .rating-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
         .stars {
             display: flex;
-            justify-content: space-between;
-            width: 200px;
-            margin-top: 10px;
+            flex-direction: row-reverse; /* Reverse to make CSS hover trick work */
+            justify-content: center;
         }
 
-        .star {
-            font-size: 30px;
-            color: #ddd;
+        .stars input[type="radio"] {
+            display: none;
+        }
+
+        .stars label {
+            font-size: 2.5rem;
+            color: var(--star-inactive-color);
             cursor: pointer;
+            transition: color 0.2s ease;
+            margin: 0 0.25rem;
         }
 
-        /* Mengubah warna bintang saat dipilih */
-        input[type="radio"]:checked ~ .stars label:nth-child(1),
-        input[type="radio"]:checked ~ .stars label:nth-child(2),
-        input[type="radio"]:checked ~ .stars label:nth-child(3),
-        input[type="radio"]:checked ~ .stars label:nth-child(4),
-        input[type="radio"]:checked ~ .stars label:nth-child(5) {
-            color: #4682b4; /* Biru */
+        .stars label:hover,
+        .stars label:hover ~ label,
+        .stars input[type="radio"]:checked ~ label {
+            color: var(--star-active-color);
+        }
+
+        .rating-value {
+            margin-top: 1rem;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            min-height: 1.5rem;
         }
 
         .submit-btn {
             display: block;
             width: 100%;
-            padding: 12px;
-            background-color: #4682b4; /* Biru */
+            padding: 0.85rem;
+            background-color: var(--primary-color);
             color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 16px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.2s;
         }
 
         .submit-btn:hover {
-            background-color: #5a8fb7; /* Biru lebih gelap */
+            background-color: var(--primary-hover-color);
+            transform: translateY(-2px);
         }
 
-        /* Dialog Mengambang */
-        .dialog {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #fff; /* Putih susu */
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            display: none;
-            text-align: center;
-            z-index: 9999;
-        }
-
-        .dialog.show {
-            display: block;
-        }
-
-        .dialog .check-icon {
-            color: #4682b4; /* Biru */
-            font-size: 40px;
-            margin-bottom: 10px;
-        }
-
-        .dialog .message {
-            font-size: 16px;
-            color: #333;
-        }
-
-        .dialog .close-btn {
-            margin-top: 15px;
-            padding: 8px 16px;
-            background-color: #4682b4; /* Biru */
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .dialog .close-btn:hover {
-            background-color: #5a8fb7; /* Biru lebih gelap */
-        }
-
-        .rating-value {
-            text-align: center;
-            margin-top: 10px;
-            font-size: 18px;
-            color: #4682b4; /* Biru */
-        }
-
-        /* Animasi Loading */
-        .loading-overlay {
+        /* Dialog & Loading Overlay */
+        .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.4);
             display: none;
             align-items: center;
             justify-content: center;
-            z-index: 9998; /* Di bawah dialog sukses */
+            z-index: 9998;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        .loading-box {
-            background-color: #fff; /* Putih susu */
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        .overlay.show {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            opacity: 1;
+        }
+        
+        .dialog-box {
+            background-color: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        
+        .overlay.show .dialog-box {
+            transform: scale(1);
         }
 
-        .loading-box .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #4682b4; /* Biru */
+        .dialog-box .check-icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 1rem;
+            color: #10b981; /* Green for success */
+        }
+
+        .dialog-box .spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary-color);
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             animation: spin 1s linear infinite;
+            margin: 0 auto 1rem auto;
         }
 
         @keyframes spin {
@@ -183,9 +204,31 @@
             100% { transform: rotate(360deg); }
         }
 
-        .loading-box p {
-            margin-top: 10px;
-            color: #333;
+        .dialog-box .message {
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .dialog-box .sub-message {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .dialog-box .close-btn {
+            margin-top: 1.5rem;
+            padding: 0.6rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .dialog-box .close-btn:hover {
+            background-color: var(--primary-hover-color);
         }
 
     </style>
@@ -193,112 +236,109 @@
 <body>
 
     <div class="container">
-        <h2>Kirim Ulasan Anda</h2>
-        <form id="reviewForm">
+        <h2>Berikan Ulasan Anda</h2>
+        <form id="reviewForm" novalidate>
             <div class="form-group">
-                <label for="name">Nama Anda</label>
+                <label for="name">Nama</label>
                 <input type="text" id="name" name="name" placeholder="Masukkan nama Anda" required>
             </div>
+            
             <div class="form-group">
-                <label for="rating">Rating</label>
-                <div class="stars">
-                    <!-- Setiap radio button diwakili dengan label bintang -->
-                    <input type="radio" id="star5" name="rating" value="5" required>
-                    <label class="star" for="star5">⭐</label>
-
-                    <input type="radio" id="star4" name="rating" value="4">
-                    <label class="star" for="star4">⭐</label>
-
-                    <input type="radio" id="star3" name="rating" value="3">
-                    <label class="star" for="star3">⭐</label>
-
-                    <input type="radio" id="star2" name="rating" value="2">
-                    <label class="star" for="star2">⭐</label>
-
-                    <input type="radio" id="star1" name="rating" value="1">
-                    <label class="star" for="star1">⭐</label>
+                <label>Rating</label>
+                <div class="rating-container">
+                    <div class="stars">
+                        <input type="radio" id="star5" name="rating" value="5" required><label for="star5">★</label>
+                        <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+                        <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+                        <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+                        <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+                    </div>
+                    <div id="ratingValue" class="rating-value">Silakan pilih rating</div>
                 </div>
-                <!-- Menampilkan rating yang dipilih -->
-                <div id="ratingValue" class="rating-value">Pilih rating</div>
             </div>
+            
             <div class="form-group">
                 <label for="comment">Komentar</label>
-                <textarea id="comment" name="comment" placeholder="Tuliskan komentar Anda" required></textarea>
+                <textarea id="comment" name="comment" placeholder="Tuliskan pengalaman Anda..." required></textarea>
             </div>
+            
             <button type="submit" class="submit-btn">Kirim Ulasan</button>
         </form>
     </div>
 
-    <!-- Dialog Mengambang -->
-    <div id="successDialog" class="dialog">
-        
-        <div class="message">Ulasan Anda Telah Terkirim!</div>
-        <button class="close-btn" onclick="closeDialog()">Tutup</button>
+    <div id="loadingOverlay" class="overlay">
+        <div class="dialog-box">
+            <div class="spinner"></div>
+            <p class="message">Memproses...</p>
+        </div>
     </div>
 
-    <!-- Animasi Loading -->
-    <div id="loadingOverlay" class="loading-overlay">
-        <div class="loading-box">
-            <div class="spinner"></div>
-            <p>Memproses...</p>
+    <div id="successDialog" class="overlay">
+        <div class="dialog-box">
+            <svg class="check-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p class="message">Ulasan Terkirim!</p>
+            <p class="sub-message">Terima kasih atas masukan Anda.</p>
+            <button class="close-btn" onclick="closeDialog()">Tutup</button>
         </div>
     </div>
 
     <script>
-        // Fungsi untuk menampilkan dialog setelah pengiriman ulasan
-        function showDialog() {
-            document.getElementById('successDialog').classList.add('show');
-        }
-
-        // Fungsi untuk menutup dialog
-        function closeDialog() {
-            document.getElementById('successDialog').classList.remove('show');
-        }
-
-        // Menangani pengiriman form
-        document.getElementById('reviewForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Mencegah form disubmit secara tradisional
-
-            // Menampilkan animasi loading
-            document.getElementById('loadingOverlay').style.display = 'flex';
-
-            // Menunggu selama 4 detik sebelum menampilkan dialog sukses
-            setTimeout(function() {
-                // Menyembunyikan animasi loading dan menampilkan dialog sukses
-                document.getElementById('loadingOverlay').style.display = 'none';
-                showDialog();
-
-                // Reset form setelah pengiriman
-                document.getElementById('reviewForm').reset();
-                document.getElementById('ratingValue').innerText = 'Pilih rating';
-            }, 4000); // 4 detik
-        });
-
-        // Fungsi untuk memperbarui rating yang dipilih
-        const stars = document.querySelectorAll('.star');
+        const reviewForm = document.getElementById('reviewForm');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const successDialog = document.getElementById('successDialog');
         const ratingValue = document.getElementById('ratingValue');
+        const starInputs = document.querySelectorAll('.stars input[type="radio"]');
 
-        // Update rating berdasarkan klik pada bintang
-        stars.forEach(star => {
-            star.addEventListener('click', function() {
-                const rating = this.previousElementSibling.value; // Mendapatkan nilai rating
-                ratingValue.innerText = `Rating Anda: ${rating} ⭐`;
-                // Menandai bintang yang dipilih
-                document.querySelectorAll('.star').forEach(label => label.style.color = '#ddd');
-                this.style.color = '#4682b4'; // Biru
-            });
+        function showLoading() {
+            loadingOverlay.classList.add('show');
+        }
+
+        function hideLoading() {
+            loadingOverlay.classList.remove('show');
+        }
+
+        function showSuccessDialog() {
+            successDialog.classList.add('show');
+        }
+
+        function closeDialog() {
+            successDialog.classList.remove('show');
+        }
+
+        // Form submission handler
+        reviewForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Simple validation check
+            const name = document.getElementById('name').value;
+            const comment = document.getElementById('comment').value;
+            const rating = document.querySelector('input[name="rating"]:checked');
+
+            if (!name || !comment || !rating) {
+                alert('Harap isi semua kolom sebelum mengirim.');
+                return;
+            }
+
+            showLoading();
+
+            // Simulate network delay for 2 seconds
+            setTimeout(function() {
+                hideLoading();
+                showSuccessDialog();
+
+                // Reset form and rating text
+                reviewForm.reset();
+                ratingValue.innerText = 'Silakan pilih rating';
+            }, 2000); // 2 seconds
         });
 
-        // Update rating berdasarkan klik pada radio button
-        const radioButtons = document.querySelectorAll('input[type="radio"]');
-        radioButtons.forEach(radio => {
+        // Update rating text when a star is selected
+        starInputs.forEach(radio => {
             radio.addEventListener('change', function() {
                 const rating = this.value;
-                ratingValue.innerText = `Rating Anda: ${rating} ⭐`;
-                // Menandai bintang yang dipilih
-                document.querySelectorAll('.star').forEach(label => label.style.color = '#ddd');
-                const selectedStar = document.querySelector(`label[for="star${rating}"]`);
-                selectedStar.style.color = '#4682b4'; // Biru
+                ratingValue.innerText = `Anda memberikan ${rating} bintang`;
             });
         });
     </script>
