@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MGCHIP - The Future of AI Analysis</title>
+    <style>
+        /* CSS Reset & Basic Styling */
+        :root {
+            --primary-color: #00aaff; /* A vibrant tech blue */
+            --secondary-color: #0a192f; /* Dark navy background */
+            --light-slate: #ccd6f6;
+            --slate: #8892b0;
+            --white: #e6f1ff;
+            --font-sans: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+            --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--secondary-color);
+            color: var(--slate);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        h1, h2 {
+            color: var(--light-slate);
+            font-family: var(--font-mono);
+        }
+
+        /* Header Navigation */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 0;
+            position: fixed;
+            width: 100%;
+            background-color: rgba(10, 25, 47, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            font-weight: bold;
+            font-family: var(--font-mono);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--light-slate);
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 100px;
+        }
+        
+        .hero-content {
+            max-width: 700px;
+        }
+        
+        .hero h1 {
+            font-size: clamp(40px, 8vw, 80px);
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            animation: fadeIn 1s ease-in;
+        }
+        
+        .hero .subtitle {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            font-family: var(--font-mono);
+            margin-bottom: 1.5rem;
+            animation: fadeIn 1s 0.5s ease-in backwards;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 540px;
+            animation: fadeIn 1s 1s ease-in backwards;
+        }
+
+        .cta-button {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 1rem 2rem;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            animation: fadeIn 1s 1.5s ease-in backwards;
+        }
+
+        .cta-button:hover {
+            background-color: rgba(0, 170, 255, 0.1);
+        }
+
+        /* Section Styling */
+        section {
+            padding: 100px 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 3rem;
+            text-align: center;
+            font-family: var(--font-mono);
+        }
+
+        /* Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: #112240; /* Slightly lighter navy */
+            padding: 2rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px -15px rgba(2,12,27,0.7);
+        }
+
+        .feature-card h3 {
+            color: var(--light-slate);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Integration Section */
+        #integration .integration-content {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+        
+        #integration .text-content {
+            flex: 1;
+        }
+        
+        #integration .image-content {
+            flex: 1;
+            text-align: center;
+        }
+        
+        #integration img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            border-top: 1px solid #233554;
+        }
+        
+        /* Keyframe Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                padding: 1.5rem 0;
+            }
+            nav ul {
+                display: none; /* Simple hiding for demo, can be replaced with hamburger menu JS */
+            }
+            #integration .integration-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <div class="logo">MGCHIP</div>
+            <nav>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#integration">Integration</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <p class="subtitle" id="dynamic-subtitle">Analyzing the Future...</p>
+                    <h1>MGCHIP: Akurasi Bertemu Kecepatan.</h1>
+                    <p>
+                        Memperkenalkan MGCHIP, arsitektur AI revolusioner yang dirancang untuk mengasah dan memvalidasi data sebelum analisis. Memberikan hasil yang tidak hanya akurat, tetapi juga instan.
+                    </p>
+                    <a href="#features" class="cta-button">Pelajari Lebih Lanjut</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="features">
+            <div class="container">
+                <h2 class="section-title">Teknologi Luar Biasa</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h3>🧠 Pre-Analysis Brain Sharpening</h3>
+                        <p>MGCHIP secara unik memproses dan menyaring data, mengasah pemahaman AI untuk menghilangkan anomali dan bias sebelum memberikan hasil akhir. Ini memastikan akurasi tertinggi.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>⚡ Real-Time Processing</h3>
+                        <p>Didesain untuk kecepatan. MGCHIP mengelola perintah dan menghasilkan jawaban kompleks dalam waktu singkat, menjadikannya ideal untuk aplikasi yang membutuhkan respons instan.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🌐 The Core of MGLYZER</h3>
+                        <p>Sebagai otak utama di balik website dan aplikasi MGLYZER, MGCHIP mengintegrasikan setiap perintah dengan mulus, memberikan pengalaman pengguna yang cerdas dan responsif.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="integration">
+            <div class="container">
+                <h2 class="section-title">Terintegrasi dengan MGLYZER</h2>
+                <div class="integration-content">
+                    <div class="text-content">
+                        <h2>Otak Utama Platform Anda.</h2>
+                        <p>
+                            MGCHIP bukan sekadar komponen; ia adalah fondasi dari MGLYZER. Setiap interaksi, setiap kueri, dan setiap analisis ditenagai oleh chip ini, memastikan bahwa pengguna mendapatkan jawaban yang paling akurat dan relevan secara real-time. Dari analisis data kompleks hingga interaksi pengguna sehari-hari, MGCHIP adalah jaminan kualitas dan kecepatan.
+                        </p>
+                    </div>
+                    <div class="image-content">
+                        <img src="https://imgpx.com/qZJABORUieRq.png" alt="AI Chip Visualization">
+                        </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 MGCHIP Technologies. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Simple text animation for the hero subtitle
+        document.addEventListener('DOMContentLoaded', function() {
+            const subtitles = [
+                "Sharpening AI Brain...",
+                "Validating Data...",
+                "Ensuring Accuracy...",
+                "Delivering Real-Time Insights."
+            ];
+            let index = 0;
+            const subtitleElement = document.getElementById('dynamic-subtitle');
+
+            setInterval(() => {
+                // Fade out
+                subtitleElement.style.opacity = 0;
+
+                setTimeout(() => {
+                    index = (index + 1) % subtitles.length;
+                    subtitleElement.textContent = subtitles[index];
+                    // Fade in
+                    subtitleElement.style.opacity = 1;
+                }, 500); // Time for fade out animation
+
+            }, 3000); // Change text every 3 seconds
+            
+            // Adding smooth transition style via JS
+            subtitleElement.style.transition = 'opacity 0.5s ease-in-out';
+        });
+    </script>
+</body>
+</html>
