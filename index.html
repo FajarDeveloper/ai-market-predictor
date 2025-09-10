@@ -101,14 +101,17 @@
 
       /* 5. Header (PERBAIKAN TAMBAHAN) */
       header {
-        text-align: center;
-        position: relative; /* (DITAMBAHKAN) - Membuat posisi absolut di dalamnya lebih stabil */
-      }
+  text-align: center;
+  position: relative; 
+  padding-top: 30px; /* Memberi ruang di atas untuk toolbar */
+  padding-bottom: 30px;
+}
       
       header .controls {
-        position: absolute;
-        top: 0; /* Disesuaikan agar pas di dalam container padding */
-        right: 24px; /* Disesuaikan agar pas di dalam container padding */
+  position: absolute;
+  top: 10px; /* Jarak dari atas halaman */
+  left: 50%; /* Posisikan ke tengah secara horizontal */
+  transform: translateX(-50%); /* Sempurnakan posisi agar benar-benar di tengah */
         display: flex;
         gap: 12px;
         background: var(--color-card-bg);
@@ -143,19 +146,19 @@
       #theme-toggle { font-size: 1.2rem; padding: 4px 8px; }
 
       header h1 {
-        font-size: clamp(2.2rem, 5vw, 3.5rem);
-        font-weight: 800;
-        color: var(--color-primary);
-        text-shadow: 0 0 20px var(--color-primary-glow);
-        margin-top: 60px; /* Space for controls */
-        margin-bottom: 8px;
-      }
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  color: var(--color-primary);
+  text-shadow: 0 0 20px var(--color-primary-glow);
+  margin-top: 30; /* Margin atas dihapus karena sudah diatasi oleh padding header */
+  margin-bottom: 8px;
+}
       .subtitle {
-        color: var(--color-text-muted);
-        font-size: clamp(1rem, 2vw, 1.15rem);
-        max-width: 700px;
-        margin: 0 auto 24px auto;
-      }
+  color: var(--color-text-muted);
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  max-width: 700px;
+  margin: 0 auto 0px auto; /* Nilai ketiga (margin-bottom) diubah dari 24px menjadi 16px */
+}
       
       /* ... Sisa kode CSS tidak perlu diubah karena sudah mengikuti struktur yang benar ... */
       
