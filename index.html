@@ -618,9 +618,8 @@ main, main * {
     </div>
 
     <script>
-        // --- SCRIPT FUNGSIONAL INTI (TIDAK DIUBAH) ---
         document.addEventListener('DOMContentLoaded', () => {
-        	const langEnBtn = document.getElementById('langEnBtn');
+            const langEnBtn = document.getElementById('langEnBtn');
             const langIdBtn = document.getElementById('langIdBtn');
 
             const headerTitle = document.getElementById('headerTitle');
@@ -629,7 +628,7 @@ main, main * {
             const labelAssetType = document.getElementById('labelAssetType');
             const labelTimeframe = document.getElementById('labelTimeframe');
             const labelAdditionalNotes = document.getElementById('labelAdditionalNotes');
-            const additionalNotesTextarea = document.getElementById('additionalNotes');
+            const additionalNotesTextarea = document.getElementById('additionalNotes'); // Need to update placeholder
             const labelUploadChart = document.getElementById('labelUploadChart');
             const uploadAreaText = document.getElementById('uploadAreaText');
             const analyzeBtn = document.getElementById('analyzeBtn');
@@ -642,6 +641,7 @@ main, main * {
             const assetTypeSelect = document.getElementById('assetType');
             const timeframeSelect = document.getElementById('timeframe');
 
+
             const chartAnalysisForm = document.getElementById('chartAnalysisForm');
             const chartImageInput = document.getElementById('chartImageInput');
             const uploadArea = document.getElementById('uploadArea');
@@ -649,26 +649,38 @@ main, main * {
             const fileNameDisplay = document.getElementById('fileNameDisplay');
             const loadingSpinner = document.getElementById('loadingSpinner');
             const analysisResultDiv = document.getElementById('analysisResult');
+
             let uploadedFile = null;
-            let currentLang = localStorage.getItem('appLang') || 'id'; 
+            let currentLang = localStorage.getItem('appLang') || 'en'; // Default ke 'en' atau dari local storage
 
             const translations = {
                 en: {
                     headerTitle: "MGLYZER 2.2",
                     headerSubtitle: "Upload your latest chart screenshot and let AI analyze market direction for Crypto, Forex, and Commodities.",
-                    inputSectionTitle: `<i class="fas fa-upload"></i> Upload Chart & Details`,
+                    inputSectionTitle: "Upload Chart & Details",
                     labelAssetType: "Asset Type:",
+                    selectAssetType: "Select Asset Type",
+                    crypto: "Crypto",
+                    forex: "Forex",
+                    commodity: "Commodity",
+                    stock: "Stock",
                     labelTimeframe: "Timeframe:",
+                    selectTimeframe: "Select Timeframe",
+                    minute: "Minute", // For 5M, 15M, 30M
+                    hour: "Hour", // For 1H, 4H
+                    day: "Day", // For 1D
+                    week: "Week", // For 1W
+                    month: "Month", // For 1M
                     labelAdditionalNotes: "Additional Context/Notes (Optional):",
                     placeholderNotes: "e.g., 'Looking for resistance levels', 'Is this a bullish setup?'",
                     labelUploadChart: "Upload Chart Screenshot:",
                     uploadAreaText: "Drag & drop your image here, or click to browse",
                     analyzeButton: "Analyze Chart",
                     analyzingButton: "Analyzing...",
-                    analyzingButton: "Analyzing...",
-                    outputSectionTitle: `<i class="fas fa-chart-line"></i> Analysis Results`,
+                    outputSectionTitle: "Analysis Results",
                     placeholderAnalysis: "Upload a chart and click 'Analyze Chart' to see the AI's prediction here.",
                     footerText: "&copy; 2025 MGLYZER 2.2 by MG Trade. All rights reserved.",
+                    // Messages
                     msgUploadImage: "Please upload an image file (e.g., JPG, PNG).",
                     msgFileSize: "Image file size exceeds 5MB. Please upload a smaller image.",
                     msgNoImageUploaded: "Please upload a chart screenshot.",
@@ -677,22 +689,34 @@ main, main * {
                     msgServerError: "Server error during analysis. Please try again.",
                     msgFailedAnalysis: "Failed to get analysis.",
                     msgErrorPrefix: "Error: "
-                    },
+                },
                 id: {
                     headerTitle: "MGLYZER 2.2",
                     headerSubtitle: "Unggah tangkapan layar grafik terbaru Anda dan biarkan AI menganalisis arah pasar untuk Kripto, Forex, dan Komoditas.",
-                    inputSectionTitle: `<i class="fas fa-upload"></i> Unggah Grafik & Detail`,
+                    inputSectionTitle: "Unggah Grafik & Detail",
                     labelAssetType: "Jenis Aset:",
+                    selectAssetType: "Pilih Jenis Aset",
+                    crypto: "Kripto",
+                    forex: "Forex",
+                    commodity: "Komoditas",
+                    stock: "Saham",
                     labelTimeframe: "Jangka Waktu:",
+                    selectTimeframe: "Pilih Jangka Waktu",
+                    minute: "Menit", // For 5M, 15M, 30M
+                    hour: "Jam", // For 1H, 4H
+                    day: "Hari", // For 1D
+                    week: "Minggu", // For 1W
+                    month: "Bulan", // For 1M
                     labelAdditionalNotes: "Konteks/Catatan Tambahan (Opsional):",
                     placeholderNotes: "cth: 'Mencari level resistensi', 'Apakah ini setup bullish?'",
                     labelUploadChart: "Unggah Tangkapan Layar Grafik:",
                     uploadAreaText: "Seret & lepas gambar Anda di sini, atau klik untuk mencari",
                     analyzeButton: "Analisis Grafik",
                     analyzingButton: "Menganalisis...",
-                    outputSectionTitle: `<i class="fas fa-chart-line"></i> Hasil Analisis`,
+                    outputSectionTitle: "Hasil Analisis",
                     placeholderAnalysis: "Unggah grafik dan klik 'Analisis Grafik' untuk melihat prediksi AI di sini.",
                     footerText: "&copy; 2025 MGLYZER 2.2 by MG Trade. Semua Hak Dilindungi.",
+                    // Messages
                     msgUploadImage: "Mohon unggah file gambar (misal: JPG, PNG).",
                     msgFileSize: "Ukuran file gambar melebihi 5MB. Mohon unggah gambar yang lebih kecil.",
                     msgNoImageUploaded: "Mohon unggah tangkapan layar grafik.",
@@ -703,7 +727,7 @@ main, main * {
                     msgErrorPrefix: "Kesalahan: "
                 }
             };
-            
+
             const assetTypes = {
                 '': { en: 'Select Asset Type', id: 'Pilih Jenis Aset' },
                 'Crypto': { en: 'Crypto', id: 'Kripto' },
@@ -723,8 +747,9 @@ main, main * {
                 '1W': { en: '1 Week', id: '1 Minggu' },
                 '1M': { en: '1 Month', id: '1 Bulan' }
             };
+
             function populateSelectOptions(selectElement, optionsData) {
-                selectElement.innerHTML = '';
+                selectElement.innerHTML = ''; // Clear existing options
                 for (const value in optionsData) {
                     const option = document.createElement('option');
                     option.value = value;
@@ -735,9 +760,10 @@ main, main * {
 
             function updateUI() {
                 const t = translations[currentLang];
+
                 headerTitle.textContent = t.headerTitle;
                 headerSubtitle.textContent = t.headerSubtitle;
-                inputSectionTitle.innerHTML = t.inputSectionTitle;
+                inputSectionTitle.textContent = t.inputSectionTitle;
                 labelAssetType.textContent = t.labelAssetType;
                 labelTimeframe.textContent = t.labelTimeframe;
                 labelAdditionalNotes.textContent = t.labelAdditionalNotes;
@@ -745,79 +771,146 @@ main, main * {
                 labelUploadChart.textContent = t.labelUploadChart;
                 uploadAreaText.textContent = t.uploadAreaText;
                 buttonText.textContent = t.analyzeButton;
-                outputSectionTitle.innerHTML = t.outputSectionTitle;
+                outputSectionTitle.textContent = t.outputSectionTitle;
                 placeholderAnalysis.textContent = t.placeholderAnalysis;
-                footerText.innerHTML = t.footerText;
+                footerText.innerHTML = t.footerText; // Use innerHTML for copyright symbol
+
+                // Update select options
                 populateSelectOptions(assetTypeSelect, assetTypes);
                 populateSelectOptions(timeframeSelect, timeframes);
+
+                // Update active language button style
                 langEnBtn.classList.toggle('active', currentLang === 'en');
                 langIdBtn.classList.toggle('active', currentLang === 'id');
+
+                // Re-evaluate current messages in correct language if any
+                if (messageBox.style.display === 'block') {
+                    // This is a simplified approach. For more robust message handling,
+                    // you'd typically store message keys and re-display them.
+                    // For now, if a message is shown, it won't auto-translate unless re-triggered.
+                    // This is acceptable for simple cases.
+                }
             }
 
+            // Initial UI update
             updateUI();
 
-            langEnBtn.addEventListener('click', () => { currentLang = 'en'; localStorage.setItem('appLang', 'en'); updateUI(); });
-            langIdBtn.addEventListener('click', () => { currentLang = 'id'; localStorage.setItem('appLang', 'id'); updateUI(); });
-            
+            // Language Switcher Event Listeners
+            langEnBtn.addEventListener('click', () => {
+                currentLang = 'en';
+                localStorage.setItem('appLang', 'en');
+                updateUI();
+            });
+
+            langIdBtn.addEventListener('click', () => {
+                currentLang = 'id';
+                localStorage.setItem('appLang', 'id');
+                updateUI();
+            });
+
+            // --- File Upload Logic (Drag & Drop) ---
             uploadArea.addEventListener('click', () => chartImageInput.click());
-            uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('drag-over'); });
-            uploadArea.addEventListener('dragleave', () => { uploadArea.classList.remove('drag-over'); });
+            
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('drag-over');
+            });
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('drag-over');
+            });
             uploadArea.addEventListener('drop', (e) => {
                 e.preventDefault();
                 uploadArea.classList.remove('drag-over');
-                if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFile(files[0]);
+                }
             });
-            chartImageInput.addEventListener('change', (e) => { if (e.target.files.length > 0) handleFile(e.target.files[0]); });
+
+            chartImageInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleFile(e.target.files[0]);
+                }
+            });
 
             function handleFile(file) {
-                if (!file.type.startsWith('image/')) { showMessage(translations[currentLang].msgUploadImage, 'error'); return; }
-                if (file.size > 5 * 1024 * 1024) { showMessage(translations[currentLang].msgFileSize, 'error'); return; }
+                if (!file.type.startsWith('image/')) {
+                    showMessage(translations[currentLang].msgUploadImage, 'error');
+                    imagePreview.style.display = 'none';
+                    fileNameDisplay.style.display = 'none';
+                    uploadedFile = null;
+                    return;
+                }
+                if (file.size > 5 * 1024 * 1024) { // 5 MB limit
+                    showMessage(translations[currentLang].msgFileSize, 'error');
+                    imagePreview.style.display = 'none';
+                    fileNameDisplay.style.display = 'none';
+                    uploadedFile = null;
+                    return;
+                }
+
                 uploadedFile = file;
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     imagePreview.src = e.target.result;
-                                       imagePreview.style.display = 'block';
+                    imagePreview.style.display = 'block';
                     fileNameDisplay.textContent = file.name;
                     fileNameDisplay.style.display = 'block';
                 };
                 reader.readAsDataURL(file);
-                hideMessage();
+                hideMessage(); // Clear any previous error message
             }
 
+            // --- Form Submission Logic ---
             chartAnalysisForm.addEventListener('submit', async function(event) {
                 event.preventDefault();
+
                 analysisResultDiv.innerHTML = `<p class="placeholder-text">${translations[currentLang].analyzingButton}...</p>`;
                 hideMessage();
-                if (!uploadedFile) { showMessage(translations[currentLang].msgNoImageUploaded, 'error'); return; }
-                if (!assetTypeSelect.value || !timeframeSelect.value) { showMessage(translations[currentLang].msgSelectAssetTimeframe, 'error'); return; }
+
+                if (!uploadedFile) {
+                    showMessage(translations[currentLang].msgNoImageUploaded, 'error');
+                    return;
+                }
+                if (!assetTypeSelect.value || !timeframeSelect.value) {
+                    showMessage(translations[currentLang].msgSelectAssetTimeframe, 'error');
+                    return;
+                }
+
                 setLoadingState(true);
+
                 const formData = new FormData();
                 formData.append('image', uploadedFile);
                 formData.append('assetType', assetTypeSelect.value);
                 formData.append('timeframe', timeframeSelect.value);
                 formData.append('additionalNotes', additionalNotesTextarea.value);
-                formData.append('outputLanguage', currentLang);
+                formData.append('outputLanguage', currentLang); // Kirim bahasa output ke API
 
                 try {
-                    // This is a placeholder for the actual API call
-                    // In a real scenario, you would fetch from your backend
-                    await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate network delay
-                    const mockAnalysis = {
-                    	direction: currentLang === 'id' ? 'Bullish (Tren Naik)' : 'Bullish (Uptrend)',
-                        rationale: currentLang === 'id' ? 'Pola candlestick "bullish engulfing" terdeteksi pada level support kunci, mengindikasikan potensi pembalikan harga ke atas.' : 'A "bullish engulfing" candlestick pattern was detected at a key support level, indicating a potential upward price reversal.',
-                        support: '1985.50',
-                        resistance: '2010.00'
-                    };
-                    displayAnalysisResults(mockAnalysis);
+                    const response = await fetch('/api/analyze-chart', {
+                        method: 'POST',
+                        body: formData, // FormData otomatis set Content-Type: multipart/form-data
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || translations[currentLang].msgServerError);
+                    }
+
+                    const data = await response.json();
+                    displayAnalysisResults(data.analysis);
                     showMessage(translations[currentLang].msgAnalysisComplete, 'success');
+
                 } catch (err) {
+                    console.error('Analysis error:', err);
                     analysisResultDiv.innerHTML = `<p class="placeholder-text">${translations[currentLang].msgFailedAnalysis}</p>`;
-                    showMessage(`${translations[currentLang].msgErrorPrefix} ${err.message || 'Unknown error'}`, 'error');
-                     } finally {
+                    showMessage(`${translations[currentLang].msgErrorPrefix} ${err.message}`, 'error');
+                } finally {
                     setLoadingState(false);
                 }
             });
 
+            // --- Helper Functions ---
             function setLoadingState(isLoading) {
                 analyzeBtn.disabled = isLoading;
                 buttonText.textContent = isLoading ? translations[currentLang].analyzingButton : translations[currentLang].analyzeButton;
@@ -829,33 +922,50 @@ main, main * {
                 messageBox.className = `message-box ${type}-message`;
                 messageBox.style.display = 'block';
             }
-            
-            function hideMessage() { messageBox.style.display = 'none'; }
+
+            function hideMessage() {
+                messageBox.style.display = 'none';
+            }
 
             function displayAnalysisResults(analysis) {
                 let htmlContent = '';
-                const t = translations[currentLang];
-                const keyMap = {
-                    en: { direction: 'Market Direction', rationale: 'Rationale', support: 'Support Level', resistance: 'Resistance Level' },
-                    id: { direction: 'Arah Pasar', rationale: 'Alasan', support: 'Level Dukungan', resistance: 'Level Resistensi' }
-                };
-                const langKeys = keyMap[currentLang];
-
-                htmlContent += `<div class="result-item"><h3>${langKeys.direction}:</h3><p><strong>${analysis.direction || 'N/A'}</strong></p></div>`;
-                if (analysis.rationale) htmlContent += `<div class="result-item"><h3>${langKeys.rationale}:</h3><p>${analysis.rationale}</p></div>`;
-                if (analysis.support) htmlContent += `<div class="result-item"><h3>${langKeys.support}:</h3><p>${analysis.support}</p></div>`;
-                if (analysis.resistance) htmlContent += `<div class="result-item"><h3>${langKeys.resistance}:</h3><p>${analysis.resistance}</p></div>`;
-                
+                if (typeof analysis === 'string') {
+                    htmlContent = `<p>${analysis.replace(/\n/g, '<br>')}</p>`; // Basic newline conversion
+                } else if (typeof analysis === 'object') {
+                    // This assumes AI's JSON output keys are consistent (direction, rationale etc.)
+                    // You might need to translate these keys if AI doesn't return them in the selected language.
+                    // For now, let's assume AI's response for direction/rationale will be in the requested language.
+                    htmlContent += `<div class="result-item"><h3>${currentLang === 'en' ? 'Market Direction' : 'Arah Pasar'}:</h3><p><strong>${analysis.direction || 'N/A'}</strong></p></div>`;
+                    if (analysis.rationale) {
+                         htmlContent += `<div class="result-item"><h3>${currentLang === 'en' ? 'Rationale' : 'Alasan'}:</h3><p>${analysis.rationale}</p></div>`;
+                    }
+                    if (analysis.support) {
+                        htmlContent += `<div class="result-item"><h3>${currentLang === 'en' ? 'Support Level' : 'Level Dukungan'}:</h3><p>${analysis.support}</p></div>`;
+                    }
+                     if (analysis.resistance) {
+                        htmlContent += `<div class="result-item"><h3>${currentLang === 'en' ? 'Resistance Level' : 'Level Resistensi'}:</h3><p>${analysis.resistance}</p></div>`;
+                    }                    
+                } else {
+                    htmlContent = `<p class="placeholder-text">${translations[currentLang].placeholderAnalysis}</p>`;
+                }
                 analysisResultDiv.innerHTML = htmlContent;
             }
         });
        
+    </script>
+    
+    <script>
         function openLink() {
+            // Disable the button to prevent further clicks
             const button = document.getElementById("registerButton");
             button.disabled = true;
-            button.innerHTML = "Redirecting...";
-            const link = "https://headway.partners/user/signup?hwp=3843d4";
-            setTimeout(() => { window.location.href = link; }, 1000);
+            button.textContent = "Redirecting..."; // Change text to indicate action
+
+            // Set the link (change URL as needed)
+            const link = "https://headway.partners/user/signup?hwp=3843d4"; // Replace with the actual link
+            setTimeout(() => {
+                window.location.href = link; // Redirect to the desired URL
+            }, 1000); // Redirect after 1 second delay
         }
     </script>
     
