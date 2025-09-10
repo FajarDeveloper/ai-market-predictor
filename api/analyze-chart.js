@@ -29,7 +29,8 @@ export default async function handler(request, response) {
   }
 
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-  const model = genAI.getGenerativeModel({ model: "gemini-2.5-pro" }); 
+  // Menggunakan model yang lebih kuat seperti yang diminta untuk analisis kompleks
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" }); 
 
   try {
     const form = formidable({});
@@ -47,52 +48,74 @@ export default async function handler(request, response) {
     const imageBuffer = await fs.readFile(imageFile.filepath);
     const imagePart = fileToGenerativePart(imageBuffer, imageFile.mimetype);
 
-    const assetType = fields.assetType ? fields.assetType[0] : '';
-    const timeframe = fields.timeframe ? fields.timeframe[0] : '';
+    const assetType = fields.assetType ? fields.assetType[0] : 'this asset';
+    const timeframe = fields.timeframe ? fields.timeframe[0] : 'this timeframe';
     const additionalNotes = fields.additionalNotes ? fields.additionalNotes[0] : '';
-    const outputLanguage = fields.outputLanguage ? fields.outputLanguage[0] : 'en'; // Dapatkan bahasa output dari frontend
+    const outputLanguage = fields.outputLanguage ? fields.outputLanguage[0] : 'en';
 
-    // Tentukan bahasa untuk instruksi prompt ke AI
     const languagePrompt = outputLanguage === 'id' ? 
-        "Berikan jawaban dalam Bahasa Indonesia." : 
-        "Provide the answer in English.";
+        "Berikan semua teks dalam output JSON dalam Bahasa Indonesia." : 
+        "Provide all text in the JSON output in English.";
 
-    // Instruksi prompt yang lebih spesifik untuk AI
+    // --- PROMPT BARU YANG DIINTEGRASIKAN ---
+    const detailedPrompt = `
+      **ROLE & GOAL:** You are a Senior Financial Market Analyst AI. Your goal is to perform a comprehensive market analysis of the provided chart image and output a structured, actionable conclusion in JSON format.
+
+      **MARKET DATA:**
+      * **Asset:** ${assetType}
+      * **Timeframe:** ${timeframe}
+      * **User's Additional Context (News, Geopolitics, etc.):** "${additionalNotes}"
+
+      **ANALYSIS INSTRUCTIONS (Perform these steps internally before concluding):**
+      1.  **Market Character:** Briefly consider the typical volatility and drivers for ${assetType}.
+      2.  **Comprehensive Technical Analysis:**
+          * **Market Structure & Trend:** Identify the primary trend (Uptrend, Downtrend, Sideways) by analyzing swing highs and lows.
+          * **Key Levels:** Pinpoint the most critical Support and Resistance levels. Identify any clear Supply/Demand zones or Fair Value Gaps (FVG).
+          * **Chart Patterns:** Look for major chart patterns (e.g., Head and Shoulders, Triangles, Double Tops/Bottoms).
+          * **Candlestick Patterns:** Identify influential recent candlestick patterns (e.g., Engulfing, Hammer, Doji) near key levels.
+      3.  **Fundamental/Contextual Analysis:** Integrate the user's additional context. How does this news or geopolitical situation likely impact the sentiment for this asset?
+      4.  **Synthesis:** Combine technical and fundamental findings. Are they in confluence or divergence? Formulate the most probable market direction. Identify a potential safe price for execution based on your analysis.
+
+      **OUTPUT REQUIREMENT:**
+      After performing the full analysis, you MUST format your final conclusion into a single, clean JSON object. Do not include any text or markdown before or after the JSON object.
+
+      **JSON STRUCTURE:**
+      {
+        "direction": "Provide one word: 'Bullish', 'Bearish', or 'Sideways/Neutral'.",
+        "rationale": "Provide a concise but comprehensive rationale for your direction. Mention the strongest technical and fundamental factors from your analysis (e.g., 'A bearish engulfing candle at a major resistance level, combined with negative inflation data, suggests a high probability of a downward move.'). Also, mention a potential safe price for execution.",
+        "support": "State the most immediate and significant support level as a price or price range.",
+        "resistance": "State the most immediate and significant resistance level as a price or price range.",
+        "riskWarning": "Provide a standard risk warning about market volatility and the nature of analysis as non-financial advice."
+      }
+
+      ${languagePrompt}
+    `;
+
     const parts = [
       imagePart,
-      { text: `Analyze this market chart. ` },
-      { text: `It's for ${assetType} with a ${timeframe} timeframe.` },
-      { text: `Provide a clear prediction of the market's likely direction (e.g., Bullish, Bearish, Sideways) and a brief rationale.` },
+      { text: detailedPrompt },
     ];
-
-    if (additionalNotes) {
-        parts.push({ text: `Additional context from user: "${additionalNotes}". Incorporate this into your analysis if relevant.` });
-    }
-
-    parts.push({ text: `Focus on key technical patterns, chart patterns, candlestick pattern, support/resistance levels, FVG, influential news, geopolitics If there are and overall trend. also provide a good and safe price execution position from the analysis conclusions obtained. Please provide a complete and detailed prediction of the market price position. Provide output in this structured JSON-like format: { "direction": "string", "rationale": "string", "support": "string", "resistance": "string", "riskWarning": "string" }. ${languagePrompt}` });
-
 
     const result = await model.generateContent({
         contents: [{ role: "user", parts: parts }],
+        // Menambahkan instruksi agar output hanya berupa JSON
+        generationConfig: {
+          responseMimeType: "application/json",
+        },
     });
 
     const geminiResponseText = result.response.text();
-    console.log("Gemini Raw Response:", geminiResponseText);
+    console.log("Gemini Raw JSON Response:", geminiResponseText);
 
     let analysisOutput;
     try {
-        const jsonMatch = geminiResponseText.match(/```json\n([\s\S]*?)\n```/);
-        if (jsonMatch && jsonMatch[1]) {
-            analysisOutput = JSON.parse(jsonMatch[1]);
-        } else {
-            analysisOutput = JSON.parse(geminiResponseText);
-        }
+        // Karena kita meminta JSON, kita bisa langsung parse
+        analysisOutput = JSON.parse(geminiResponseText);
     } catch (parseError) {
         console.error("Failed to parse Gemini's JSON response, sending fallback text:", parseError);
-        // Fallback messages based on requested language
         const fallbackMessage = outputLanguage === 'id' ? 
-            "Gagal mem-parse analisis rinci dari AI. Respon mentah: " : 
-            "Failed to parse detailed analysis from AI. Raw response: ";
+            "Gagal mem-parse analisis dari AI. Respon mentah: " : 
+            "Failed to parse analysis from AI. Raw response: ";
         const fallbackRiskWarning = outputLanguage === 'id' ?
             "Selalu berhati-hati. Analisis AI hanya untuk tujuan informasi." :
             "Always exercise caution. AI analysis is for informational purposes only.";
@@ -110,7 +133,6 @@ export default async function handler(request, response) {
 
   } catch (error) {
     console.error('Error in analyze-chart API:', error);
-    // Tambahkan pesan error yang bisa disesuaikan bahasa di frontend
     const errorMessage = request.headers['accept-language'] && request.headers['accept-language'].includes('id') ? 
         `Gagal menganalisis grafik. Detail kesalahan: ${error.message}` : 
         `Failed to analyze chart. Error details: ${error.message}`;
