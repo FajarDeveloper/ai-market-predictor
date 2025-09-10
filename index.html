@@ -3,1001 +3,483 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MGLYZER 2.2 - AI Market Analysis</title>
-    
-    <meta name="monetag" content="28cd66a48a557b8bfa51174459c7f7bc">
+    <title>MGLYZER - AI Trading Analysis powered by MGCHIP</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    
+
     <style>
-      /* ===== MODERN FUTURISTIC THEME ===== */
-      
-      /* 1. Reset & Root Variables */
-      *, *::before, *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
-      :root {
-        --radius-sm: 8px;
-        --radius-md: 14px;
-        --radius-lg: 20px;
-        --transition-speed: 0.3s;
-      }
-
-      /* 2. Light & Dark Theme Color Palette */
-      html[data-theme="light"] {
-        --color-primary: #2563eb;
-        --color-primary-dark: #1e40af;
-        --color-primary-glow: rgba(37, 99, 235, 0.4);
-        --color-text: #0f172a;
-        --color-text-muted: #475569;
-        --color-bg: #f0f4f9;
-        --color-bg-gradient: linear-gradient(135deg, #e0e8f6 0%, #f0f4f9 100%);
-        --color-card-bg: rgba(255, 255, 255, 0.7);
-        --color-border: rgba(0, 0, 0, 0.1);
-        --color-shadow: rgba(15, 23, 42, 0.1);
-        --color-success: #16a34a;
-        --color-error: #ef4444;
-        --color-input-bg: rgba(255, 255, 255, 0.8);
-      }
-
-      html[data-theme="dark"] {
-        --color-primary: #38bdf8; /* Light Blue */
-        --color-primary-dark: #0ea5e9;
-        --color-primary-glow: rgba(56, 189, 248, 0.3);
-        --color-text: #e2e8f0; /* Light Gray */
-        --color-text-muted: #94a3b8; /* Slate 400 */
-        --color-bg: #0b1120;
-        --color-bg-gradient: linear-gradient(135deg, #0f172a 0%, #0b1120 100%);
-        --color-card-bg: rgba(15, 23, 42, 0.5); /* Semi-transparent dark blue */
-        --color-border: rgba(255, 255, 255, 0.1);
-        --color-shadow: rgba(0, 0, 0, 0.2);
-        --color-success: #22c55e;
-        --color-error: #f43f5e;
-        --color-input-bg: rgba(15, 23, 42, 0.7);
-      }
-
-      /* 3. Base & Body Styles */
-      html, body {
-        height: 100%;
-        scroll-behavior: smooth;
-      }
-
-      body {
-        font-family: 'Poppins', system-ui, -apple-system, sans-serif;
-        background-color: var(--color-bg);
-        background-image: var(--color-bg-gradient);
-        color: var(--color-text);
-        margin: 0;
-        /* PADDING DIHAPUS DARI SINI */
-        line-height: 1.7;
-        transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
-      }
-      
-      /* GAMBAR DIBUAT RESPONSIVE SECARA GLOBAL (DITAMBAHKAN) */
-      img {
-        max-width: 100%;
-        height: auto;
-        display: block; /* Menghilangkan spasi ekstra di bawah gambar */
-      }
-      
-      /* ... CSS sebelumnya tidak berubah ... */
-      
-      /* 4. Layout Container (PERBAIKAN UTAMA) */
-      .container {
-        /* width: 100%; (DIHAPUS) - Ini adalah penyebab utama masalah overflow */
-        max-width: 1200px;
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        gap: 32px;
-        padding: 32px 24px;
-      }
-
-      /* 5. Header (PERBAIKAN TAMBAHAN) */
-      header {
-        text-align: center;
-        position: relative; /* (DITAMBAHKAN) - Membuat posisi absolut di dalamnya lebih stabil */
-      }
-      
-      header .controls {
-        position: absolute;
-        top: 0; /* Disesuaikan agar pas di dalam container padding */
-        right: 24px; /* Disesuaikan agar pas di dalam container padding */
-        display: flex;
-        gap: 12px;
-        background: var(--color-card-bg);
-        border: 1px solid var(--color-border);
-        padding: 8px;
-        border-radius: var(--radius-lg);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-      }
-      
-      .control-btn {
-        appearance: none;
-        border: none;
-        background: transparent;
-        color: var(--color-text-muted);
-        padding: 6px 10px;
-        border-radius: var(--radius-sm);
-        cursor: pointer;
-        font-size: 1rem;
-        font-weight: 600;
-        transition: all
-        var(--transition-speed) ease;
-      }
-      .control-btn:hover {
-        color: var(--color-primary);
-        background: rgba(255,255,255,0.1);
-      }
-      .control-btn.active {
-        background: var(--color-primary);
-        color: var(--color-bg);
-      }
-      #theme-toggle { font-size: 1.2rem; padding: 4px 8px; }
-
-      header h1 {
-        font-size: clamp(2.2rem, 5vw, 3.5rem);
-        font-weight: 800;
-        color: var(--color-primary);
-        text-shadow: 0 0 20px var(--color-primary-glow);
-        margin-top: 60px; /* Space for controls */
-        margin-bottom: 8px;
-      }
-      .subtitle {
-        color: var(--color-text-muted);
-        font-size: clamp(1rem, 2vw, 1.15rem);
-        max-width: 700px;
-        margin: 0 auto 24px auto;
-      }
-      
-      /* ... Sisa kode CSS tidak perlu diubah karena sudah mengikuti struktur yang benar ... */
-      
-      /* 6. Main Content Grid */
-      main {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 32px;
-      }
-      @media (min-width: 992px) {
-        main { grid-template-columns: 1fr 1fr; }
-      }
-
-      /* 7. Card Styling (Glassmorphism) */
-      .card {
-        background: var(--color-card-bg);
-        border: 1px solid var(--color-border);
-        padding: clamp(20px, 3vw, 32px);
-        border-radius: var(--radius-lg);
-        box-shadow: 0 8px 32px 0 var(--color-shadow);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
-      }
-      .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 40px 0 var(--color-shadow);
-      }
-      .card h2 {
-        font-size: clamp(1.2rem, 3vw, 1.5rem);
-        font-weight: 700;
-        color: var(--color-text);
-        margin: 0 0 24px;
-        padding-bottom: 12px;
-        border-bottom: 2px solid var(--color-primary);
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-      /* 8. Form Elements */
-      .form-group { margin-bottom: 20px; }
-      label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 600;
-        color: var(--color-text-muted);
-        font-size: 0.95rem;
-      }
-      input[type="text"], select, textarea {
-        width: 100%;
-        padding: 14px;
-        border: 1px solid var(--color-border);
-        border-radius: var(--radius-sm);
-        font-size: 1rem;
-        font-family: 'Poppins', sans-serif;
-        background: var(--color-input-bg);
-        color: var(--color-text);
-        transition: all var(--transition-speed) ease;
-      }
-      input[type="text"]:focus, select:focus, textarea:focus {
-        outline: none;
-        border-color:
-        var(--color-primary);
-        box-shadow: 0 0 0 4px var(--color-primary-glow);
-        background: var(--color-card-bg);
-      }
-      textarea { resize: vertical; min-height: 100px; }
-
-      /* 9. Upload Area */
-      .upload-area {
-        border: 2px dashed var(--color-border);
-        border-radius: var(--radius-md);
-        padding: 32px;
-        text-align: center;
-        cursor: pointer;
-        transition: all var(--transition-speed) ease;
-      }
-      .upload-area:hover, .upload-area.drag-over {
-        border-color: var(--color-primary);
-        background: var(--color-primary-glow);
-        transform: scale(1.02);
-      }
-      .upload-area i {
-        font-size: 2.5rem;
-        color: var(--color-primary);
-        margin-bottom: 12px;
-      }
-      .upload-area p { color: var(--color-text-muted); }
-      .upload-area img.preview {
-        max-width: 100%;
-        max-height: 200px;
-        margin-top: 16px;
-        border-radius: var(--radius-sm);
-      }
-      .upload-area .file-name {
-        margin-top: 10px;
-        font-weight: 500;
-      }
-      #chartImageInput { display: none; }
-      
-      /* 10. Buttons */
-      .btn {
-        padding: 14px 24px;
-        border: none;
-        border-radius: var(--radius-md);
-        cursor: pointer;
-        font-size: 1.05rem;
-        font-weight: 700;
-        font-family: 'Poppins', sans-serif;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        transition: all var(--transition-speed) ease;
-        text-decoration: none;
-      }
-      .primary-btn {
-        width: 100%;
-        margin-top: 12px;
-        color: #fff;
-        background: linear-gradient(45deg, var(--color-primary), var(--color-primary-dark));
-        box-shadow: 0 10px 20px -5px var(--color-primary-glow);
-      }
-      .primary-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 14px 25px -5px var(--color-primary-glow);
-      }
-      .primary-btn:active { transform: translateY(0); }
-      .primary-btn:disabled {
-        background: var(--color-text-muted);
-        cursor: not-allowed;
-        box-shadow: none;
-        opacity: 0.7;
-      }
-      .loading-spinner {
-        border: 3px solid rgba(255,255,255,.3);
-        border-top: 3px solid #fff;
-        width: 20px; height: 20px;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-      }
-      @keyframes spin { to { transform: rotate(360deg); } }
-
-      /* 11. Output Section */
-      .analysis-result {
-        background: var(--color-input-bg);
-        padding: 20px;
-        border-radius: var(--radius-md);
-        min-height: 250px;
-        color: var(--color-text);
-        white-space: pre-wrap;
-        word-break: break-word;
-        font-size: 0.95rem;
-      }
-      .analysis-result .placeholder-text { color: var(--color-text-muted); }
-      .result-item {
-        margin-bottom: 16px; padding-bottom: 16px;
-        border-bottom: 1px dashed var(--color-border);
+        /* =================================
+           1. SETUP & ROOT VARIABLES
+        ================================= */
+        :root {
+            --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-      .result-item:last-child { border: none; margin: 0; padding: 0; }
-      .result-item h3 {
-        margin: 0 0 8px; font-size: 1.1rem; color: var(--color-primary); font-weight: 600;
-      }
 
-      /* 12. Message Boxes */
-      .message-box {
-        margin-top: 16px; padding: 14px; border-radius: var(--radius-sm);
-        text-align: center; font-weight: 600; border: 1px solid transparent;
-      }
-      .success-message { background: rgba(34,197,94,.15); color: var(--color-success); border-color: var(--color-success); }
-      .error-message { background: rgba(244,63,94,.15); color: var(--color-error); border-color: var(--color-error); }
+        html[data-theme="light"] {
+            --color-primary: #2563eb;
+            --color-secondary: #4f46e5;
+            --color-primary-glow: rgba(37, 99, 235, 0.3);
+            --color-bg: #f4f7fc;
+            --color-bg-alt: #ffffff;
+            --color-text: #1e293b;
+            --color-text-muted: #64748b;
+            --color-border: #e2e8f0;
+        }
 
-      /* GANTI SELURUH BLOK INI DI CSS ANDA */
+        html[data-theme="dark"] {
+            --color-primary: #0ea5e9; /* Sky Blue */
+            --color-secondary: #6366f1; /* Indigo */
+            --color-primary-glow: rgba(14, 165, 233, 0.2);
+            --color-bg: #050816; /* Near Black */
+            --color-bg-alt: #10152b;
+            --color-text: #cbd5e1;
+            --color-text-muted: #94a3b8;
+            --color-border: rgba(255, 255, 255, 0.1);
+        }
 
-/* 13. Broker Info Box */
-.info-box {
-    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
-    color: white;
-    padding: 32px;
-    border-radius: var(--radius-lg);
-    grid-column: 1 / -1;
-    
-    /* PROPERTI BARU UNTUK MEMPERBAIKI TATA LETAK */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            transition: background-color 0.3s var(--ease), color 0.3s var(--ease);
+            overflow-x: hidden;
+        }
+        
+        /* =================================
+           2. LAYOUT & HELPERS
+        ================================= */
+        .container { width: 90%; max-width: 1100px; margin: 0 auto; }
+        .section { padding: 120px 0; position: relative; }
+        
+        .section-title {
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--color-text-muted);
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 60px auto;
+        }
+        .section-title span {
+            background: -webkit-linear-gradient(45deg, var(--color-primary), var(--color-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-.info-box h3 { 
-    font-size: 1.8rem; 
-    margin-bottom: 8px; 
-    text-align: center; /* Memastikan teks tetap di tengah */
-}
+        /* SCROLL ANIMATION */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+        }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-.info-box p {
-    margin-bottom: 24px;
-    text-align: center; /* Memastikan teks tetap di tengah */
-}
+        /* =================================
+           3. HEADER & NAVIGATION
+        ================================= */
+        .main-header {
+            position: fixed;
+            top: 0; left: 0; width: 100%; z-index: 100;
+            padding: 20px 0;
+            transition: background 0.3s var(--ease), box-shadow 0.3s var(--ease);
+        }
+        .main-header.scrolled {
+            background: rgba(5, 8, 22, 0.8);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--color-border);
+        }
+        .main-header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.8rem; font-weight: 800; color: var(--color-text); text-decoration: none; }
+        .logo span { color: var(--color-primary); }
+        .controls { display: flex; align-items: center; margin-left: 10px; gap: 10px; }
+        .control-btn {
+            background: transparent; border: 1px solid var(--color-border);
+            color: var(--color-text-muted); padding: 8px 12px; border-radius: 8px;
+            cursor: pointer; font-size: 0.9rem; font-weight: 600;
+            transition: all 0.3s var(--ease);
+        }
+        .control-btn:hover { color: var(--color-primary); border-color: var(--color-primary); }
+        .control-btn.active { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
+        #theme-toggle { font-size: 1.2rem; padding: 6px 10px; }
+        .cta-button {
+            background-image: linear-gradient(45deg, var(--color-primary), var(--color-secondary));
+            color: #fff; padding: 10px 20px; border-radius: 8px;
+            text-decoration: none; font-weight: 600; border: none;
+            box-shadow: 0 5px 20px var(--color-primary-glow);
+            transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+        }
+        .cta-button:hover { transform: translateY(-3px); box-shadow: 0 8px 25px var(--color-primary-glow); }
 
-.info-box .btn { 
-    background: #fff; 
-    color: var(--color-primary-dark); 
-    margin-top: 16px;
-}
+        /* =================================
+           4. HERO SECTION
+        ================================= */
+        .hero {
+            min-height: 100vh;
+            display: flex; align-items: center; text-align: center;
+            position: relative;
+            background-image: radial-gradient(var(--color-text-muted) 0.5px, transparent 0.5px);
+            background-size: 20px 20px;
+            background-position: center;
+        }
+        .hero-content { max-width: 800px; margin: 100px auto 0 auto; }
+        .hero h1 {
+            font-size: clamp(2.8rem, 7vw, 4.5rem);
+            font-weight: 800; line-height: 1.15;
+            margin-bottom: 20px;
+        }
+        .hero p {
+            font-size: clamp(1.1rem, 3vw, 1.25rem);
+            color: var(--color-text-muted);
+            margin-bottom: 40px;
+        }
 
-.info-box .btn:hover { 
-    background: #eef; 
-}
+        /* =================================
+           5. MGCHIP SECTION
+        ================================= */
+        .mgchip-section { background-color: var(--color-bg-alt); }
+        .mgchip-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            align-items: center;
+            gap: 60px;
+        }
+        @media (min-width: 992px) {
+            .mgchip-container { grid-template-columns: 1fr 1fr; }
+        }
+        .mgchip-image { text-align: center; }
+        .mgchip-image img {
+             max-width: 350px;
+             animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        .mgchip-content h2 { font-size: 2.5rem; margin-bottom: 20px; }
+        .mgchip-content p { color: var(--color-text-muted); margin-bottom: 30px; font-size: 1.1rem; }
+        .chip-features { list-style: none; padding: 0; }
+        .chip-feature-item { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 20px; }
+        .chip-feature-item i { font-size: 1.5rem; color: var(--color-primary); margin-top: 5px; }
+        .chip-feature-item h4 { font-size: 1.2rem; margin-bottom: 5px; }
+        .chip-feature-item p { font-size: 1rem; color: var(--color-text-muted); margin: 0; }
 
-/* (MODIFIKASI UTAMA) Grid untuk daftar fitur */
-.highlights-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Membuat 2 kolom */
-    gap: 16px; /* Jarak antar item */
-    text-align: left;
-    max-width: 500px;
-    margin: 24px auto;
-}
+        /* =================================
+           6. FEATURES SECTION
+        ================================= */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .feature-card {
+            background: var(--color-bg-alt);
+            border: 1px solid var(--color-border);
+            padding: 30px;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-card::before {
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 100%; height: 2px;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+            transform: scaleX(0); transform-origin: left;
+            transition: transform 0.5s var(--ease);
+        }
+        .feature-card:hover::before { transform: scaleX(1); }
+        .feature-icon { font-size: 2.5rem; color: var(--color-primary); margin-bottom: 20px; }
+        .feature-card h3 { font-size: 1.5rem; margin-bottom: 10px; }
+        .feature-card p { color: var(--color-text-muted); line-height: 1.7; }
 
-/* (CLASS BARU) Styling untuk setiap item fitur */
-.highlight-item {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Jarak antara ikon dan teks */
-    font-size: 0.95rem;
-}
+        /* =================================
+           7. REVIEWS SECTION
+        ================================= */
+        .reviews-section { background-color: var(--color-bg-alt); }
+        .reviews-container {
+            display: flex;
+            gap: 30px;
+            overflow-x: auto;
+            padding-bottom: 20px; /* Space for scrollbar */
+            scrollbar-width: none; /* For Firefox */
+        }
+        .reviews-container::-webkit-scrollbar { display: none; } /* For Chrome, Safari, and Opera */
+        .review-card {
+            flex: 0 0 320px; /* Don't shrink, base width 320px */
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 15px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+        }
+        .review-author { font-weight: 600; font-size: 1.1rem; margin-bottom: 10px; }
+        .review-stars { color: #f59e0b; margin-bottom: 15px; }
+        .review-comment { color: var(--color-text-muted); flex-grow: 1; line-height: 1.7; }
+        .review-date { font-size: 0.85rem; color: var(--color-text-muted); opacity: 0.7; margin-top: 20px; }
 
-/* (CLASS BARU) Menambahkan ikon centang menggunakan Font Awesome */
-.highlight-item::before {
-    font-family: "Font Awesome 6 Free";
-    content: "\f00c"; /* Kode unicode untuk ikon centang */
-    font-weight: 900;
-    color: var(--color-success);
-    font-size: 1.1rem;
-}
-
-      /* 14. Reviews Section */
-      .reviews-section { grid-column: 1 / -1; }
-      .reviews-container {
-    display: grid; 
-/* Mengubah dari flex menjadi grid */
-    /* Membuat kolom yang otomatis mengisi ruang dan memiliki lebar minimum 300px */
-    grid-auto-flow: column;
-    grid-auto-columns: minmax(300px, 1fr); 
-    overflow-x: auto;
-    gap: 20px;
-    padding: 10px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-primary) transparent;
-}
-      .reviews-container::-webkit-scrollbar { height: 8px; }
-      .reviews-container::-webkit-scrollbar-thumb { background: var(--color-primary); border-radius: 10px; }
-      .review {
-        min-width: 300px;
-        flex-shrink: 0;
-        background: var(--color-card-bg);
-        border: 1px solid var(--color-border);
-        padding: 20px;
-        border-radius: var(--radius-md);
-      }
-      .review .stars { color: #f39c12; font-size: 1.2rem; margin: 8px 0; }
-      .review .username { font-weight: 600; color: var(--color-text); }
-      .review .comment { font-size: 0.9rem; color: var(--color-text-muted); }
-      .review .date { font-size: 0.8rem; color: var(--color-text-muted); margin-top: 12px; }
-      
-      /* 15. Footer & Social Icons */
-      footer {
-        text-align: center;
-        margin-top: 20px;
-        color: var(--color-text-muted);
-        font-size: 0.9rem;
-      }
-      .social-media-icons { display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; }
-      .social-icon { font-size: 1.8rem; color: var(--color-text-muted); text-decoration: none; transition: all var(--transition-speed) ease; }
-      .social-icon:hover { color: var(--color-primary); transform: translateY(-3px); }
-
-      /* Floating Nav Bar */
-      #floatingNavBar {
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: var(--color-card-bg);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        padding: 12px 20px;
-        border-radius: 50px;
-        border: 1px solid var(--color-border);
-        box-shadow: 0 4px 12px var(--color-shadow);
-        z-index: 1000;
-        display: flex; gap: 25px;
-        transition: all var(--transition-speed) ease;
-      }
-      #floatingNavBar:hover { transform: translateX(-50%) translateY(-3px); }
-      .navigation-icon {
-        font-size: 1.5rem;
-        color: var(--color-text-muted);
-        transition: color var(--transition-speed) ease;
-      }
-      .navigation-icon:hover { color: var(--color-primary); }
- 
-/* ============================================ */
-/* PERBAIKAN OVERFLOW FINAL (TAMBAHKAN DI AKHIR) */
-/* ============================================ */
-main, main * {
-  min-width: 0;
-}
-/* ============================================== */
-/* PERBAIKAN FINAL UNTUK INFO-BOX (TAMBAHKAN INI) */
-/* ============================================== */
-
-/* Memaksa setiap anak langsung dari .info-box untuk menjadi blok penuh */
-.info-box > * {
-    width: 100% !important;
-    max-width: 100% !important;
-}
-
-/* Mengatur ulang grid fitur agar tetap di tengah dalam wadah barunya */
-.highlights-grid {
-    margin: 24px auto !important;
-    max-width: 500px !important; /* Pastikan grid tidak terlalu lebar di desktop */
-}
-   </style>
+        /* =================================
+           8. FOOTER
+        ================================= */
+        footer {
+            padding: 40px 0; border-top: 1px solid var(--color-border); text-align: center;
+            background-color: var(--color-bg);
+        }
+        .social-icons { display: flex; justify-content: center; gap: 25px; margin-bottom: 20px; }
+        .social-icons a { color: var(--color-text-muted); font-size: 1.5rem; transition: all 0.3s var(--ease); }
+        .social-icons a:hover { color: var(--color-primary); transform: translateY(-5px); }
+        .copyright { color: var(--color-text-muted); font-size: 0.9rem; }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <header>
+
+    <header class="main-header">
+        <div class="container">
+            <a href="#" class="logo">MG<span>LYZER</span></a>
             <div class="controls">
                 <button id="langEnBtn" class="control-btn" data-lang="en">EN</button>
                 <button id="langIdBtn" class="control-btn" data-lang="id">ID</button>
-                <button id="theme-toggle" class="control-btn" aria-label="Toggle dark mode">
-                    <i class="fas fa-moon"></i>
-                </button>
+                <button id="theme-toggle" class="control-btn" aria-label="Toggle theme"><i class="fas fa-moon"></i></button>
+                <a href="https://ai-market-predictor.vercel.app/main.html" class="cta-button" data-lang-key="launchApp">Start</a>
             </div>
-             <a href="https://lynk.id/mgtrade/">
-              <img src="https://imgpx.com/Dd4UjbwERpzv.png" width="100%" height="auto" style="max-width: 100%; margin: 0 auto;"/>
-            </a>
-            
-            <h1 id="headerTitle">MGLYZER</h1>
-            <p id="headerSubtitle" class="subtitle">Upload your latest chart screenshot and let AI analyze market direction for Crypto, Forex, and Commodities.</p>
-        </header>
+        </div>
+    </header>
 
-        <main>
-            <section class="input-section card">
-                <h2 id="inputSectionTitle"><i class="fas fa-upload"></i> Upload Chart & Details</h2>
-                <form id="chartAnalysisForm">
-                    <div class="form-group">
-                    	<label id="labelAssetType" for="assetType">Asset Type:</label>
-                        <select id="assetType" required></select>
-                    </div>
-
-                    <div class="form-group">
-                        <label id="labelTimeframe" for="timeframe">Timeframe:</label>
-                        <select id="timeframe" required></select>
-                    </div>
-
-                    <div class="form-group">
-                        <label id="labelAdditionalNotes" for="additionalNotes">Additional Context/Notes (Optional):</label>
-                        <textarea id="additionalNotes" rows="3" placeholder="e.g., 'Looking for resistance levels', 'Is this a bullish setup?'"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                    	<label id="labelUploadChart">Upload Chart Screenshot:</label>
-                        <div id="uploadArea" class="upload-area">
-                            <input type="file" id="chartImageInput" accept="image/*" required>
-                            <i class="fas fa-file-image"></i>
-                            <p id="uploadAreaText">Drag & drop your image here, or click to browse</p>
-                            <img id="imagePreview" class="preview" style="display: none;">
-                            <div id="fileNameDisplay" class="file-name" style="display: none;"></div>
-                        </div>
-                    </div>
-
-                    <button type="submit" id="analyzeBtn" class="btn primary-btn">
-                        <span id="buttonText">Analyze Chart</span>
-                        <span id="loadingSpinner" class="loading-spinner" style="display: none;"></span>
-                    </button>
-                </form>
-            </section>
-            
-            <section class="output-section card">
-                <h2 id="outputSectionTitle"><i class="fas fa-chart-line"></i> Analysis Results</h2>
-                <div id="analysisResult" class="analysis-result">
-                    <p id="placeholderAnalysis" class="placeholder-text">Upload a chart and click 'Analyze Chart' to see the AI's prediction here.</p>
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content fade-in">
+                    <h1 data-lang-key="heroTitle">Analisis Pasar Presisi, <br>Didukung oleh <span>AI Generatif</span></h1>
+                    <p data-lang-key="heroSubtitle">Ubah tangkapan layar chart trading Anda menjadi wawasan strategis. MGLYZER memberikan kejelasan instan untuk Forex, Kripto, dan Saham.</p>
+                    <a href="https://ai-market-predictor.vercel.app/main.html" class="cta-button" data-lang-key="getStarted">Mulai Analisis Gratis</a>
                 </div>
-                <div id="message" class="message-box" style="display: none;"></div>
-            </section>
-            
-            <section class="info-box">
-    <h3>Broker dengan Spread 0.0 Pip!</h3>
-    <p>Deposit cukup mulai dari Rp20.000 saja.</p>
-    <img src="https://imgpx.com/RfVLW1IaqwTY.png" alt="Broker Promotion" style="max-width: 400px; border-radius: var(--radius-md); margin: 20px auto;"/>
-    
-    <div class="highlights-grid">
-        <div class="highlight-item">Berlisensi FSCA</div>
-        <div class="highlight-item">Anti Lag</div>
-        <div class="highlight-item">Akun Standar, Cent & Pro</div>
-        <div class="highlight-item">Tanpa Komisi WD/Deposit</div>
-        <div class="highlight-item">Leverage 1:Unlimited</div>
-        <div class="highlight-item">CopyTrading Tersedia</div>
-        <div class="highlight-item">Bonus Deposit</div>
-        <div class="highlight-item">Edukasi Gratis</div>
-    </div>
-    
-    <button id="registerButton" class="btn" onclick="openLink()">Daftar Sekarang <i class="fas fa-arrow-right"></i></button>
-</section>
-
-            <section class="reviews-section card">
-                <h2><i class="fas fa-star"></i> Ulasan Teratas</h2>
-                <div class="reviews-container">
-                    <div class="review">
-                        <div class="username">Satria Wira Yudha</div>
-                        <div class="stars">⭐⭐⭐⭐⭐</div>
-                        <div class="comment">Terima kasih MGLYZER karena sudah menghadirkan AI yang sangat bermanfaat bagi trading saya🥰</div>
-                        <div class="date">Dikirim pada: 10 September 2025</div>
-                         </div>
-                    <div class="review">
-                        <div class="username">Bagus Adi Nugraha</div>
-                        <div class="stars">⭐⭐⭐⭐⭐</div>
-                        <div class="comment">Sangat akurat, semoga layanan ini terus bertahan untuk membantu banyak orang.</div>
-                        <div class="date">Dikirim pada: 10 September 2025</div>
-                    </div>
-                    <div class="review">
-                        <div class="username">Alifa Zea Amanda</div>
-                        <div class="stars">⭐⭐⭐⭐⭐</div>
-                        <div class="comment">Sehat terus buat developernya karena sudah membuat alat bantu trading sehebat ini bahkan gratissss🫵😭😭</div>
-                        <div class="date">Dikirim pada: 10 September 2025</div>
-                         </div>
-                    <div class="review">
-                        <div class="username">Syalwa Anantasya</div>
-                        <div class="stars">⭐⭐⭐⭐</div>
-                        <div class="comment">AI nya bagus banget kakk, semoga versi aslinya segera rilis karena sangat membantu pemula seperti saya😭🙏</div>
-                        <div class="date">Dikirim pada: 9 September 2025</div>
-                    </div>
-                    <div class="review">
-                        <div class="username">Fharel Putra Pramadiyono</div>
-                        <div class="stars">⭐⭐⭐⭐⭐</div>
-                        <div class="comment">Setelah ada AI ini saya jadi semakin pede untuk membuka posisi🔥</div>
-                        <div class="date">Dikirim pada: 9 September 2025</div>
-                         </div>
-                </div>
-            </section>
-        </main>
-
-        <footer>
-            <div class="social-media-icons">
-                <a href="https://www.instagram.com/dfajar22_" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.tiktok.com/@masterofgold_id" target="_blank" class="social-icon"><i class="fab fa-tiktok"></i></a>
-                <a href="https://chat.whatsapp.com/IACHnHTIwpr4SIgB1AbChE?mode=ems_copy_c" target="_blank" class="social-icon"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://t.me/penjarahemass" target="_blank" class="social-icon"><i class="fab fa-telegram"></i></a>
             </div>
-            <p id="footerText">&copy; 2025 MGLYZER 2.2 by MG Trade. All rights reserved.</p>
-        </footer>
-    </div>
-    
-    <div id="floatingNavBar">
-        <a href="https://ai-market-predictor-one.vercel.app/comment.html" target="_blank" class="navigation-icon"><i class="fa fa-star"></i></a>
-        <a href="https://ai-market-predictor-one.vercel.app/info.html" target="_blank" class="navigation-icon"><i class="fa fa-info-circle"></i></a>
-        <a href="https://ai-market-predictor-one.vercel.app/crown.html" target="_blank" class="navigation-icon"><i class="fa fa-crown"></i></a>
-        <a href="https://ai-market-predictor-one.vercel.app/install.html" target="_blank" class="navigation-icon"><i class="fa fa-download"></i></a>
-    </div>
+        </section>
+
+        <section id="mgchip" class="section mgchip-section">
+            <div class="container">
+                <div class="mgchip-container">
+                    <div class="mgchip-image fade-in">
+                        <img src="https://imgpx.com/PnMdOabEMGRy.png" alt="Futuristic AI Chip">
+                    </div>
+                    <div class="mgchip-content fade-in">
+                        <h2 data-lang-key="chipTitle">Ditenagai oleh <span>MGCHIP</span></h2>
+                        <p data-lang-key="chipSubtitle">Inti dari MGLYZER adalah MGCHIP, prosesor AI milik kami yang dirancang khusus untuk menganalisis data pasar finansial dengan efisiensi tak tertandingi.</p>
+                        <ul class="chip-features">
+                            <li class="chip-feature-item">
+                                <i class="fas fa-crosshairs"></i>
+                                <div>
+                                    <h4 data-lang-key="chipFeature1Title">Akurasi Tinggi</h4>
+                                    <p data-lang-key="chipFeature1Desc">Mengidentifikasi pola dan probabilitas pergerakan harga dengan tingkat keakuratan yang terdepan di industri.</p>
+                                </div>
+                            </li>
+                            <li class="chip-feature-item">
+                                <i class="fas fa-ruler-combined"></i>
+                                <div>
+                                    <h4 data-lang-key="chipFeature2Title">Presisi Kontekstual</h4>
+                                    <p data-lang-key="chipFeature2Desc">Memahami konteks dari setiap timeframe dan jenis aset untuk memberikan analisis yang relevan.</p>
+                                </div>
+                            </li>
+                            <li class="chip-feature-item">
+                                <i class="fas fa-bolt"></i>
+                                <div>
+                                    <h4 data-lang-key="chipFeature3Title">Kecepatan Instan</h4>
+                                    <p data-lang-key="chipFeature3Desc">Memberikan hasil analisis kompleks hanya dalam beberapa detik setelah Anda mengunggah gambar.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="section">
+            <div class="container">
+                <h2 class="section-title fade-in" data-lang-key="featuresTitle">Alat Bantu <span>Intuitif</span> untuk Setiap Trader</h2>
+                <p class="section-subtitle fade-in" data-lang-key="featuresSubtitle">Kami menghilangkan kerumitan dan menyajikan fitur yang benar-benar Anda butuhkan untuk mengambil keputusan yang lebih baik.</p>
+                <div class="features-grid">
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                        <h3 data-lang-key="feature1Title">Analisis Mendalam</h3>
+                        <p data-lang-key="feature1Desc">AI kami melampaui garis tren, menganalisis sentimen pasar, level kunci, dan formasi candlestick untuk gambaran pasar yang utuh.</p>
+                    </div>
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h3 data-lang-key="feature2Title">Cakupan Multi-Aset</h3>
+                        <p data-lang-key="feature2Desc">Baik itu Forex, Kripto, Komoditas, atau Saham, MGLYZER dilatih untuk memahami karakteristik unik setiap pasar.</p>
+                    </div>
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon"><i class="fas fa-upload"></i></div>
+                        <h3 data-lang-key="feature3Title">Sederhana: Cukup Unggah</h3>
+                        <p data-lang-key="feature3Desc">Lupakan input data yang rumit. Cukup unggah screenshot chart Anda dan dapatkan analisis visual yang mudah dipahami.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="reviews" class="section reviews-section">
+            <div class="container">
+                <h2 class="section-title fade-in" data-lang-key="reviewsTitle">Apa Kata <span>Para Trader</span></h2>
+                <p class="section-subtitle fade-in" data-lang-key="reviewsSubtitle">Kami bangga telah membantu ribuan trader. Inilah beberapa cerita sukses mereka.</p>
+                <div class="reviews-container fade-in">
+                    <div class="review-card">
+                        <h4 class="review-author">Satria Wira Yudha</h4>
+                        <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                        <p class="review-comment">Terima kasih MGLYZER karena sudah menghadirkan AI yang sangat bermanfaat bagi trading saya🥰</p>
+                        <p class="review-date">10 September 2025</p>
+                    </div>
+                    <div class="review-card">
+                        <h4 class="review-author">Bagus Adi Nugraha</h4>
+                        <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                        <p class="review-comment">Cukup sempurna bahkan dapat memberikan analisa secara realtime dan sangat akurat, semoga layanan ini terus bertahan.</p>
+                        <p class="review-date">10 September 2025</p>
+                    </div>
+                    <div class="review-card">
+                        <h4 class="review-author">Alifa Zea Amanda</h4>
+                        <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                        <p class="review-comment">Sehat terus buat developernya karena sudah membuat alat bantu trading sehebat ini bahkan gratissss🫵😭😭</p>
+                        <p class="review-date">10 September 2025</p>
+                    </div>
+                     <div class="review-card">
+                        <h4 class="review-author">Syalwa Anantasya</h4>
+                        <div class="review-stars">⭐⭐⭐⭐</div>
+                        <p class="review-comment">AI nya bagus banget kakk, tapi sayang masih versi beta dan semoga versi aslinya segera rilis karena sangat membantu pemula.</p>
+                        <p class="review-date">9 September 2025</p>
+                    </div>
+                    <div class="review-card">
+                        <h4 class="review-author">Fharel Putra P.</h4>
+                        <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                        <p class="review-comment">Saya sering kurang yakin dengan analisa saya dan setelah ada AI ini saya jadi semakin pede untuk membuka posisi🔥</p>
+                        <p class="review-date">9 September 2025</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="social-icons">
+                <a href="https://www.instagram.com/dfajar22_" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@masterofgold_id" target="_blank"><i class="fab fa-tiktok"></i></a>
+                <a href="https://t.me/penjarahemass" target="_blank"><i class="fab fa-telegram"></i></a>
+            </div>
+            <p class="copyright" data-lang-key="footerText">&copy; 2025 MGLYZER by MG Trade. All rights reserved.</p>
+        </div>
+    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const translations = {
+                en: {
+                    launchApp: "Start",
+                    getStarted: "Start Free Analysis",
+                    heroTitle: "Precision Market Analysis, <br>Powered by <span>Generative AI</span>",
+                    heroSubtitle: "Transform your trading chart screenshots into strategic insights. MGLYZER provides instant clarity for Forex, Crypto, and Stocks.",
+                    chipTitle: "Powered by <span>MGCHIP</span>",
+                    chipSubtitle: "At the core of MGLYZER is MGCHIP, our proprietary AI processor designed specifically to analyze financial market data with unparalleled efficiency.",
+                    chipFeature1Title: "High Accuracy",
+                    chipFeature1Desc: "Identifies patterns and price movement probabilities with industry-leading accuracy.",
+                    chipFeature2Title: "Contextual Precision",
+                    chipFeature2Desc: "Understands the context of each timeframe and asset type to provide relevant analysis.",
+                    chipFeature3Title: "Instant Speed",
+                    chipFeature3Desc: "Delivers complex analysis results in just seconds after you upload an image.",
+                    featuresTitle: "<span>Intuitive</span> Tools for Every Trader",
+                    featuresSubtitle: "We cut through the complexity and present the features you actually need to make better decisions.",
+                    feature1Title: "In-Depth Analysis",
+                    feature1Desc: "Our AI goes beyond trend lines, analyzing market sentiment, key levels, and candlestick formations for a complete market picture.",
+                    feature2Title: "Multi-Asset Coverage",
+                    feature2Desc: "Understands the context of each timeframe and asset type to provide relevant analysis.",
+                    chipFeature3Title: "Instant Speed",
+                    chipFeature3Desc: "Delivers complex analysis results in just seconds after you upload an image.",
+                    featuresTitle: "<span>Intuitive</span> Tools for Every Trader",
+                    featuresSubtitle: "We cut through the complexity and present the features you actually need to make better decisions.",
+                    feature1Title: "In-Depth Analysis",
+                    feature1Desc: "Our AI goes beyond trend lines, analyzing market sentiment, key levels, and candlestick formations for a complete market picture.",
+                    feature2Title: "Multi-Asset Coverage",
+                    feature2Desc: "Whether it's Forex, Crypto, Commodities, or Stocks, MGLYZER is trained to understand the unique characteristics of each market.",
+                    feature3Title: "Simple: Just Upload",
+                    feature3Desc: "Forget complex data inputs. Simply upload a screenshot of your chart and get an easy-to-understand visual analysis.",
+                    reviewsTitle: "What <span>Our Traders</span> Say",
+                    reviewsSubtitle: "We're proud to have helped thousands of traders. Here are some of their success stories.",
+                    footerText: "&copy; 2025 MGLYZER by MG Trade. All rights reserved."
+                },
+                id: {
+                	launchApp: "Mulai",
+                    getStarted: "Mulai Analisis Gratis",
+                    heroTitle: "Analisis Pasar Presisi, <br>Didukung oleh <span>AI Generatif</span>",
+                    heroSubtitle: "Ubah tangkapan layar chart trading Anda menjadi wawasan strategis. MGLYZER memberikan kejelasan instan untuk Forex, Kripto, dan Saham.",
+                    chipTitle: "Ditenagai oleh <span>MGCHIP</span>",
+                    chipSubtitle: "Inti dari MGLYZER adalah MGCHIP, prosesor AI milik kami yang dirancang khusus untuk menganalisis data pasar finansial dengan efisiensi tak tertandingi.",
+                    chipFeature1Title: "Akurasi Tinggi",
+                    chipFeature1Desc: "Mengidentifikasi pola dan probabilitas pergerakan harga dengan tingkat keakuratan yang terdepan di industri.",
+                    chipFeature2Title: "Presisi Kontekstual",
+                    chipFeature2Desc: "Memahami konteks dari setiap timeframe dan jenis aset untuk memberikan analisis yang relevan.",
+                    chipFeature3Title: "Kecepatan Instan",
+                    chipFeature3Desc: "Memberikan hasil analisis kompleks hanya dalam beberapa detik setelah Anda mengunggah gambar.",
+                    featuresTitle: "Alat Bantu <span>Intuitif</span> untuk Setiap Trader",
+                    featuresSubtitle: "Kami menghilangkan kerumitan dan menyajikan fitur yang benar-benar Anda butuhkan untuk mengambil keputusan yang lebih baik.",
+                    feature1Title: "Analisis Mendalam",
+                    feature1Desc: "AI kami melampaui garis tren, menganalisis sentimen pasar, level kunci, dan formasi candlestick untuk gambaran pasar yang utuh.",
+                    feature2Title: "Cakupan Multi-Aset",
+                    feature2Desc: "Baik itu Forex, Kripto, Komoditas, atau Saham, MGLYZER dilatih untuk memahami karakteristik unik setiap pasar.",
+                    feature3Title: "Sederhana: Cukup Unggah",
+                    feature3Desc: "Lupakan input data yang rumit. Cukup unggah screenshot chart Anda dan dapatkan analisis visual yang mudah dipahami.",
+                    reviewsTitle: "Apa Kata <span>Para Trader</span>",
+                    reviewsSubtitle: "Kami bangga telah membantu ribuan trader. Inilah beberapa cerita sukses mereka.",
+                    footerText: "&copy; 2025 MGLYZER oleh MG Trade. Hak cipta dilindungi undang-undang."
+                }
+                };
+            
+            const htmlEl = document.documentElement;
+            const themeToggle = document.getElementById('theme-toggle');
             const langEnBtn = document.getElementById('langEnBtn');
             const langIdBtn = document.getElementById('langIdBtn');
 
-            const headerTitle = document.getElementById('headerTitle');
-            const headerSubtitle = document.getElementById('headerSubtitle');
-            const inputSectionTitle = document.getElementById('inputSectionTitle');
-            const labelAssetType = document.getElementById('labelAssetType');
-            const labelTimeframe = document.getElementById('labelTimeframe');
-            const labelAdditionalNotes = document.getElementById('labelAdditionalNotes');
-            const additionalNotesTextarea = document.getElementById('additionalNotes'); // Need to update placeholder
-            const labelUploadChart = document.getElementById('labelUploadChart');
-            const uploadAreaText = document.getElementById('uploadAreaText');
-            const analyzeBtn = document.getElementById('analyzeBtn');
-            const buttonText = document.getElementById('buttonText');
-            const outputSectionTitle = document.getElementById('outputSectionTitle');
-            const placeholderAnalysis = document.getElementById('placeholderAnalysis');
-            const footerText = document.getElementById('footerText');
-            const messageBox = document.getElementById('message');
-
-            const assetTypeSelect = document.getElementById('assetType');
-            const timeframeSelect = document.getElementById('timeframe');
-
-
-            const chartAnalysisForm = document.getElementById('chartAnalysisForm');
-            const chartImageInput = document.getElementById('chartImageInput');
-            const uploadArea = document.getElementById('uploadArea');
-            const imagePreview = document.getElementById('imagePreview');
-            const fileNameDisplay = document.getElementById('fileNameDisplay');
-            const loadingSpinner = document.getElementById('loadingSpinner');
-            const analysisResultDiv = document.getElementById('analysisResult');
-
-            let uploadedFile = null;
-            let currentLang = localStorage.getItem('appLang') || 'en'; // Default ke 'en' atau dari local storage
-
-            const translations = {
-                en: {
-                    headerTitle: "MGLYZER 2.2",
-                    headerSubtitle: "Upload your latest chart screenshot and let AI analyze market direction for Crypto, Forex, and Commodities.",
-                    inputSectionTitle: "Upload Chart & Details",
-                    labelAssetType: "Asset Type:",
-                    selectAssetType: "Select Asset Type",
-                    crypto: "Crypto",
-                    forex: "Forex",
-                    commodity: "Commodity",
-                    stock: "Stock",
-                    labelTimeframe: "Timeframe:",
-                    selectTimeframe: "Select Timeframe",
-                    minute: "Minute", // For 5M, 15M, 30M
-                    hour: "Hour", // For 1H, 4H
-                    day: "Day", // For 1D
-                    week: "Week", // For 1W
-                    month: "Month", // For 1M
-                    labelAdditionalNotes: "Additional Context/Notes (Optional):",
-                    placeholderNotes: "e.g., 'Looking for resistance levels', 'Is this a bullish setup?'",
-                    labelUploadChart: "Upload Chart Screenshot:",
-                    uploadAreaText: "Drag & drop your image here, or click to browse",
-                    analyzeButton: "Analyze Chart",
-                    analyzingButton: "Analyzing...",
-                    outputSectionTitle: "Analysis Results",
-                    placeholderAnalysis: "Upload a chart and click 'Analyze Chart' to see the AI's prediction here.",
-                    footerText: "&copy; 2025 MGLYZER 2.2 by MG Trade. All rights reserved.",
-                    // Messages
-                    msgUploadImage: "Please upload an image file (e.g., JPG, PNG).",
-                    msgFileSize: "Image file size exceeds 5MB. Please upload a smaller image.",
-                    msgNoImageUploaded: "Please upload a chart screenshot.",
-                    msgSelectAssetTimeframe: "Please select Asset Type and Timeframe.",
-                    msgAnalysisComplete: "Analysis complete!",
-                    msgServerError: "Server error during analysis. Please try again.",
-                    msgFailedAnalysis: "Failed to get analysis.",
-                    msgErrorPrefix: "Error: "
-                },
-                id: {
-                    headerTitle: "MGLYZER 2.2",
-                    headerSubtitle: "Unggah tangkapan layar grafik terbaru Anda dan biarkan AI menganalisis arah pasar untuk Kripto, Forex, dan Komoditas.",
-                    inputSectionTitle: "Unggah Grafik & Detail",
-                    labelAssetType: "Jenis Aset:",
-                    selectAssetType: "Pilih Jenis Aset",
-                    crypto: "Kripto",
-                    forex: "Forex",
-                    commodity: "Komoditas",
-                    stock: "Saham",
-                    labelTimeframe: "Jangka Waktu:",
-                    selectTimeframe: "Pilih Jangka Waktu",
-                    minute: "Menit", // For 5M, 15M, 30M
-                    hour: "Jam", // For 1H, 4H
-                    day: "Hari", // For 1D
-                    week: "Minggu", // For 1W
-                    month: "Bulan", // For 1M
-                    labelAdditionalNotes: "Konteks/Catatan Tambahan (Opsional):",
-                    placeholderNotes: "cth: 'Mencari level resistensi', 'Apakah ini setup bullish?'",
-                    labelUploadChart: "Unggah Tangkapan Layar Grafik:",
-                    uploadAreaText: "Seret & lepas gambar Anda di sini, atau klik untuk mencari",
-                    analyzeButton: "Analisis Grafik",
-                    analyzingButton: "Menganalisis...",
-                    outputSectionTitle: "Hasil Analisis",
-                    placeholderAnalysis: "Unggah grafik dan klik 'Analisis Grafik' untuk melihat prediksi AI di sini.",
-                    footerText: "&copy; 2025 MGLYZER 2.2 by MG Trade. Semua Hak Dilindungi.",
-                    // Messages
-                    msgUploadImage: "Mohon unggah file gambar (misal: JPG, PNG).",
-                    msgFileSize: "Ukuran file gambar melebihi 5MB. Mohon unggah gambar yang lebih kecil.",
-                    msgNoImageUploaded: "Mohon unggah tangkapan layar grafik.",
-                    msgSelectAssetTimeframe: "Mohon pilih Jenis Aset dan Jangka Waktu.",
-                    msgAnalysisComplete: "Analisis selesai!",
-                    msgServerError: "Terjadi kesalahan server saat analisis. Mohon coba lagi.",
-                    msgFailedAnalysis: "Gagal mendapatkan analisis.",
-                    msgErrorPrefix: "Kesalahan: "
-                }
+            const applyLanguage = (lang) => {
+                document.querySelectorAll('[data-lang-key]').forEach(el => {
+                    const key = el.getAttribute('data-lang-key');
+                    if (translations[lang][key]) el.innerHTML = translations[lang][key];
+                });
+                langEnBtn.classList.toggle('active', lang === 'en');
+                langIdBtn.classList.toggle('active', lang === 'id');
+                localStorage.setItem('language', lang);
+                htmlEl.setAttribute('lang', lang);
             };
 
-            const assetTypes = {
-                '': { en: 'Select Asset Type', id: 'Pilih Jenis Aset' },
-                'Crypto': { en: 'Crypto', id: 'Kripto' },
-                'Forex': { en: 'Forex', id: 'Forex' },
-                'Commodity': { en: 'Commodity', id: 'Komoditas' },
-                'Stock': { en: 'Stock', id: 'Saham' }
-            };
-
-            const timeframes = {
-                '': { en: 'Select Timeframe', id: 'Pilih Jangka Waktu' },
-                '5M': { en: '5 Minute', id: '5 Menit' },
-                '15M': { en: '15 Minute', id: '15 Menit' },
-                '30M': { en: '30 Minute', id: '30 Menit' },
-                '1H': { en: '1 Hour', id: '1 Jam' },
-                '4H': { en: '4 Hour', id: '4 Jam' },
-                '1D': { en: '1 Day', id: '1 Hari' },
-                '1W': { en: '1 Week', id: '1 Minggu' },
-                '1M': { en: '1 Month', id: '1 Bulan' }
-            };
-
-            function populateSelectOptions(selectElement, optionsData) {
-                selectElement.innerHTML = ''; // Clear existing options
-                for (const value in optionsData) {
-                    const option = document.createElement('option');
-                    option.value = value;
-                    option.textContent = optionsData[value][currentLang];
-                    selectElement.appendChild(option);
-                }
-            }
-
-            function updateUI() {
-                const t = translations[currentLang];
-
-                headerTitle.textContent = t.headerTitle;
-                headerSubtitle.textContent = t.headerSubtitle;
-                inputSectionTitle.textContent = t.inputSectionTitle;
-                labelAssetType.textContent = t.labelAssetType;
-                labelTimeframe.textContent = t.labelTimeframe;
-                labelAdditionalNotes.textContent = t.labelAdditionalNotes;
-                additionalNotesTextarea.placeholder = t.placeholderNotes;
-                labelUploadChart.textContent = t.labelUploadChart;
-                uploadAreaText.textContent = t.uploadAreaText;
-                buttonText.textContent = t.analyzeButton;
-                outputSectionTitle.textContent = t.outputSectionTitle;
-                placeholderAnalysis.textContent = t.placeholderAnalysis;
-                footerText.innerHTML = t.footerText; // Use innerHTML for copyright symbol
-
-                // Update select options
-                populateSelectOptions(assetTypeSelect, assetTypes);
-                populateSelectOptions(timeframeSelect, timeframes);
-
-                // Update active language button style
-                langEnBtn.classList.toggle('active', currentLang === 'en');
-                langIdBtn.classList.toggle('active', currentLang === 'id');
-
-                // Re-evaluate current messages in correct language if any
-                if (messageBox.style.display === 'block') {
-                    // This is a simplified approach. For more robust message handling,
-                    // you'd typically store message keys and re-display them.
-                    // For now, if a message is shown, it won't auto-translate unless re-triggered.
-                    // This is acceptable for simple cases.
-                }
-            }
-
-            // Initial UI update
-            updateUI();
-
-            // Language Switcher Event Listeners
-            langEnBtn.addEventListener('click', () => {
-                currentLang = 'en';
-                localStorage.setItem('appLang', 'en');
-                updateUI();
-            });
-
-            langIdBtn.addEventListener('click', () => {
-                currentLang = 'id';
-                localStorage.setItem('appLang', 'id');
-                updateUI();
-            });
-
-            // --- File Upload Logic (Drag & Drop) ---
-            uploadArea.addEventListener('click', () => chartImageInput.click());
-            
-            uploadArea.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                uploadArea.classList.add('drag-over');
-            });
-            uploadArea.addEventListener('dragleave', () => {
-                uploadArea.classList.remove('drag-over');
-            });
-            uploadArea.addEventListener('drop', (e) => {
-                e.preventDefault();
-                uploadArea.classList.remove('drag-over');
-                const files = e.dataTransfer.files;
-                if (files.length > 0) {
-                    handleFile(files[0]);
-                }
-            });
-
-            chartImageInput.addEventListener('change', (e) => {
-                if (e.target.files.length > 0) {
-                    handleFile(e.target.files[0]);
-                }
-            });
-
-            function handleFile(file) {
-                if (!file.type.startsWith('image/')) {
-                    showMessage(translations[currentLang].msgUploadImage, 'error');
-                    imagePreview.style.display = 'none';
-                    fileNameDisplay.style.display = 'none';
-                    uploadedFile = null;
-                    return;
-                }
-                if (file.size > 5 * 1024 * 1024) { // 5 MB limit
-                    showMessage(translations[currentLang].msgFileSize, 'error');
-                    imagePreview.style.display = 'none';
-                    fileNameDisplay.style.display = 'none';
-                    uploadedFile = null;
-                    return;
-                }
-
-                uploadedFile = file;
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    imagePreview.src = e.target.result;
-                    imagePreview.style.display = 'block';
-                    fileNameDisplay.textContent = file.name;
-                    fileNameDisplay.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-                hideMessage(); // Clear any previous error message
-            }
-
-            // --- Form Submission Logic ---
-            chartAnalysisForm.addEventListener('submit', async function(event) {
-                event.preventDefault();
-
-                analysisResultDiv.innerHTML = `<p class="placeholder-text">${translations[currentLang].analyzingButton}...</p>`;
-                hideMessage();
-
-                if (!uploadedFile) {
-                    showMessage(translations[currentLang].msgNoImageUploaded, 'error');
-                    return;
-                }
-                if (!assetTypeSelect.value || !timeframeSelect.value) {
-                    showMessage(translations[currentLang].msgSelectAssetTimeframe, 'error');
-                    return;
-                }
-
-                setLoadingState(true);
-
-                const formData = new FormData();
-                formData.append('image', uploadedFile);
-                formData.append('assetType', assetTypeSelect.value);
-                formData.append('timeframe', timeframeSelect.value);
-                formData.append('additionalNotes', additionalNotesTextarea.value);
-                formData.append('outputLanguage', currentLang); // Kirim bahasa output ke API
-
-                try {
-                    const response = await fetch('/api/analyze-chart', {
-                        method: 'POST',
-                        body: formData, // FormData otomatis set Content-Type: multipart/form-data
-                    });
-
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.message || translations[currentLang].msgServerError);
-                    }
-
-                    const data = await response.json();
-                    displayAnalysisResults(data.analysis);
-                    showMessage(translations[currentLang].msgAnalysisComplete, 'success');
-
-                } catch (err) {
-                    console.error('Analysis error:', err);
-                    analysisResultDiv.innerHTML = `<p class="placeholder-text">${translations[currentLang].msgFailedAnalysis}</p>`;
-                    showMessage(`${translations[currentLang].msgErrorPrefix} ${err.message}`, 'error');
-                } finally {
-                    setLoadingState(false);
-                }
-            });
-
-            // --- Helper Functions ---
-            function setLoadingState(isLoading) {
-                analyzeBtn.disabled = isLoading;
-                buttonText.textContent = isLoading ? translations[currentLang].analyzingButton : translations[currentLang].analyzeButton;
-                loadingSpinner.style.display = isLoading ? 'inline-block' : 'none';
-            }
-
-            function showMessage(msg, type) {
-                messageBox.textContent = msg;
-                messageBox.className = `message-box ${type}-message`;
-                messageBox.style.display = 'block';
-            }
-
-            function hideMessage() {
-                messageBox.style.display = 'none';
-            }
-
-            function displayAnalysisResults(analysis) {
-                let htmlContent = '';
-                if (typeof analysis === 'string') {
-                    htmlContent = `<p>${analysis.replace(/\n/g, '<br>')}</p>`; // Basic newline conversion
-                } else if (typeof analysis === 'object') {
-                    // This assumes AI's JSON output keys are consistent (direction, rationale etc.)
-                    // You might need to translate these keys if AI doesn't return them in the selected language.
-                    // For now, let's assume AI's response for direction/rationale will be in the requested language.
-                    htmlContent += `<div class="result-item"><h3>${currentLang === 'en' ? 'Market Direction' : 'Arah Pasar'}:</h3><p><strong>${analysis.direction || 'N/A'}</strong></p></div>`;
-                    if (analysis.rationale) {
-                         htmlContent += `<div class="result-item"><h3>${currentLang === 'en' ? 'Rationale' : 'Alasan'}:</h3><p>${analysis.rationale}</p></div>`;
-                    }
-                    if (analysis.support) {
-                        htmlContent += `<div class="result-item"><h3>${currentLang === 'en' ? 'Support Level' : 'Level Dukungan'}:</h3><p>${analysis.support}</p></div>`;
-                    }
-                     if (analysis.resistance) {
-                        htmlContent += `<div class="result-item"><h3>${currentLang === 'en' ? 'Resistance Level' : 'Level Resistensi'}:</h3><p>${analysis.resistance}</p></div>`;
-                    }                    
-                } else {
-                    htmlContent = `<p class="placeholder-text">${translations[currentLang].placeholderAnalysis}</p>`;
-                }
-                analysisResultDiv.innerHTML = htmlContent;
-            }
-        });
-       
-    </script>
-    
-    <script>
-        function openLink() {
-            // Disable the button to prevent further clicks
-            const button = document.getElementById("registerButton");
-            button.disabled = true;
-            button.textContent = "Redirecting..."; // Change text to indicate action
-
-            // Set the link (change URL as needed)
-            const link = "https://headway.partners/user/signup?hwp=3843d4"; // Replace with the actual link
-            setTimeout(() => {
-                window.location.href = link; // Redirect to the desired URL
-            }, 1000); // Redirect after 1 second delay
-        }
-    </script>
-    
-    <script>
-        // --- SCRIPT BARU UNTUK FITUR LIGHT/DARK MODE ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const themeToggle = document.getElementById('theme-toggle');
-            const htmlEl = document.documentElement;
-
-            // Function to set theme
             const applyTheme = (theme) => {
                 htmlEl.setAttribute('data-theme', theme);
                 themeToggle.innerHTML = theme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
                 localStorage.setItem('theme', theme);
             };
+            themeToggle.addEventListener('click', () => applyTheme(htmlEl.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'));
+            langEnBtn.addEventListener('click', () => applyLanguage('en'));
+            langIdBtn.addEventListener('click', () => applyLanguage('id'));
             
-            // Check for saved theme in localStorage, or system preference, or default to dark
-            const savedTheme = localStorage.getItem('theme');
-            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+            const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            const savedLang = localStorage.getItem('language') || 'id';
+            applyTheme(savedTheme);
+            applyLanguage(savedLang);
 
-            applyTheme(initialTheme);
+            const header = document.querySelector('.main-header');
+            window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 50));
 
-            // Event listener for the toggle button
-            themeToggle.addEventListener('click', () => {
-                const currentTheme = htmlEl.getAttribute('data-theme');
-                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                applyTheme(newTheme);
-            });
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
         });
     </script>
 </body>
 </html>
-                
-  
