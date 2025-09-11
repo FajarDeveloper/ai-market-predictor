@@ -142,6 +142,37 @@
             color: var(--color-text-muted);
             margin-bottom: 40px;
         }
+        
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px 40px;
+            margin-top: 60px;
+            flex-wrap: wrap;
+        }
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-align: left;
+        }
+        .stat-item i {
+            font-size: 1.8rem;
+            color: var(--color-primary);
+        }
+        .stat-content .stat-number, 
+        .stat-content .stat-text {
+            font-size: 1.6rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        .stat-content p {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+            margin: 0;
+            padding: 0;
+        }
+
 
         /* =================================
            5. MGCHIP SECTION
@@ -258,6 +289,24 @@
                     <h1 data-lang-key="heroTitle">Analisis Pasar Presisi, <br>Didukung oleh <span>AI Generatif</span></h1>
                     <p data-lang-key="heroSubtitle">Ubah tangkapan layar chart trading Anda menjadi wawasan strategis. MGLYZER memberikan kejelasan instan untuk Forex, Kripto, dan Saham.</p>
                     <a href="https://ai-market-predictor-one.vercel.app/" class="cta-button" data-lang-key="getStarted">Mulai Analisis Gratis</a>
+
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-users"></i>
+                            <div class="stat-content">
+                                <span class="stat-number" data-target="1500">0</span>+
+                                <p data-lang-key="dailyUsers">Pengguna Harian</p>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-server"></i>
+                            <div class="stat-content">
+                                <span class="stat-text">24/7</span>
+                                <p data-lang-key="serverOnline">Server Online</p>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -355,7 +404,7 @@
                     <div class="review-card">
                         <h4 class="review-author">Fharel Putra P.</h4>
                         <div class="review-stars">⭐⭐⭐⭐⭐</div>
-                        <p class="review-comment">Saya sering kurang yakin dengan analisa saya dan setelah ada AI ini saya jadi semakin pede untuk membuka posisi🔥</p>
+                       <p class="review-comment">Saya sering kurang yakin dengan analisa saya dan setelah ada AI ini saya jadi semakin pede untuk membuka posisi🔥</p>
                         <p class="review-date">9 September 2025</p>
                     </div>
                 </div>
@@ -376,27 +425,22 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+    	
+    document.addEventListener('DOMContentLoaded', () => {
             const translations = {
                 en: {
                     launchApp: "Start",
                     getStarted: "Start Free Analysis",
                     heroTitle: "Precision Market Analysis, <br>Powered by <span>Generative AI</span>",
                     heroSubtitle: "Transform your trading chart screenshots into strategic insights. MGLYZER provides instant clarity for Forex, Crypto, and Stocks.",
+                    dailyUsers: "Daily Users",
+                    serverOnline: "Server Online",
                     chipTitle: "Powered by <span>MGCHIP</span>",
                     chipSubtitle: "At the core of MGLYZER is MGCHIP, our proprietary AI processor designed specifically to analyze financial market data with unparalleled efficiency.",
                     chipFeature1Title: "High Accuracy",
                     chipFeature1Desc: "Identifies patterns and price movement probabilities with industry-leading accuracy.",
                     chipFeature2Title: "Contextual Precision",
                     chipFeature2Desc: "Understands the context of each timeframe and asset type to provide relevant analysis.",
-                    chipFeature3Title: "Instant Speed",
-                    chipFeature3Desc: "Delivers complex analysis results in just seconds after you upload an image.",
-                    featuresTitle: "<span>Intuitive</span> Tools for Every Trader",
-                    featuresSubtitle: "We cut through the complexity and present the features you actually need to make better decisions.",
-                    feature1Title: "In-Depth Analysis",
-                    feature1Desc: "Our AI goes beyond trend lines, analyzing market sentiment, key levels, and candlestick formations for a complete market picture.",
-                    feature2Title: "Multi-Asset Coverage",
-                    feature2Desc: "Understands the context of each timeframe and asset type to provide relevant analysis.",
                     chipFeature3Title: "Instant Speed",
                     chipFeature3Desc: "Delivers complex analysis results in just seconds after you upload an image.",
                     featuresTitle: "<span>Intuitive</span> Tools for Every Trader",
@@ -416,6 +460,8 @@
                     getStarted: "Mulai Analisis Gratis",
                     heroTitle: "Analisis Pasar Presisi, <br>Didukung oleh <span>AI Generatif</span>",
                     heroSubtitle: "Ubah tangkapan layar chart trading Anda menjadi wawasan strategis. MGLYZER memberikan kejelasan instan untuk Forex, Kripto, dan Saham.",
+                    dailyUsers: "Pengguna Harian",
+                    serverOnline: "Server Online",
                     chipTitle: "Ditenagai oleh <span>MGCHIP</span>",
                     chipSubtitle: "Inti dari MGLYZER adalah MGCHIP, prosesor AI milik kami yang dirancang khusus untuk menganalisis data pasar finansial dengan efisiensi tak tertandingi.",
                     chipFeature1Title: "Akurasi Tinggi",
@@ -436,7 +482,7 @@
                     reviewsSubtitle: "Kami bangga telah membantu ribuan trader. Inilah beberapa cerita sukses mereka.",
                     footerText: "&copy; 2025 MGLYZER oleh MG Trade. Hak cipta dilindungi undang-undang."
                 }
-                };
+            };
             
             const htmlEl = document.documentElement;
             const themeToggle = document.getElementById('theme-toggle');
@@ -467,7 +513,7 @@
             const savedLang = localStorage.getItem('language') || 'id';
             applyTheme(savedTheme);
             applyLanguage(savedLang);
-
+            
             const header = document.querySelector('.main-header');
             window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 50));
 
@@ -475,11 +521,34 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
+
+                        const counter = entry.target.querySelector('.stat-number');
+                        if (counter && !counter.classList.contains('is-animated')) {
+                            counter.classList.add('is-animated');
+                            const target = parseInt(counter.dataset.target, 10);
+                            let current = 0;
+                            const duration = 2000;
+                            const stepTime = 20;
+                            const steps = duration / stepTime;
+                            const increment = target / steps;
+
+                            const timer = setInterval(() => {
+                                current += increment;
+                                if (current >= target) {
+                                    clearInterval(timer);
+                                    counter.innerText = target;
+                                } else {
+                                	counter.innerText = Math.ceil(current);
+                                }
+                            }, stepTime);
+                        }
                     }
                 });
             }, { threshold: 0.1 });
+            
             document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
         });
     </script>
 </body>
 </html>
+                
