@@ -11,23 +11,60 @@
 
     <style>
         :root {
-            --bg-color: #f0f2f5; /* Very light gray */
-            --card-bg-light: rgba(255, 255, 255, 0.8); /* For glassmorphism base */
-            --card-bg-dark: rgba(255, 255, 255, 0.95); /* For slightly opaque parts */
+            --ease: all 0.3s ease-in-out;
+        }
+
+        html[data-theme='light'] {
+            --bg-color: #f0f2f5;
+            --card-bg-light: rgba(255, 255, 255, 0.8);
+            --card-bg-dark: rgba(255, 255, 255, 0.95);
             --border-color: rgba(220, 220, 220, 0.6);
-            --primary-gradient-start: #3b82f6; /* Blue for primary */
-            --primary-gradient-end: #2563eb;   /* Darker Blue for primary */
-            --primary-text-color: #1d4ed8;     /* Even darker blue for text */
-            --text-main: #1a202c; /* Darker text */
-            --text-secondary: #4a5568; /* Medium text */
+            --primary-gradient-start: #3b82f6;
+            --primary-gradient-end: #2563eb;
+            --primary-text-color: #1d4ed8;
+            --text-main: #1a202c;
+            --text-secondary: #4a5568;
             --shadow-light: rgba(0, 0, 0, 0.04);
             --shadow-medium: rgba(0, 0, 0, 0.08);
+            --theme-btn-bg: #e2e8f0;
+            --theme-btn-color: var(--text-secondary);
         }
+
+        html[data-theme='dark'] {
+    --bg-color: #1a202c;
+    --card-bg-light: rgba(26, 32, 44, 0.7);
+    --card-bg-dark: rgba(26, 32, 44, 0.9);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --primary-gradient-start: #38bdf8; /* Biru Langit (Sky Blue) */
+    --primary-gradient-end: #0ea5e9;   /* Biru Langit lebih gelap */
+    --primary-text-color: #38bdf8;     /* Biru Langit (Sky Blue) */
+    --text-main: #f7fafc;
+    --text-secondary: #a0aec0;
+    --shadow-light: rgba(0, 0, 0, 0.1);
+    --shadow-medium: rgba(0, 0, 0, 0.2);
+    --theme-btn-bg: #2d3748;
+    --theme-btn-color: var(--text-secondary);
+}
+
+html[data-theme='dark'] .language-switcher button.active {
+    /* Mengubah bayangan tombol bahasa menjadi biru */
+    box-shadow: 0 4px 15px rgba(56, 189, 248, 0.25);
+}
+
+html[data-theme='dark'] .download-button {
+     /* Mengubah bayangan tombol unduh menjadi biru */
+     box-shadow: 0 8px 20px rgba(56, 189, 248, 0.2);
+}
+
+html[data-theme='dark'] .download-button:hover {
+    /* Mengubah bayangan tombol unduh (hover) menjadi biru */
+    box-shadow: 0 12px 25px rgba(56, 189, 248, 0.3);
+}
 
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--bg-color);
-            background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.03) 1px, transparent 0);
+            background-image: radial-gradient(circle at 1px 1px, rgba(120,120,120,0.05) 1px, transparent 0);
             background-size: 30px 30px;
             color: var(--text-main);
             margin: 0;
@@ -36,6 +73,7 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            transition: var(--ease);
         }
 
         h1, h2, h3 {
@@ -43,19 +81,25 @@
             color: var(--text-main);
         }
 
-        .language-switcher {
+        .controls-container {
             display: flex;
             justify-content: center;
-            gap: 0.5rem;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
             background-color: var(--card-bg-light);
             border: 1px solid var(--border-color);
             padding: 0.4rem 0.5rem;
             border-radius: 99px;
-            margin-bottom: 3rem;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             box-shadow: 0 4px 15px var(--shadow-light);
-            z-index: 10; /* Ensure it stays on top */
+            z-index: 10;
+        }
+
+        .language-switcher {
+            display: flex;
+            gap: 0.5rem;
         }
 
         .language-switcher button {
@@ -67,7 +111,7 @@
             cursor: pointer;
             font-size: 0.9rem;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: var(--ease);
         }
 
         .language-switcher button.active {
@@ -75,10 +119,37 @@
             color: white;
             box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
         }
+        
+        html[data-theme='dark'] .language-switcher button.active {
+            box-shadow: 0 4px 15px rgba(74, 222, 128, 0.3);
+        }
+        
+        #theme-toggle {
+            background-color: var(--theme-btn-bg);
+            color: var(--theme-btn-color);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: var(--ease);
+        }
+
+        #theme-toggle:hover {
+            opacity: 0.8;
+        }
+
+        #theme-toggle svg {
+            width: 20px;
+            height: 20px;
+        }
 
         .main-content-wrapper {
             width: 100%;
-            max-width: 800px; /* Adjusted max-width for the main content card */
+            max-width: 800px;
             margin: 0 auto;
             padding: 0 1rem;
             animation: fadeIn 0.8s ease-out;
@@ -93,38 +164,20 @@
             background: linear-gradient(135deg, var(--card-bg-light), var(--card-bg-dark));
             border: 1px solid var(--border-color);
             border-radius: 25px;
-            padding: 3rem 2.5rem; /* Increased padding */
+            padding: 3rem 2.5rem;
             box-shadow: 0 10px 30px var(--shadow-light);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             text-align: center;
             position: relative;
             overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: var(--ease);
         }
-
+        
         .download-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 35px var(--shadow-medium);
         }
-
-        .download-card::before { /* Subtle background shimmer effect */
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            z-index: 0;
-        }
-
-        .download-card:hover::before {
-            opacity: 1;
-        }
-
 
         .download-header {
             margin-bottom: 2.5rem;
@@ -161,27 +214,35 @@
         }
 
         .download-button {
-            display: inline-flex; /* Use inline-flex for icon alignment */
+            display: inline-flex;
             align-items: center;
             gap: 0.75rem;
             padding: 1.2rem 2.5rem;
             background-image: linear-gradient(to right, var(--primary-gradient-start), var(--primary-gradient-end));
             color: white;
             border: none;
-            border-radius: 15px; /* More rounded button */
+            border-radius: 15px;
             font-size: 1.1rem;
             font-weight: 600;
             text-decoration: none;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--ease);
             box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
             margin-top: 2rem;
+        }
+        
+        html[data-theme='dark'] .download-button {
+             box-shadow: 0 8px 20px rgba(74, 222, 128, 0.25);
         }
 
         .download-button:hover {
             transform: translateY(-5px);
             box-shadow: 0 12px 25px rgba(59, 130, 246, 0.4);
             opacity: 0.95;
+        }
+        
+        html[data-theme='dark'] .download-button:hover {
+            box-shadow: 0 12px 25px rgba(74, 222, 128, 0.35);
         }
 
         .download-button svg {
@@ -193,44 +254,27 @@
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
-            body {
-                padding: 1.5rem 1rem;
-            }
-            .main-content-wrapper {
-                padding: 0;
-            }
-            .language-switcher {
-                margin-bottom: 2rem;
-            }
-            .download-card {
-                padding: 2.5rem 1.5rem;
-            }
-            .download-header {
-                margin-bottom: 2rem;
-            }
-            .download-header h1 {
-                font-size: 2.2rem;
-            }
-            .download-header p {
-                font-size: 0.95rem;
-            }
-            .download-button {
-                padding: 1rem 2rem;
-                font-size: 1rem;
-                margin-top: 1.5rem;
-            }
-            .download-button svg {
-                width: 20px;
-                height: 20px;
-            }
+            body { padding: 1.5rem 1rem; }
+            .main-content-wrapper { padding: 0; }
+            .controls-container { margin-bottom: 2rem; }
+            .download-card { padding: 2.5rem 1.5rem; }
+            .download-header { margin-bottom: 2rem; }
+            .download-header h1 { font-size: 2.2rem; }
+            .download-header p { font-size: 0.95rem; }
+            .download-button { padding: 1rem 2rem; font-size: 1rem; margin-top: 1.5rem; }
+            .download-button svg { width: 20px; height: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="language-switcher">
-        <button id="en-btn" class="active">English</button>
-        <button id="id-btn">Indonesia</button>
+    <div class="controls-container">
+        <div class="language-switcher">
+            <button id="en-btn" class="active">English</button>
+            <button id="id-btn">Indonesia</button>
+        </div>
+        <button id="theme-toggle" aria-label="Toggle theme">
+            </button>
     </div>
 
     <div class="main-content-wrapper">
@@ -255,32 +299,46 @@
         document.addEventListener('DOMContentLoaded', () => {
             const enButton = document.getElementById('en-btn');
             const idButton = document.getElementById('id-btn');
-            
+            const themeToggle = document.getElementById('theme-toggle');
             const translatableElements = document.querySelectorAll('[data-en], .download-button span');
+            
+            const sunIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg>`;
+            const moonIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21c3.73 0 7.01-1.846 9.002-4.646z" /></svg>`;
 
+            // --- Theme Switcher ---
+            function applyTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+                themeToggle.innerHTML = theme === 'dark' ? sunIcon : moonIcon;
+            }
+
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+            });
+
+            // --- Language Switcher ---
             function switchLanguage(lang) {
                 translatableElements.forEach(element => {
                     if (element.dataset[lang]) {
                         element.textContent = element.dataset[lang];
                     }
                 });
-
-                if (lang === 'en') {
-                    enButton.classList.add('active');
-                    idButton.classList.remove('active');
-                    document.documentElement.lang = 'en';
-                } else {
-                    idButton.classList.add('active');
-                    enButton.classList.remove('active');
-                    document.documentElement.lang = 'id';
-                }
+                enButton.classList.toggle('active', lang === 'en');
+                idButton.classList.toggle('active', lang === 'id');
+                document.documentElement.lang = lang;
+                localStorage.setItem('language', lang);
             }
 
             enButton.addEventListener('click', () => switchLanguage('en'));
             idButton.addEventListener('click', () => switchLanguage('id'));
 
-            // Set initial language based on the active button
-            switchLanguage('en'); 
+            // --- Initial Load ---
+            const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            const savedLang = localStorage.getItem('language') || 'en';
+            
+            applyTheme(savedTheme);
+            switchLanguage(savedLang);
         });
     </script>
 </body>

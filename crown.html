@@ -11,12 +11,33 @@
 
     <style>
         :root {
-            --bg-color: #f4f7fc; /* Light gray background */
-            --card-bg: #ffffff; /* White card background */
-            --border-color: #e5e7eb; /* Light gray border */
-            --primary-color: #3b82f6; /* A strong, modern blue */
-            --text-primary: #1f2937; /* Dark gray for text */
-            --text-secondary: #6b7280; /* Medium gray for secondary text */
+            --ease: all 0.3s ease-in-out;
+        }
+
+        html[data-theme='light'] {
+            --bg-color: #f4f7fc;
+            --card-bg: #ffffff;
+            --item-bg: #f9fafb;
+            --border-color: #e5e7eb;
+            --primary-color: #3b82f6;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --controls-bg: #eef2f9;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+            --shadow-hover-color: rgba(0, 0, 0, 0.07);
+        }
+
+        html[data-theme='dark'] {
+            --bg-color: #111827;
+            --card-bg: #1f2937;
+            --item-bg: #374151;
+            --border-color: #4b5563;
+            --primary-color: #60a5fa;
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --controls-bg: #374151;
+            --shadow-color: rgba(0, 0, 0, 0.2);
+            --shadow-hover-color: rgba(0, 0, 0, 0.3);
         }
 
         * {
@@ -28,10 +49,11 @@
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--bg-color);
-            background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.04) 1px, transparent 0);
+            background-image: radial-gradient(circle at 1px 1px, rgba(120,120,120,0.05) 1px, transparent 0);
             background-size: 25px 25px;
             color: var(--text-primary);
-            padding: 2rem 1rem; /* Added padding for smaller screens */
+            padding: 2rem 1rem;
+            transition: var(--ease);
         }
 
         .container {
@@ -41,9 +63,9 @@
             border: 1px solid var(--border-color);
             border-radius: 20px;
             padding: 2.5rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 25px var(--shadow-color);
             animation: fadeIn 1s ease-in-out;
-            margin: 0 auto; /* Center container and allow flow from top */
+            margin: 0 auto;
         }
 
         @keyframes fadeIn {
@@ -60,9 +82,8 @@
             gap: 1rem;
         }
         
-        /* Placeholder for your large AI logo */
         .header .main-logo {
-            width: 120px; /* Adjust size as needed */
+            width: 120px;
             height: auto;
             margin-bottom: 1rem;
         }
@@ -80,14 +101,20 @@
             font-weight: 400;
         }
 
-        .language-switcher {
+        .controls-container {
             display: flex;
             justify-content: center;
-            gap: 0.5rem;
-            background-color: #eef2f9;
+            align-items: center;
+            gap: 1rem;
+            background-color: var(--controls-bg);
             padding: 0.5rem;
             border-radius: 99px;
             margin-bottom: 2rem;
+        }
+
+        .language-switcher {
+            display: flex;
+            gap: 0.5rem;
         }
 
         .language-switcher button {
@@ -99,7 +126,7 @@
             cursor: pointer;
             font-size: 0.9rem;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: var(--ease);
         }
 
         .language-switcher button.active {
@@ -108,6 +135,26 @@
             box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
         }
 
+        html[data-theme='dark'] .language-switcher button.active {
+             box-shadow: 0 4px 15px rgba(96, 165, 250, 0.25);
+        }
+
+        #theme-toggle {
+            background-color: var(--card-bg);
+            color: var(--text-secondary);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: var(--ease);
+        }
+        #theme-toggle:hover { opacity: 0.8; }
+        #theme-toggle svg { width: 20px; height: 20px; }
+
         .info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -115,16 +162,16 @@
         }
 
         .info-item {
-            background: #f9fafb;
+            background: var(--item-bg);
             border: 1px solid var(--border-color);
             border-radius: 15px;
             padding: 1.5rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: var(--ease);
         }
 
         .info-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+            box-shadow: 0 8px 20px var(--shadow-hover-color);
         }
 
         .item-header {
@@ -153,24 +200,21 @@
         }
         
         @media (max-width: 768px) {
-            body {
-                padding: 1rem;
-            }
-            .container {
-                padding: 1.5rem;
-            }
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
+            body { padding: 1rem; }
+            .container { padding: 1.5rem; }
+            .info-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div class="language-switcher">
-            <button id="en-btn" class="active">English</button>
-            <button id="id-btn">Indonesia</button>
+        <div class="controls-container">
+            <div class="language-switcher">
+                <button id="en-btn" class="active">English</button>
+                <button id="id-btn">Indonesia</button>
+            </div>
+            <button id="theme-toggle" aria-label="Toggle theme"></button>
         </div>
         
         <header class="header">
@@ -219,33 +263,42 @@
         document.addEventListener('DOMContentLoaded', () => {
             const enButton = document.getElementById('en-btn');
             const idButton = document.getElementById('id-btn');
-            
-            // Select all elements that have translation data
+            const themeToggle = document.getElementById('theme-toggle');
             const translatableElements = document.querySelectorAll('[data-en]');
+
+            const sunIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg>`;
+            const moonIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21c3.73 0 7.01-1.846 9.002-4.646z" /></svg>`;
+            
+            function applyTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+                themeToggle.innerHTML = theme === 'dark' ? sunIcon : moonIcon;
+            }
+
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+            });
 
             function switchLanguage(lang) {
                 translatableElements.forEach(element => {
-                    // Check if the dataset for the language exists before assigning
                     if (element.dataset[lang]) {
                         element.textContent = element.dataset[lang];
                     }
                 });
-
-                // Update active button state
-                if (lang === 'en') {
-                    enButton.classList.add('active');
-                    idButton.classList.remove('active');
-                } else {
-                    idButton.classList.add('active');
-                    enButton.classList.remove('active');
-                }
+                enButton.classList.toggle('active', lang === 'en');
+                idButton.classList.toggle('active', lang === 'id');
+                localStorage.setItem('language', lang);
             }
 
             enButton.addEventListener('click', () => switchLanguage('en'));
             idButton.addEventListener('click', () => switchLanguage('id'));
 
-            // Set initial language based on the active button
-            switchLanguage('en'); 
+            const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            const savedLang = localStorage.getItem('language') || 'en';
+
+            applyTheme(savedTheme);
+            switchLanguage(savedLang);
         });
     </script>
 </body>

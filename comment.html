@@ -11,6 +11,10 @@
 
     <style>
         :root {
+            --ease: all 0.3s ease-in-out;
+        }
+
+        html[data-theme='light'] {
             --bg-color: #f4f7fc;
             --card-bg: #ffffff;
             --border-color: #e5e7eb;
@@ -19,7 +23,21 @@
             --text-primary: #1f2937;
             --text-secondary: #6b7280;
             --star-inactive-color: #d1d5db;
-            --star-active-color: #facc15; /* Yellow for stars */
+            --star-active-color: #facc15;
+            --input-bg: #ffffff;
+        }
+
+        html[data-theme='dark'] {
+            --bg-color: #111827;
+            --card-bg: #1f2937;
+            --border-color: #4b5563;
+            --primary-color: #3b82f6;
+            --primary-hover-color: #60a5fa;
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --star-inactive-color: #4b5563;
+            --star-active-color: #facc15;
+            --input-bg: #374151;
         }
 
         body {
@@ -31,7 +49,30 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            transition: var(--ease);
         }
+        
+        #theme-toggle {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            background-color: var(--card-bg);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: var(--ease);
+            z-index: 100;
+        }
+        #theme-toggle:hover {
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+        }
+        #theme-toggle svg { width: 22px; height: 22px; }
 
         .container {
             width: 100%;
@@ -71,6 +112,8 @@
             width: 100%;
             padding: 0.75rem 1rem;
             border: 1px solid var(--border-color);
+            background-color: var(--input-bg);
+            color: var(--text-primary);
             border-radius: 8px;
             font-size: 1rem;
             font-family: 'Poppins', sans-serif;
@@ -89,7 +132,6 @@
             height: 120px;
         }
 
-        /* Modern Star Rating */
         .rating-container {
             display: flex;
             flex-direction: column;
@@ -98,14 +140,11 @@
         
         .stars {
             display: flex;
-            flex-direction: row-reverse; /* Reverse to make CSS hover trick work */
+            flex-direction: row-reverse;
             justify-content: center;
         }
 
-        .stars input[type="radio"] {
-            display: none;
-        }
-
+        .stars input[type="radio"] { display: none; }
         .stars label {
             font-size: 2.5rem;
             color: var(--star-inactive-color);
@@ -113,7 +152,6 @@
             transition: color 0.2s ease;
             margin: 0 0.25rem;
         }
-
         .stars label:hover,
         .stars label:hover ~ label,
         .stars input[type="radio"]:checked ~ label {
@@ -141,13 +179,11 @@
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
         }
-
         .submit-btn:hover {
             background-color: var(--primary-hover-color);
             transform: translateY(-2px);
         }
 
-        /* Dialog & Loading Overlay */
         .overlay {
             position: fixed;
             top: 0;
@@ -162,12 +198,10 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-
         .overlay.show {
             display: flex;
             opacity: 1;
         }
-        
         .dialog-box {
             background-color: var(--card-bg);
             padding: 2.5rem;
@@ -177,20 +211,15 @@
             transform: scale(0.9);
             transition: transform 0.3s ease;
         }
-        
-        .overlay.show .dialog-box {
-            transform: scale(1);
-        }
-
+        .overlay.show .dialog-box { transform: scale(1); }
         .dialog-box .check-icon {
             width: 60px;
             height: 60px;
             margin-bottom: 1rem;
-            color: #10b981; /* Green for success */
+            color: #10b981;
         }
-
         .dialog-box .spinner {
-            border: 5px solid #f3f3f3;
+            border: 5px solid var(--border-color);
             border-top: 5px solid var(--primary-color);
             border-radius: 50%;
             width: 50px;
@@ -210,12 +239,10 @@
             font-weight: 600;
             margin-bottom: 0.5rem;
         }
-        
         .dialog-box .sub-message {
             font-size: 1rem;
             color: var(--text-secondary);
         }
-
         .dialog-box .close-btn {
             margin-top: 1.5rem;
             padding: 0.6rem 1.5rem;
@@ -226,15 +253,12 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        
-        .dialog-box .close-btn:hover {
-            background-color: var(--primary-hover-color);
-        }
+        .dialog-box .close-btn:hover { background-color: var(--primary-hover-color); }
 
     </style>
 </head>
 <body>
-
+    <button id="theme-toggle" aria-label="Toggle theme"></button>
     <div class="container">
         <h2>Berikan Ulasan Anda</h2>
         <form id="reviewForm" novalidate>
@@ -285,63 +309,61 @@
     </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggle = document.getElementById('theme-toggle');
+            const sunIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg>`;
+            const moonIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21c3.73 0 7.01-1.846 9.002-4.646z" /></svg>`;
+            
+            function applyTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+                themeToggle.innerHTML = theme === 'dark' ? sunIcon : moonIcon;
+            }
+
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+            });
+            
+            const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            applyTheme(savedTheme);
+        });
+
+        // Existing form logic
         const reviewForm = document.getElementById('reviewForm');
         const loadingOverlay = document.getElementById('loadingOverlay');
         const successDialog = document.getElementById('successDialog');
         const ratingValue = document.getElementById('ratingValue');
         const starInputs = document.querySelectorAll('.stars input[type="radio"]');
 
-        function showLoading() {
-            loadingOverlay.classList.add('show');
-        }
+        function showLoading() { loadingOverlay.classList.add('show'); }
+        function hideLoading() { loadingOverlay.classList.remove('show'); }
+        function showSuccessDialog() { successDialog.classList.add('show'); }
+        function closeDialog() { successDialog.classList.remove('show'); }
 
-        function hideLoading() {
-            loadingOverlay.classList.remove('show');
-        }
-
-        function showSuccessDialog() {
-            successDialog.classList.add('show');
-        }
-
-        function closeDialog() {
-            successDialog.classList.remove('show');
-        }
-
-        // Form submission handler
         reviewForm.addEventListener('submit', function(event) {
             event.preventDefault();
-
-            // Simple validation check
             const name = document.getElementById('name').value;
             const comment = document.getElementById('comment').value;
             const rating = document.querySelector('input[name="rating"]:checked');
-
             if (!name || !comment || !rating) {
                 alert('Harap isi semua kolom sebelum mengirim.');
                 return;
             }
-
             showLoading();
-
-            // Simulate network delay for 2 seconds
             setTimeout(function() {
                 hideLoading();
                 showSuccessDialog();
-
-                // Reset form and rating text
                 reviewForm.reset();
                 ratingValue.innerText = 'Silakan pilih rating';
-            }, 2000); // 2 seconds
+            }, 2000);
         });
 
-        // Update rating text when a star is selected
         starInputs.forEach(radio => {
             radio.addEventListener('change', function() {
-                const rating = this.value;
-                ratingValue.innerText = `Anda memberikan ${rating} bintang`;
+                ratingValue.innerText = `Anda memberikan ${this.value} bintang`;
             });
         });
     </script>
-
 </body>
 </html>
