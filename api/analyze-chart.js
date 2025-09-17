@@ -1,4 +1,4 @@
-// api/analyze-chart.js (fundamental)
+// api/analyze-chart.js (teknikal)
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import formidable from 'formidable';
 import fs from 'fs/promises';
@@ -60,16 +60,16 @@ export default async function handler(request, response) {
     // Instruksi prompt yang lebih spesifik untuk AI
     const parts = [
       imagePart,
-      { text: `This fundamental prediction. ` },
-      { text: `It's for ${assetType} asset.` },
-      { text: `Provide a clear prediction of the market's likely direction (e.g., Good, Bad, Neutral) and a brief rationale.` },
+      { text: `Analyze this market chart. ` },
+      { text: `It's for ${assetType} with a ${timeframe} timeframe.` },
+      { text: `Provide a clear prediction of the market's likely direction (e.g., Bullish, Bearish, Sideways) and a brief rationale.` },
     ];
 
     if (additionalNotes) {
         parts.push({ text: `Additional context from user: "${additionalNotes}". Incorporate this into your analysis if relevant.` });
     }
 
-    parts.push({ text: `Focus on the fundamentals that will be predicted and focus on providing predictions on where the price will move when the data is published and what steps are the safest to take to avoid being liquidated. Please provide a complete and detailed prediction of the market price position. Provide output in this structured JSON-like format: { "direction": "string", "rationale": "string", "support": "string", "resistance": "string", "riskWarning": "string" }. ${languagePrompt}` });
+    parts.push({ text: `Focus on key technical patterns, chart patterns, candlestick pattern, support/resistance levels, Fibonacci point, FVG, influential news, geopolitics If there are and overall trend. also provide a good and safe price execution position from the analysis conclusions obtained. Please provide a complete and detailed prediction of the market price position. Provide output in this structured JSON-like format: { "direction": "string", "rationale": "string", "support": "string", "resistance": "string", "riskWarning": "string" }. ${languagePrompt}` });
 
 
     const result = await model.generateContent({
