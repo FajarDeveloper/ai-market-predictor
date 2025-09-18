@@ -112,8 +112,8 @@ export default async function handler(request, response) {
     console.error('Error in analyze-chart API:', error);
     // Tambahkan pesan error yang bisa disesuaikan bahasa di frontend
     const errorMessage = request.headers['accept-language'] && request.headers['accept-language'].includes('id') ? 
-        `Gagal menganalisis grafik. Detail kesalahan: ${error.message}` : 
-        `Failed to analyze chart. Error details: ${error.message}`;
+        `Gagal menganalisis grafik. Detail kesalahan: Server Berlebihan` : 
+        `Failed to analyze chart. Error details: Server Overload`;
 
     response.status(500).json({ message: errorMessage });
   }
